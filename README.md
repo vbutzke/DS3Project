@@ -1,6 +1,6 @@
-ObseC√o
+ObseC√£o
 
-Projeto de aplicativo para ado√√o de c√es.
+Projeto de aplicativo para ado√ß√£o de c√£es.
 
 Plataforma: Android (Nativo)
 Tecnologias: Java, Gradle, JUnit, MongoDB, Jackson, SpringBoot, Spring Security.
