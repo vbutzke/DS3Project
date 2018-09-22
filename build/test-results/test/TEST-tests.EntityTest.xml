@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tests.EntityTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2018-09-22T19:12:45" hostname="DESKTOP-DRJCKOR" time="0.003">
+  <properties/>
+  <testcase name="testSomeLibraryMethod" classname="tests.EntityTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
