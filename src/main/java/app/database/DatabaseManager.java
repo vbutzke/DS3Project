@@ -1,11 +1,12 @@
 package app.database;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.bson.Document;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 
 public class DatabaseManager {
 
@@ -21,7 +22,7 @@ public class DatabaseManager {
 	 private void createDB(){
 	    MongoClientURI connectionString = new MongoClientURI("mongodb://localhost:27017");
 	    this.mongoClient 				= new MongoClient(connectionString);
-	    this.database 					= mongoClient.getDatabase("MediaSharing");
+	    this.database 					= mongoClient.getDatabase("Obsecao");
 	 }
 
 	 private void createCollections(){
@@ -47,5 +48,16 @@ public class DatabaseManager {
 	 public void setDatabase(MongoDatabase database) {
 	 	this.database = database;
 	 }
+
+	public boolean findRecord(Document record, String collection) {
+		if(database.getCollection(collection).find(Filters.jsonSchema(record)) != null) {
+			return true;
+		}
+		return false;
+	}
+
+	public void addObject(Document record, String collection) {
+		database.getCollection(collection).insertOne(record);
+	}
 	
 }
