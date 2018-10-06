@@ -16,8 +16,8 @@ Tecnologias:
  - Spring Security
 
 Para executar o exemplo:
- 1. Abrir um terminal
- 2. Executar os comandos:
+1.Abrir um terminal
+2.Executar os comandos:
     
     $mkdir algumNomeDePasta
     
@@ -40,7 +40,7 @@ Futuramente haverá uma imagem docker com todas as configurações de ambiente.
 
 Para baixar o MongoDB, acesse o link:
   
-  https://www.mongodb.com/download-center?initial=true#community
+    https://www.mongodb.com/download-center?initial=true#community
   
   Siga os passos de instalação, deixando todas as opções default. Dê preferência pela versão completa.
   
