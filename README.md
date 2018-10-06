@@ -53,3 +53,7 @@ Para baixar o MongoDB, acesse o link:
   MongoDB Docs:
     
     https://docs.mongodb.com/manual/introduction/
+   
+Nome do banco: Obsecao
+
+Coleção criada: user
