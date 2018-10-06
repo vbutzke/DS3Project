@@ -1,11 +1,8 @@
 package app.database;
 
 import org.bson.Document;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import app.entities.User;
 
 public enum DatabaseController {
 	
@@ -17,7 +14,6 @@ public enum DatabaseController {
 	private DatabaseController() {
 		this.dm = new DatabaseManager();
 		this.om = new ObjectMapper();
-		
 	}
 	
 	public DatabaseManager getDM() {
@@ -33,10 +29,11 @@ public enum DatabaseController {
 	}
 	
 	public boolean isAccessCodeValid(String accessCode) throws JsonProcessingException {
-		if(dm.findRecord(convertToDocument(accessCode), "accessCodes")) {
+		//if(dm.findRecord(convertToDocument(accessCode), "accessCodes")) {
+			//verificar atributo "used", se estiver como falso, ok e atualiza ele pra true, se não, dá erro. por enquanto pra minimizar o esforço em geração de dados, vou deixar fixo
 			return true;
-		}
-		return false;
+		//}
+		//return false;
 	}
 	
 	public void addObject(Object o, String collection) throws JsonProcessingException {
@@ -51,10 +48,7 @@ public enum DatabaseController {
 	}
 	
 	private Document convertToDocument(Object o) throws JsonProcessingException {
-		String json = om.writeValueAsString(o);
-		Document d  = new Document();
-		d           = Document.parse(json);
-		return d;
+		return Document.parse(om.writeValueAsString(o));
 	}
 	
 }

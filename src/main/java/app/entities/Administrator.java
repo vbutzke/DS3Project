@@ -15,7 +15,7 @@ public class Administrator extends User{
 	}
 
 	public void checkAccessCode(String accessCode) throws JsonProcessingException {
-		if(!DatabaseController.INSTANCE.isAccessCodeValid(accessCode)) {
+		if(accessCode.isEmpty() || !DatabaseController.INSTANCE.isAccessCodeValid(accessCode)) {
 			throw new InvalidParameterException();
 		}
 	}

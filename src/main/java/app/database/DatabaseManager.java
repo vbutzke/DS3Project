@@ -4,7 +4,8 @@ import org.bson.Document;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoCollection;
+import com.mongodb.client.FindIterable;
+//import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 
@@ -12,11 +13,10 @@ public class DatabaseManager {
 
 	 private MongoClient mongoClient;
 	 private MongoDatabase database;
-	// private MongoCollection<Document> users;
 
 	 public void startDB(){
 		 createDB();
-		 createCollections();
+	//	 createCollections();
 	 }
 
 	 private void createDB(){
@@ -25,9 +25,9 @@ public class DatabaseManager {
 	    this.database 					= mongoClient.getDatabase("Obsecao");
 	 }
 
-	 private void createCollections(){
+	// private void createCollections(){
 	    //create collections
-	 }
+	// }
 	    
 	 public void closeConnection(){
 	    this.mongoClient.close();
@@ -50,7 +50,9 @@ public class DatabaseManager {
 	 }
 
 	public boolean findRecord(Document record, String collection) {
-		if(database.getCollection(collection).find(Filters.jsonSchema(record)) != null) {
+		FindIterable<Document> i = database.getCollection(collection).find(Filters.jsonSchema(record));
+
+		if(i.first().equals(record)) {
 			return true;
 		}
 		return false;

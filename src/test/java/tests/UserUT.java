@@ -1,13 +1,9 @@
 package tests;
 
 import static org.junit.Assert.assertTrue;
-
 import java.security.InvalidParameterException;
-
 import org.junit.*;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import app.entities.Administrator;
 import app.entities.User;
 import singletons.UserRecord;
@@ -29,7 +25,7 @@ public class UserUT extends AbstractUT{
 		User admin;
 		try {
 			admin = new Administrator(UserRecord.ADMINISTRATOR.getEmail(), UserRecord.ADMINISTRATOR.getFirstName(), UserRecord.ADMINISTRATOR.getLastName(), UserRecord.ADMINISTRATOR.getPassword(), UserRecord.ADMINISTRATOR.getPasswordConf(), UserRecord.ADMINISTRATOR.getCode());
-			assertTrue(findRecord(admin, "users"));
+			assertTrue(findRecord(admin, "user"));
 		} catch (InvalidParameterException | JsonProcessingException e) {
 			e.printStackTrace();
 		}
