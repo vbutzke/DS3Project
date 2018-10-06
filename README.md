@@ -16,7 +16,9 @@ Tecnologias:
  - Spring Security
 
 Para executar o exemplo:
+
 1.Abrir um terminal
+
 2.Executar os comandos:
     
     $mkdir algumNomeDePasta
