@@ -1,5 +1,9 @@
 package app.database;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
@@ -50,11 +54,15 @@ public class DatabaseManager {
 	 }
 
 	public boolean findRecord(Document record, String collection) {
-		FindIterable<Document> i = database.getCollection(collection).find(Filters.jsonSchema(record));
+		FindIterable<Document> i = database.getCollection(collection).find(record);
 
-		if(i.first().equals(record)) {
-			return true;
+		for(Document d : i) {
+			d.remove("_id");
+			if(d.toString().equals(record.toString())) {
+				return true;
+			}
 		}
+		
 		return false;
 	}
 
