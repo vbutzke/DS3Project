@@ -42,13 +42,19 @@ public class UserUT extends AbstractUT{
 	
 	@Test
 	public void createAdopter() {
-	/*	User adopter;
+		User adopter = null;
 		try {
 			adopter = new Adopter(UserRecord.ADOPTER.getEmail(), UserRecord.ADOPTER.getFirstName(), UserRecord.ADOPTER.getLastName(), UserRecord.ADOPTER.getPassword(), UserRecord.ADOPTER.getPasswordConf(), UserRecord.ADOPTER.getCode());
 			assertTrue(findRecord(adopter, "user"));
+			DatabaseController.INSTANCE.removeObject(adopter, "user");
 		} catch (InvalidParameterException | JsonProcessingException e) {
+			try {
+				DatabaseController.INSTANCE.removeObject(adopter, "user");
+			} catch (JsonProcessingException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
-		}*/
+		}
 	}
 	
 	@Test
