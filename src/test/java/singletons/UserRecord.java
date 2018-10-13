@@ -3,8 +3,8 @@ package singletons;
 public enum UserRecord {
 
 	ADMINISTRATOR("emaildummytestersender@gmail.com", "Administrator", "A", "admin123", "admin123", "admin123"),
-	GUARDIAN("emaildummytestersender@gmail.com", "Guardian", "A", "guardian123", "guardian123", ""),
-	ADOPTER("emaildummytestersender@gmail.com", "Adopter", "A", "adopter123", "adopter123", "adopter123");
+	GUARDIAN("emaildummytestersender@gmail.com", "Guardian", "A", "guardian123", "guardian123", "guardian123"),
+	ADOPTER("emaildummytestersender@gmail.com", "Adopter", "A", "adopter123", "adopter123", "");
 	
 	private String email;
 	private String firstName;
