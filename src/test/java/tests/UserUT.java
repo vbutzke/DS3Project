@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import app.database.DatabaseController;
 import app.entities.Administrator;
 import app.entities.Adopter;
+import app.entities.Guardian;
 import app.entities.User;
 import singletons.UserRecord;
 
@@ -59,7 +60,19 @@ public class UserUT extends AbstractUT{
 	
 	@Test
 	public void createGuardian() {
-		
+		User guardian = null;
+		try {
+			guardian = new Guardian(UserRecord.GUARDIAN.getEmail(), UserRecord.GUARDIAN.getFirstName(), UserRecord.GUARDIAN.getLastName(), UserRecord.GUARDIAN.getPassword(), UserRecord.GUARDIAN.getPasswordConf());
+			assertTrue(findRecord(guardian, "user"));
+			DatabaseController.INSTANCE.removeObject(guardian, "user");
+		} catch (InvalidParameterException | JsonProcessingException e) {
+			try {
+				DatabaseController.INSTANCE.removeObject(guardian, "user");
+			} catch (JsonProcessingException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
 	}
 	
 }
