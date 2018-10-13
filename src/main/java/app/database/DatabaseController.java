@@ -39,6 +39,10 @@ public enum DatabaseController {
 	public void addObject(Object o, String collection) throws JsonProcessingException {
 		dm.addObject(convertToDocument(o), collection);
 	}
+	
+	public void removeObject(Object o, String collection) throws JsonProcessingException {
+		dm.removeObject(convertToDocument(o), collection);
+	}
 
 	public boolean findRecord(Object o, String collection) throws JsonProcessingException {
 		if(dm.findRecord(convertToDocument(o), collection)) {

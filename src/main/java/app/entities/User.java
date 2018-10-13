@@ -2,6 +2,10 @@ package app.entities;
 
 import java.security.InvalidParameterException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import app.database.DatabaseController;
+
 public abstract class User {
 	
 	private String  email;
@@ -38,6 +42,12 @@ public abstract class User {
 
 	public String getCollection() {
 		return collection;
+	}
+	
+	public void checkAccessCode(String accessCode) throws JsonProcessingException {
+		if(accessCode.isEmpty() || !DatabaseController.INSTANCE.isAccessCodeValid(accessCode)) {
+			throw new InvalidParameterException();
+		}
 	}
 	
 }

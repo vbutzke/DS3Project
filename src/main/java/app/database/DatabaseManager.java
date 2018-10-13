@@ -1,17 +1,11 @@
 package app.database;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
 import org.bson.Document;
-
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
 //import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
 
 public class DatabaseManager {
 
@@ -68,6 +62,12 @@ public class DatabaseManager {
 
 	public void addObject(Document record, String collection) {
 		database.getCollection(collection).insertOne(record);
+	}
+	
+	public void removeObject(Document record, String collection) {
+		if(findRecord(record, collection)) {
+			database.getCollection(collection).deleteOne(record);
+		}
 	}
 	
 }

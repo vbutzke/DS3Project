@@ -4,7 +4,10 @@ import static org.junit.Assert.assertTrue;
 import java.security.InvalidParameterException;
 import org.junit.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import app.database.DatabaseController;
 import app.entities.Administrator;
+import app.entities.Adopter;
 import app.entities.User;
 import singletons.UserRecord;
 
@@ -22,18 +25,30 @@ public class UserUT extends AbstractUT{
 	
 	@Test
 	public void createAdminUser() {
-		User admin;
+		User admin = null;
 		try {
 			admin = new Administrator(UserRecord.ADMINISTRATOR.getEmail(), UserRecord.ADMINISTRATOR.getFirstName(), UserRecord.ADMINISTRATOR.getLastName(), UserRecord.ADMINISTRATOR.getPassword(), UserRecord.ADMINISTRATOR.getPasswordConf(), UserRecord.ADMINISTRATOR.getCode());
 			assertTrue(findRecord(admin, "user"));
+			DatabaseController.INSTANCE.removeObject(admin, "user");
 		} catch (InvalidParameterException | JsonProcessingException e) {
+			try {
+				DatabaseController.INSTANCE.removeObject(admin, "user");
+			} catch (JsonProcessingException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 	}
 	
 	@Test
 	public void createAdopter() {
-		
+	/*	User adopter;
+		try {
+			adopter = new Adopter(UserRecord.ADOPTER.getEmail(), UserRecord.ADOPTER.getFirstName(), UserRecord.ADOPTER.getLastName(), UserRecord.ADOPTER.getPassword(), UserRecord.ADOPTER.getPasswordConf(), UserRecord.ADOPTER.getCode());
+			assertTrue(findRecord(adopter, "user"));
+		} catch (InvalidParameterException | JsonProcessingException e) {
+			e.printStackTrace();
+		}*/
 	}
 	
 	@Test
