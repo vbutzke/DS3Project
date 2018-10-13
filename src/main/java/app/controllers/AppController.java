@@ -2,6 +2,7 @@ package app.controllers;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import app.database.*;
 import app.entities.Administrator;
 import app.entities.Adopter;
 import app.entities.EntityExample;
@@ -18,6 +20,11 @@ import app.entities.User;
 
 @RestController
 public class AppController {
+	
+	@PostConstruct
+    public void postConstruct() {
+        DatabaseController.INSTANCE.startDB();
+    }
 	
 	@RequestMapping("/")
 	public String works(HttpServletResponse response) {
@@ -31,13 +38,15 @@ public class AppController {
 	@RequestMapping("/register")
 	public User registerUser(String email, String firstName, String lastName, String password, String passwordConf, String code, HttpServletResponse response) {
 		User u = null;
+		System.out.println("Code: "+code);
+		
 		try {
-			if(code.contains("admin")) {
+			if(code == null || code.isEmpty() || code.equals("\"\"")) {
+				u = new Adopter(email, firstName, lastName, password, passwordConf);
+			} else if(code.contains("admin")) {
 				u = new Administrator(email, firstName, lastName, password, passwordConf, code);
 			} else if (code.contains("guardian")) {
 				u = new Guardian(email, firstName, lastName, password, passwordConf, code);
-			} else if(code.isEmpty()) {
-				u = new Adopter(email, firstName, lastName, password, passwordConf);
 			} else {
 				sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, "Invalid access code.");
 			}
@@ -47,6 +56,11 @@ public class AppController {
 
 		response.setStatus(HttpServletResponse.SC_OK);
 		return u;
+	}
+	
+	@RequestMapping("/logout")
+	private void logout(HttpServletResponse response) {
+		DatabaseController.INSTANCE.closeDB();
 	}
 	
 	private HttpServletResponse sendError(HttpServletResponse response, int sc, String message) {
@@ -59,5 +73,7 @@ public class AppController {
 		
 		return response;
 	}
+	
+	
 	
 }
