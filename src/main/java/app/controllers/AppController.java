@@ -29,9 +29,9 @@ public class AppController {
 		try {
 			if(code == null || code.isEmpty() || code.equals("\"\"")) {
 				u = new Adopter(email, firstName, lastName, password, passwordConf);
-			} else if(code.contains("admin")) {
+			} else if(code.contains("ADMIN")) {
 				u = new Administrator(email, firstName, lastName, password, passwordConf, code);
-			} else if (code.contains("guardian")) {
+			} else if (code.contains("GUARDIAN")) {
 				u = new Guardian(email, firstName, lastName, password, passwordConf, code);
 			} else {
 				sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, "Invalid access code.");
@@ -50,7 +50,7 @@ public class AppController {
 	}
 	
 	private HttpServletResponse sendError(HttpServletResponse response, int sc, String message) {
-		response.setStatus( sc );
+		response.setStatus(sc);
 		try {
 			response.sendError(sc, message);		
 		} catch(IOException i) {

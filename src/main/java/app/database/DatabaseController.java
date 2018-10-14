@@ -3,10 +3,6 @@ package app.database;
 import org.bson.Document;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.model.Filters;
-
-import app.exceptions.DuplicateEntityException;
 
 public enum DatabaseController {
 	

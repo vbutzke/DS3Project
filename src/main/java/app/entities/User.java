@@ -1,9 +1,7 @@
 package app.entities;
 
 import java.security.InvalidParameterException;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import app.database.DatabaseController;
 import app.exceptions.DuplicateEntityException;
 
