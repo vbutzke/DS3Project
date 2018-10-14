@@ -7,14 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import app.database.*;
 import app.entities.Administrator;
 import app.entities.Adopter;
-import app.entities.EntityExample;
 import app.entities.Guardian;
 import app.entities.User;
 
@@ -25,15 +21,6 @@ public class AppController {
     public void postConstruct() {
         DatabaseController.INSTANCE.startDB();
     }
-	
-	@RequestMapping("/")
-	public String works(HttpServletResponse response) {
-		EntityExample e = new EntityExample();
-		if(e.someMethod()) {
-			response.setStatus( HttpServletResponse.SC_OK  );
-		}
-		return "Funcionou! \n" + response;
-	}
 	
 	@RequestMapping("/register")
 	public User registerUser(String email, String firstName, String lastName, String password, String passwordConf, String code, HttpServletResponse response) {
