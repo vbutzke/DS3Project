@@ -37,7 +37,7 @@ Para executar o exemplo:
     
     localhost:8080
 
-3.Abrir o Postman e esecutar a seguinte requisição:
+3.Abrir o Postman e executar a seguinte requisição:
  
     PUT localhost:8080/register?email="emaildummytestersender@gmail.com"&firstName="Adopter"&lastName="A123"&password="adopter123"&passwordConf="adopter123"&code=""&response=
 
