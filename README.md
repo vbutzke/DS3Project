@@ -37,7 +37,29 @@ Para executar o exemplo:
     
     localhost:8080
 
-Para que o projeto funcione, é necessário instalar o MongoDB (instruções abaixo).
+3.Abrir o Postman e esecutar a seguinte requisição:
+ 
+    PUT localhost:8080/register?email="emaildummytestersender@gmail.com"&firstName="Adopter"&lastName="A123"&password="adopter123"&passwordConf="adopter123"&code=""&response=
+
+4.Verificar que o JSON foi retornado com sucesso. Para verificar o usuário no banco, abrir outra aba no terminal e executar:
+
+    $mongo
+    
+    $use Obsecao
+    
+    $db.user.find({})
+    
+5.Na mesma aba, deletar o registro inserido:
+
+    $db.user.delete({})
+
+6.Executar no Postman a seguinte requisição para encerrar a conexão com o banco:
+
+    GET localhost:8080/logout
+
+7.CNTRL+C nos terminais
+
+*Para que o projeto funcione, é necessário instalar o MongoDB (instruções abaixo).
 Futuramente haverá uma imagem docker com todas as configurações de ambiente.
 
 Para baixar o MongoDB, acesse o link:
