@@ -70,6 +70,8 @@ public class DatabaseManager {
 	
 	public Document getRecord(Document record, String collection) {
 		
+		System.out.println("record: "+record);
+		
 		FindIterable<Document> i = database.getCollection(collection).find(record);
 
 		for(Document d : i) {

@@ -1,5 +1,6 @@
 package app.singletons;
 
+import app.entities.AccessCode;
 import app.utils.RandomGenerator;
 
 public enum Permissions {
@@ -14,8 +15,8 @@ public enum Permissions {
 		this.level = level;
 	}
 	
-	public String generateCode() {
-		return level+rg.generateAlphaNumericCode(4, 0, 99);
+	public AccessCode generateCode() {
+		return new AccessCode(level+rg.generateAlphaNumericCode(4, 0, 99));
 	}
 	
 	public String getLevel() {

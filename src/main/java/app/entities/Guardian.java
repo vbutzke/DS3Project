@@ -6,7 +6,7 @@ import app.exceptions.DuplicateEntityException;
 
 public class Guardian extends User{
 
-	public Guardian(String email, String firstName, String lastName, String password, String passwordConf, String accessCode) throws InvalidParameterException, JsonProcessingException, DuplicateEntityException {
+	public Guardian(String email, String firstName, String lastName, String password, String passwordConf, AccessCode accessCode) throws InvalidParameterException, JsonProcessingException, DuplicateEntityException {
 		super(email, firstName, lastName, password, passwordConf);
 		checkAccessCode(accessCode);
 		addUser();

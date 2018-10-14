@@ -14,9 +14,9 @@ public abstract class User {
 	protected final String collection = "user";
 	
 	public User(String email, String firstName, String lastName, String password, String passwordConf) throws InvalidParameterException {
-		this.email        = email;
-		this.firstName    = firstName;
-		this.lastName     = lastName;
+		this.email     = email;
+		this.firstName = firstName;
+		this.lastName  = lastName;
 		
 		if(password.equals(passwordConf)) {
 			this.password = password;
@@ -43,8 +43,8 @@ public abstract class User {
 		return collection;
 	}
 	
-	public void checkAccessCode(String accessCode) throws JsonProcessingException {
-		if(accessCode.isEmpty() || !DatabaseController.INSTANCE.isAccessCodeValid(accessCode)) {
+	public void checkAccessCode(AccessCode accessCode) throws JsonProcessingException {
+		if(accessCode == null || !DatabaseController.INSTANCE.isAccessCodeValid(accessCode)) {
 			throw new InvalidParameterException();
 		}
 	}

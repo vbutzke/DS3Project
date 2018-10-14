@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import app.database.*;
+import app.entities.AccessCode;
 import app.entities.Administrator;
 import app.entities.Adopter;
 import app.entities.Guardian;
@@ -30,9 +31,9 @@ public class AppController {
 			if(code == null || code.isEmpty() || code.equals("\"\"")) {
 				u = new Adopter(email, firstName, lastName, password, passwordConf);
 			} else if(code.contains("ADMIN")) {
-				u = new Administrator(email, firstName, lastName, password, passwordConf, code);
+				u = new Administrator(email, firstName, lastName, password, passwordConf, new AccessCode(code));
 			} else if (code.contains("GUARDIAN")) {
-				u = new Guardian(email, firstName, lastName, password, passwordConf, code);
+				u = new Guardian(email, firstName, lastName, password, passwordConf, new AccessCode(code));
 			} else {
 				sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, "Invalid access code.");
 			}

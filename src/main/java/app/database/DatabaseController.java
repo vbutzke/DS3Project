@@ -6,6 +6,8 @@ import org.bson.Document;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import app.entities.AccessCode;
+
 public enum DatabaseController {
 	
 	INSTANCE();
@@ -30,7 +32,7 @@ public enum DatabaseController {
 		dm.closeConnection();
 	}
 	
-	public boolean isAccessCodeValid(String accessCode) throws JsonProcessingException {
+	public boolean isAccessCodeValid(AccessCode accessCode) throws JsonProcessingException {
 		
 		Document d = dm.getRecord(convertToDocument(accessCode), "accessCodes");
 		if((Boolean)d.get("used") == false) {
