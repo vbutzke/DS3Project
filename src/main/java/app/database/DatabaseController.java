@@ -3,6 +3,10 @@ package app.database;
 import org.bson.Document;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.model.Filters;
+
+import app.exceptions.DuplicateEntityException;
 
 public enum DatabaseController {
 	
@@ -48,6 +52,13 @@ public enum DatabaseController {
 		if(dm.findRecord(convertToDocument(o), collection)) {
 			return true;
 		}
+		return false;
+	}
+	
+	public boolean findRecordBy(String field, String value, String collection) {
+		if(dm.findRecordBy(field, value, collection)) {
+			return true;
+		}	
 		return false;
 	}
 	

@@ -5,6 +5,7 @@ import java.security.InvalidParameterException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import app.database.DatabaseController;
+import app.exceptions.DuplicateEntityException;
 
 public abstract class User {
 	
@@ -47,6 +48,14 @@ public abstract class User {
 	public void checkAccessCode(String accessCode) throws JsonProcessingException {
 		if(accessCode.isEmpty() || !DatabaseController.INSTANCE.isAccessCodeValid(accessCode)) {
 			throw new InvalidParameterException();
+		}
+	}
+	
+	public void addUser() throws JsonProcessingException, DuplicateEntityException {
+		if(DatabaseController.INSTANCE.findRecordBy("email", this.getEmail(), collection)) {
+			throw new DuplicateEntityException("This email is already in use.");
+		} else {
+			DatabaseController.INSTANCE.addObject(this, collection);
 		}
 	}
 	

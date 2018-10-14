@@ -1,10 +1,8 @@
 package app.controllers;
 import java.io.IOException;
 import java.security.InvalidParameterException;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,6 +11,7 @@ import app.entities.Administrator;
 import app.entities.Adopter;
 import app.entities.Guardian;
 import app.entities.User;
+import app.exceptions.DuplicateEntityException;
 
 @RestController
 public class AppController {
@@ -37,7 +36,7 @@ public class AppController {
 			} else {
 				sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, "Invalid access code.");
 			}
-		} catch(InvalidParameterException | JsonProcessingException e) {
+		} catch(InvalidParameterException | JsonProcessingException | DuplicateEntityException e) {
 			sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
@@ -60,7 +59,5 @@ public class AppController {
 		
 		return response;
 	}
-	
-	
 	
 }
