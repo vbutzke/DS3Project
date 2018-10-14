@@ -1,31 +1,26 @@
 package app.database;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import org.apache.commons.math3.exception.NoDataException;
+import org.bson.Document;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoCollection;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 
 public class DatabaseManager {
 
 	 private MongoClient mongoClient;
 	 private MongoDatabase database;
-	// private MongoCollection<Document> users;
 
 	 public void startDB(){
 		 createDB();
-		 createCollections();
 	 }
 
 	 private void createDB(){
 	    MongoClientURI connectionString = new MongoClientURI("mongodb://localhost:27017");
 	    this.mongoClient 				= new MongoClient(connectionString);
-	    this.database 					= mongoClient.getDatabase("MediaSharing");
-	 }
-
-	 private void createCollections(){
-	    //create collections
+	    this.database 					= mongoClient.getDatabase("Obsecao");
 	 }
 	    
 	 public void closeConnection(){
@@ -47,5 +42,57 @@ public class DatabaseManager {
 	 public void setDatabase(MongoDatabase database) {
 	 	this.database = database;
 	 }
+
+	public boolean findRecord(Document record, String collection) {
+		FindIterable<Document> i = database.getCollection(collection).find(record);
+
+		for(Document d : i) {
+			d.remove("_id");
+			if(d.toString().equals(record.toString())) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean findRecordBy(String field, String value, String collection) {
+		FindIterable<Document> i = database.getCollection(collection).find(Filters.eq(field, value));
+		
+		for(Document d : i) {
+			if(d != null) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public Document getRecord(Document record, String collection) {
+		
+		System.out.println("record: "+record);
+		
+		FindIterable<Document> i = database.getCollection(collection).find(record);
+
+		for(Document d : i) {
+			return d;
+		}
+		
+		throw new NoDataException();
+	}
+	
+	public void addObject(Document record, String collection) {
+		database.getCollection(collection).insertOne(record);
+	}
+	
+	public void removeObject(Document record, String collection) {
+		if(findRecord(record, collection)) {
+			database.getCollection(collection).deleteOne(record);
+		}
+	}
+	
+	public void updateObject(Document record, Document newRecord, String collection) {
+		database.getCollection(collection).updateOne(record, new Document("$set", newRecord));
+	}
 	
 }
