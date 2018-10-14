@@ -1,5 +1,6 @@
 package app.database;
 
+import org.apache.commons.math3.exception.NoDataException;
 import org.bson.Document;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -67,6 +68,17 @@ public class DatabaseManager {
 		return false;
 	}
 	
+	public Document getRecord(Document record, String collection) {
+		
+		FindIterable<Document> i = database.getCollection(collection).find(record);
+
+		for(Document d : i) {
+			return d;
+		}
+		
+		throw new NoDataException();
+	}
+	
 	public void addObject(Document record, String collection) {
 		database.getCollection(collection).insertOne(record);
 	}
@@ -75,6 +87,10 @@ public class DatabaseManager {
 		if(findRecord(record, collection)) {
 			database.getCollection(collection).deleteOne(record);
 		}
+	}
+	
+	public void updateObject(Document record, Document newRecord, String collection) {
+		database.getCollection(collection).updateOne(record, new Document("$set", newRecord));
 	}
 	
 }

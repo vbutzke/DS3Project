@@ -1,5 +1,7 @@
 package app.database;
 
+import java.security.InvalidParameterException;
+
 import org.bson.Document;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,11 +31,15 @@ public enum DatabaseController {
 	}
 	
 	public boolean isAccessCodeValid(String accessCode) throws JsonProcessingException {
-		//if(dm.findRecord(convertToDocument(accessCode), "accessCodes")) {
-			//verificar atributo "used", se estiver como falso, ok e atualiza ele pra true, se não, dá erro. por enquanto pra minimizar o esforço em geração de dados, vou deixar fixo
+		
+		Document d = dm.getRecord(convertToDocument(accessCode), "accessCodes");
+		if((Boolean)d.get("used") == false) {
+			Document oldD = d;
+			d.put("used", true);
+			dm.updateObject(oldD, d, "accessCodes");
 			return true;
-		//}
-		//return false;
+		}
+		throw new InvalidParameterException("The provided access code is not valid.");
 	}
 	
 	public void addObject(Object o, String collection) throws JsonProcessingException {
