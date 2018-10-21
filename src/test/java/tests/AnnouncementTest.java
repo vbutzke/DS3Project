@@ -3,6 +3,7 @@ package tests;
 import app.database.DatabaseController;
 import app.entities.Announcement;
 import app.entities.Guardian;
+import app.entities.User;
 import app.exceptions.DuplicateEntityException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.After;
@@ -18,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AnnouncementTest extends AbstractUT {
 
-    Guardian guardian;
+    User guardian;
     @Before
     public void start() {
         startDB();
@@ -52,6 +53,8 @@ public class AnnouncementTest extends AbstractUT {
             announcement = guardian.createAnnouncement();
             assertTrue(DatabaseController.INSTANCE.findRecord(announcement, "announcements"));
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         } finally {
             try {
