@@ -75,5 +75,4 @@ public class UserUT extends AbstractUT{
 			e.printStackTrace();
 		}
 	}
-	
 }

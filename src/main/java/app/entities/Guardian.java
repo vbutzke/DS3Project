@@ -12,4 +12,9 @@ public class Guardian extends User{
 		addUser();
 	}
 
+	public Announcement createAnnouncement() throws JsonProcessingException {
+
+		return new Announcement();
+	}
+
 }

@@ -1,72 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="tests.UserUT" tests="3" skipped="0" failures="0" errors="0" timestamp="2018-10-13T23:57:23" hostname="DESKTOP-DRJCKOR" time="2.042">
+<testsuite name="tests.UserUT" tests="3" skipped="0" failures="0" errors="0" timestamp="2018-10-20T21:25:31" hostname="W105N0YRP2" time="1.816">
   <properties/>
-  <testcase name="createAdminUser" classname="tests.UserUT" time="1.971"/>
-  <testcase name="createGuardian" classname="tests.UserUT" time="0.036"/>
-  <testcase name="createAdopter" classname="tests.UserUT" time="0.035"/>
-  <system-out><![CDATA[20:57:25.017 [Test worker] INFO org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
-20:57:25.095 [Test worker] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=UNKNOWN, servers=[{address=localhost:27017, type=UNKNOWN, state=CONNECTING}]
-20:57:25.247 [cluster-ClusterId{value='5bc286658ba71318a0925b17', description='null'}-localhost:27017] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:154}] to localhost:27017
-20:57:25.249 [cluster-ClusterId{value='5bc286658ba71318a0925b17', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Checking status of localhost:27017
-20:57:25.249 [Test worker] INFO org.mongodb.driver.cluster - Cluster description not yet available. Waiting for 30000 ms before timing out
-20:57:25.257 [cluster-ClusterId{value='5bc286658ba71318a0925b17', description='null'}-localhost:27017] INFO org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 2]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=5344625}
-20:57:25.261 [cluster-ClusterId{value='5bc286658ba71318a0925b17', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=STANDALONE, servers=[{address=localhost:27017, type=STANDALONE, roundTripTime=5.3 ms, state=CONNECTED}]
-20:57:25.291 [Test worker] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:155}] to localhost:27017
-20:57:25.304 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {insert : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:155}] to server localhost:27017
-20:57:25.308 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.331 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:155}] to server localhost:27017
-20:57:25.335 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.340 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:155}] to server localhost:27017
-20:57:25.342 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.344 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {delete : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:155}] to server localhost:27017
-20:57:25.348 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.384 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {endSessions : BsonArray{values=[{ "id" : { "$binary" : "tbAeKajLSLC3V6gfH6qYrQ==", "$type" : "04" } }]}} to database admin on connection [connectionId{localValue:2, serverValue:155}] to server localhost:27017
-20:57:25.385 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.386 [Test worker] INFO org.mongodb.driver.connection - Closed connection [connectionId{localValue:2, serverValue:155}] to localhost:27017 because the pool has been closed.
-20:57:25.387 [Test worker] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:2, serverValue:155}
-20:57:25.388 [cluster-ClusterId{value='5bc286658ba71318a0925b17', description='null'}-localhost:27017] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:1, serverValue:154}
-20:57:25.393 [Test worker] INFO org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
-20:57:25.395 [Test worker] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=UNKNOWN, servers=[{address=localhost:27017, type=UNKNOWN, state=CONNECTING}]
-20:57:25.397 [Test worker] INFO org.mongodb.driver.cluster - Cluster description not yet available. Waiting for 30000 ms before timing out
-20:57:25.404 [cluster-ClusterId{value='5bc286658ba71318a0925b19', description='null'}-localhost:27017] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:156}] to localhost:27017
-20:57:25.404 [cluster-ClusterId{value='5bc286658ba71318a0925b19', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Checking status of localhost:27017
-20:57:25.406 [cluster-ClusterId{value='5bc286658ba71318a0925b19', description='null'}-localhost:27017] INFO org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 2]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=1061898}
-20:57:25.406 [cluster-ClusterId{value='5bc286658ba71318a0925b19', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=STANDALONE, servers=[{address=localhost:27017, type=STANDALONE, roundTripTime=1.1 ms, state=CONNECTED}]
-20:57:25.411 [Test worker] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:4, serverValue:157}] to localhost:27017
-20:57:25.411 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {insert : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:4, serverValue:157}] to server localhost:27017
-20:57:25.413 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.414 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:4, serverValue:157}] to server localhost:27017
-20:57:25.416 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.418 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:4, serverValue:157}] to server localhost:27017
-20:57:25.419 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.420 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {delete : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:4, serverValue:157}] to server localhost:27017
-20:57:25.421 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.423 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {endSessions : BsonArray{values=[{ "id" : { "$binary" : "+kXlHMSxRSaDRL1sjnbqLA==", "$type" : "04" } }]}} to database admin on connection [connectionId{localValue:4, serverValue:157}] to server localhost:27017
-20:57:25.424 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.424 [Test worker] INFO org.mongodb.driver.connection - Closed connection [connectionId{localValue:4, serverValue:157}] to localhost:27017 because the pool has been closed.
-20:57:25.425 [Test worker] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:4, serverValue:157}
-20:57:25.425 [cluster-ClusterId{value='5bc286658ba71318a0925b19', description='null'}-localhost:27017] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:3, serverValue:156}
-20:57:25.426 [Test worker] INFO org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
-20:57:25.428 [Test worker] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=UNKNOWN, servers=[{address=localhost:27017, type=UNKNOWN, state=CONNECTING}]
-20:57:25.432 [Test worker] INFO org.mongodb.driver.cluster - Cluster description not yet available. Waiting for 30000 ms before timing out
-20:57:25.438 [cluster-ClusterId{value='5bc286658ba71318a0925b1b', description='null'}-localhost:27017] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:5, serverValue:158}] to localhost:27017
-20:57:25.438 [cluster-ClusterId{value='5bc286658ba71318a0925b1b', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Checking status of localhost:27017
-20:57:25.440 [cluster-ClusterId{value='5bc286658ba71318a0925b1b', description='null'}-localhost:27017] INFO org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 2]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=755961}
-20:57:25.440 [cluster-ClusterId{value='5bc286658ba71318a0925b1b', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=STANDALONE, servers=[{address=localhost:27017, type=STANDALONE, roundTripTime=0.8 ms, state=CONNECTED}]
-20:57:25.445 [Test worker] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:6, serverValue:159}] to localhost:27017
-20:57:25.445 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {insert : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:6, serverValue:159}] to server localhost:27017
-20:57:25.447 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.448 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:6, serverValue:159}] to server localhost:27017
-20:57:25.450 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.452 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:6, serverValue:159}] to server localhost:27017
-20:57:25.455 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.456 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {delete : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:6, serverValue:159}] to server localhost:27017
-20:57:25.457 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.458 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {endSessions : BsonArray{values=[{ "id" : { "$binary" : "Y5a467GaSpaMfwCX930iNw==", "$type" : "04" } }]}} to database admin on connection [connectionId{localValue:6, serverValue:159}] to server localhost:27017
-20:57:25.459 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-20:57:25.460 [Test worker] INFO org.mongodb.driver.connection - Closed connection [connectionId{localValue:6, serverValue:159}] to localhost:27017 because the pool has been closed.
-20:57:25.460 [Test worker] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:6, serverValue:159}
-20:57:25.461 [cluster-ClusterId{value='5bc286658ba71318a0925b1b', description='null'}-localhost:27017] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:5, serverValue:158}
+  <testcase name="createAdminUser" classname="tests.UserUT" time="1.746"/>
+  <testcase name="createGuardian" classname="tests.UserUT" time="0.038"/>
+  <testcase name="createAdopter" classname="tests.UserUT" time="0.032"/>
+  <system-out><![CDATA[18:25:32.840 [Test worker] INFO org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+18:25:32.902 [Test worker] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=UNKNOWN, servers=[{address=localhost:27017, type=UNKNOWN, state=CONNECTING}]
+18:25:32.997 [cluster-ClusterId{value='5bcb9d4ce08953363ce02855', description='null'}-localhost:27017] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:9}] to localhost:27017
+18:25:32.998 [cluster-ClusterId{value='5bcb9d4ce08953363ce02855', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Checking status of localhost:27017
+18:25:33.005 [cluster-ClusterId{value='5bcb9d4ce08953363ce02855', description='null'}-localhost:27017] INFO org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 3]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=4596298}
+18:25:33.007 [cluster-ClusterId{value='5bcb9d4ce08953363ce02855', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=STANDALONE, servers=[{address=localhost:27017, type=STANDALONE, roundTripTime=4.6 ms, state=CONNECTED}]
+record: Document{{accessCode=ABC123}}
+18:25:33.085 [Test worker] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:10}] to localhost:27017
+18:25:33.096 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='accessCodes'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:10}] to server localhost:27017
+18:25:33.101 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.122 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {update : BsonString{value='accessCodes'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:10}] to server localhost:27017
+18:25:33.124 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.130 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:10}] to server localhost:27017
+18:25:33.132 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.135 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {insert : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:10}] to server localhost:27017
+18:25:33.136 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.137 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:10}] to server localhost:27017
+18:25:33.139 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.140 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:10}] to server localhost:27017
+18:25:33.141 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.143 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {delete : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:10}] to server localhost:27017
+18:25:33.144 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.177 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {endSessions : BsonArray{values=[{ "id" : { "$binary" : "COLQCvHST/GQCK4G1vn9vg==", "$type" : "04" } }]}} to database admin on connection [connectionId{localValue:2, serverValue:10}] to server localhost:27017
+18:25:33.178 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.179 [Test worker] INFO org.mongodb.driver.connection - Closed connection [connectionId{localValue:2, serverValue:10}] to localhost:27017 because the pool has been closed.
+18:25:33.179 [Test worker] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:2, serverValue:10}
+18:25:33.181 [cluster-ClusterId{value='5bcb9d4ce08953363ce02855', description='null'}-localhost:27017] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:1, serverValue:9}
+18:25:33.185 [Test worker] INFO org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+18:25:33.187 [Test worker] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=UNKNOWN, servers=[{address=localhost:27017, type=UNKNOWN, state=CONNECTING}]
+record: Document{{accessCode=DEF123}}
+18:25:33.188 [Test worker] INFO org.mongodb.driver.cluster - Cluster description not yet available. Waiting for 30000 ms before timing out
+18:25:33.196 [cluster-ClusterId{value='5bcb9d4de08953363ce02857', description='null'}-localhost:27017] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:11}] to localhost:27017
+18:25:33.196 [cluster-ClusterId{value='5bcb9d4de08953363ce02857', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Checking status of localhost:27017
+18:25:33.197 [cluster-ClusterId{value='5bcb9d4de08953363ce02857', description='null'}-localhost:27017] INFO org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 3]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=740060}
+18:25:33.197 [cluster-ClusterId{value='5bcb9d4de08953363ce02857', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=STANDALONE, servers=[{address=localhost:27017, type=STANDALONE, roundTripTime=0.7 ms, state=CONNECTED}]
+18:25:33.204 [Test worker] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:4, serverValue:12}] to localhost:27017
+18:25:33.204 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='accessCodes'}} to database Obsecao on connection [connectionId{localValue:4, serverValue:12}] to server localhost:27017
+18:25:33.205 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.206 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {update : BsonString{value='accessCodes'}} to database Obsecao on connection [connectionId{localValue:4, serverValue:12}] to server localhost:27017
+18:25:33.207 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.208 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:4, serverValue:12}] to server localhost:27017
+18:25:33.209 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.211 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {insert : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:4, serverValue:12}] to server localhost:27017
+18:25:33.212 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.214 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:4, serverValue:12}] to server localhost:27017
+18:25:33.215 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.216 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:4, serverValue:12}] to server localhost:27017
+18:25:33.218 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.219 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {delete : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:4, serverValue:12}] to server localhost:27017
+18:25:33.220 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.221 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {endSessions : BsonArray{values=[{ "id" : { "$binary" : "lt1sFXrbR1ym3wuPBIP2Lw==", "$type" : "04" } }]}} to database admin on connection [connectionId{localValue:4, serverValue:12}] to server localhost:27017
+18:25:33.222 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.222 [Test worker] INFO org.mongodb.driver.connection - Closed connection [connectionId{localValue:4, serverValue:12}] to localhost:27017 because the pool has been closed.
+18:25:33.222 [Test worker] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:4, serverValue:12}
+18:25:33.222 [cluster-ClusterId{value='5bcb9d4de08953363ce02857', description='null'}-localhost:27017] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:3, serverValue:11}
+18:25:33.223 [Test worker] INFO org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+18:25:33.226 [Test worker] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=UNKNOWN, servers=[{address=localhost:27017, type=UNKNOWN, state=CONNECTING}]
+18:25:33.227 [Test worker] INFO org.mongodb.driver.cluster - Cluster description not yet available. Waiting for 30000 ms before timing out
+18:25:33.234 [cluster-ClusterId{value='5bcb9d4de08953363ce02859', description='null'}-localhost:27017] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:5, serverValue:13}] to localhost:27017
+18:25:33.234 [cluster-ClusterId{value='5bcb9d4de08953363ce02859', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Checking status of localhost:27017
+18:25:33.235 [cluster-ClusterId{value='5bcb9d4de08953363ce02859', description='null'}-localhost:27017] INFO org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 3]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=753652}
+18:25:33.236 [cluster-ClusterId{value='5bcb9d4de08953363ce02859', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=STANDALONE, servers=[{address=localhost:27017, type=STANDALONE, roundTripTime=0.8 ms, state=CONNECTED}]
+18:25:33.243 [Test worker] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:6, serverValue:14}] to localhost:27017
+18:25:33.243 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:6, serverValue:14}] to server localhost:27017
+18:25:33.245 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.246 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {insert : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:6, serverValue:14}] to server localhost:27017
+18:25:33.247 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.248 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:6, serverValue:14}] to server localhost:27017
+18:25:33.249 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.250 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:6, serverValue:14}] to server localhost:27017
+18:25:33.251 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.251 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {delete : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:6, serverValue:14}] to server localhost:27017
+18:25:33.252 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.253 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {endSessions : BsonArray{values=[{ "id" : { "$binary" : "u87g7Dc5SrChHuJf8auvCg==", "$type" : "04" } }]}} to database admin on connection [connectionId{localValue:6, serverValue:14}] to server localhost:27017
+18:25:33.254 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+18:25:33.254 [Test worker] INFO org.mongodb.driver.connection - Closed connection [connectionId{localValue:6, serverValue:14}] to localhost:27017 because the pool has been closed.
+18:25:33.254 [Test worker] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:6, serverValue:14}
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
