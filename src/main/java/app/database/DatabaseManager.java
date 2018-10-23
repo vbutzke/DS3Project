@@ -91,8 +91,8 @@ public class DatabaseManager {
 		}
 	}
 	
-	public void updateObject(Document record, Document newRecord, String collection) {
-		database.getCollection(collection).updateOne(record, new Document("$set", newRecord));
+	public void updateObject(Document record, String collection) {
+		database.getCollection(collection).updateOne(Filters.eq("_id", record.get("_id")), new Document("$set", record));
 	}
 	
 }

@@ -35,10 +35,9 @@ public enum DatabaseController {
 	public boolean isAccessCodeValid(AccessCode accessCode) throws JsonProcessingException {
 		
 		Document d = dm.getRecord(convertToDocument(accessCode), "accessCodes");
-		if((Boolean)d.get("used") == false) {
-			Document oldD = d;
+		if(!((Boolean)d.get("used"))) {
 			d.put("used", true);
-			dm.updateObject(oldD, d, "accessCodes");
+			dm.updateObject(d, "accessCodes");
 			return true;
 		}
 		throw new InvalidParameterException("The provided access code is not valid.");
@@ -66,7 +65,7 @@ public enum DatabaseController {
 		return false;
 	}
 	
-	private Document convertToDocument(Object o) throws JsonProcessingException {
+	public Document convertToDocument(Object o) throws JsonProcessingException {
 		return Document.parse(om.writeValueAsString(o));
 	}
 	
