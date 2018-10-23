@@ -29,7 +29,7 @@
 </td>
 <td>
 <div class="infoBox" id="failures">
-<div class="counter">1</div>
+<div class="counter">0</div>
 <p>failures</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">2.237s</div>
+<div class="counter">2.507s</div>
 <p>duration</p>
 </div>
 </td>
@@ -50,8 +50,8 @@
 </div>
 </td>
 <td>
-<div class="infoBox failures" id="successRate">
-<div class="percent">0%</div>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
 <p>successful</p>
 </div>
 </td>
@@ -61,149 +61,13 @@
 <div id="tabs">
 <ul class="tabLinks">
 <li>
-<a href="#tab0">Failed tests</a>
+<a href="#tab0">Tests</a>
 </li>
 <li>
-<a href="#tab1">Tests</a>
-</li>
-<li>
-<a href="#tab2">Standard output</a>
-</li>
-<li>
-<a href="#tab3">Standard error</a>
+<a href="#tab1">Standard output</a>
 </li>
 </ul>
 <div id="tab0" class="tab">
-<h2>Failed tests</h2>
-<div class="test">
-<a name="createAnnouncement"></a>
-<h3 class="failures">createAnnouncement</h3>
-<span class="code">
-<pre>org.bson.BsonInvalidOperationException: readStartDocument can only be called when CurrentBSONType is DOCUMENT, not when CurrentBSONType is NULL.
-	at org.bson.AbstractBsonReader.verifyBSONType(AbstractBsonReader.java:692)
-	at org.bson.AbstractBsonReader.checkPreconditions(AbstractBsonReader.java:724)
-	at org.bson.AbstractBsonReader.readStartDocument(AbstractBsonReader.java:452)
-	at org.bson.codecs.DocumentCodec.decode(DocumentCodec.java:148)
-	at org.bson.codecs.DocumentCodec.decode(DocumentCodec.java:45)
-	at org.bson.Document.parse(Document.java:105)
-	at org.bson.Document.parse(Document.java:90)
-	at app.database.DatabaseController.convertToDocument(DatabaseController.java:70)
-	at app.database.DatabaseController.removeObject(DatabaseController.java:52)
-	at tests.AnnouncementTest.start(AnnouncementTest.java:32)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.runTestClass(JUnitTestClassExecutor.java:106)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:58)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:38)
-	at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:66)
-	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
-	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
-	at com.sun.proxy.$Proxy1.processTestClass(Unknown Source)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:109)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:155)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:137)
-	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:404)
-	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
-	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:46)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:55)
-	at java.lang.Thread.run(Thread.java:748)
-</pre>
-</span>
-<span class="code">
-<pre>org.bson.BsonInvalidOperationException: readStartDocument can only be called when CurrentBSONType is DOCUMENT, not when CurrentBSONType is NULL.
-	at org.bson.AbstractBsonReader.verifyBSONType(AbstractBsonReader.java:692)
-	at org.bson.AbstractBsonReader.checkPreconditions(AbstractBsonReader.java:724)
-	at org.bson.AbstractBsonReader.readStartDocument(AbstractBsonReader.java:452)
-	at org.bson.codecs.DocumentCodec.decode(DocumentCodec.java:148)
-	at org.bson.codecs.DocumentCodec.decode(DocumentCodec.java:45)
-	at org.bson.Document.parse(Document.java:105)
-	at org.bson.Document.parse(Document.java:90)
-	at app.database.DatabaseController.convertToDocument(DatabaseController.java:70)
-	at app.database.DatabaseController.removeObject(DatabaseController.java:52)
-	at tests.AnnouncementTest.end(AnnouncementTest.java:42)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:33)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.runTestClass(JUnitTestClassExecutor.java:106)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:58)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:38)
-	at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:66)
-	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
-	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
-	at com.sun.proxy.$Proxy1.processTestClass(Unknown Source)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:109)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:155)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:137)
-	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:404)
-	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
-	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:46)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:55)
-	at java.lang.Thread.run(Thread.java:748)
-</pre>
-</span>
-</div>
-</div>
-<div id="tab1" class="tab">
 <h2>Tests</h2>
 <table>
 <thead>
@@ -214,87 +78,50 @@
 </tr>
 </thead>
 <tr>
-<td class="failures">createAnnouncement</td>
-<td class="failures">2.237s</td>
-<td class="failures">failed</td>
+<td class="success">createAnnouncement</td>
+<td class="success">2.507s</td>
+<td class="success">passed</td>
 </tr>
 </table>
 </div>
-<div id="tab2" class="tab">
+<div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>00:39:49.152 [Test worker] INFO org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
-00:39:49.234 [Test worker] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=UNKNOWN, servers=[{address=localhost:27017, type=UNKNOWN, state=CONNECTING}]
-00:39:49.299 [cluster-ClusterId{value='5bcbf505703578242c5c5395', description='null'}-localhost:27017] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:46}] to localhost:27017
-00:39:49.300 [cluster-ClusterId{value='5bcbf505703578242c5c5395', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Checking status of localhost:27017
-00:39:49.306 [cluster-ClusterId{value='5bcbf505703578242c5c5395', description='null'}-localhost:27017] INFO org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 3]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=4893077}
-00:39:49.309 [cluster-ClusterId{value='5bcbf505703578242c5c5395', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=STANDALONE, servers=[{address=localhost:27017, type=STANDALONE, roundTripTime=4.9 ms, state=CONNECTED}]
+<pre>20:30:16.553 [Test worker] INFO org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+20:30:16.615 [Test worker] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=UNKNOWN, servers=[{address=localhost:27017, type=UNKNOWN, state=CONNECTING}]
 record: Document{{accessCode=DEF123}}
-00:39:49.406 [Test worker] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:47}] to localhost:27017
-00:39:49.418 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='accessCodes'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:47}] to server localhost:27017
-00:39:49.423 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-00:39:49.445 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {update : BsonString{value='accessCodes'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:47}] to server localhost:27017
-00:39:49.447 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-00:39:49.455 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:47}] to server localhost:27017
-00:39:49.457 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
-</pre>
-</span>
-</div>
-<div id="tab3" class="tab">
-<h2>Standard error</h2>
-<span class="code">
-<pre>app.exceptions.DuplicateEntityException: This email is already in use.
-	at app.entities.User.addUser(User.java:65)
-	at app.entities.Guardian.&lt;init&gt;(Guardian.java:13)
-	at tests.AnnouncementTest.start(AnnouncementTest.java:28)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.runTestClass(JUnitTestClassExecutor.java:106)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:58)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:38)
-	at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:66)
-	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
-	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
-	at com.sun.proxy.$Proxy1.processTestClass(Unknown Source)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:109)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:155)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:137)
-	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:404)
-	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
-	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:46)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:55)
-	at java.lang.Thread.run(Thread.java:748)
+20:30:16.711 [cluster-ClusterId{value='5bcfaf084cab1e4ccc3020ed', description='null'}-localhost:27017] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:1}] to localhost:27017
+20:30:16.712 [cluster-ClusterId{value='5bcfaf084cab1e4ccc3020ed', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Checking status of localhost:27017
+20:30:16.718 [cluster-ClusterId{value='5bcfaf084cab1e4ccc3020ed', description='null'}-localhost:27017] INFO org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 3]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=4575153}
+20:30:16.720 [cluster-ClusterId{value='5bcfaf084cab1e4ccc3020ed', description='null'}-localhost:27017] DEBUG org.mongodb.driver.cluster - Updating cluster description to  {type=STANDALONE, servers=[{address=localhost:27017, type=STANDALONE, roundTripTime=4.6 ms, state=CONNECTED}]
+20:30:16.764 [Test worker] INFO org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:2}] to localhost:27017
+20:30:16.775 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='accessCodes'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:2}] to server localhost:27017
+20:30:16.781 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+20:30:16.786 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='accessCodes'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:2}] to server localhost:27017
+20:30:16.787 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+20:30:16.804 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {update : BsonString{value='accessCodes'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:2}] to server localhost:27017
+20:30:16.809 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+20:30:16.815 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:2}] to server localhost:27017
+20:30:16.816 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+20:30:16.822 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {insert : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:2}] to server localhost:27017
+20:30:16.829 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+20:30:16.831 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {insert : BsonString{value='announcements'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:2}] to server localhost:27017
+20:30:16.840 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+20:30:16.841 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='announcements'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:2}] to server localhost:27017
+20:30:16.843 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+20:30:16.850 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='announcements'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:2}] to server localhost:27017
+20:30:16.852 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+20:30:16.853 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {delete : BsonString{value='announcements'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:2}] to server localhost:27017
+20:30:16.854 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+20:30:16.857 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {find : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:2}] to server localhost:27017
+20:30:16.858 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+20:30:16.859 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {delete : BsonString{value='user'}} to database Obsecao on connection [connectionId{localValue:2, serverValue:2}] to server localhost:27017
+20:30:16.860 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+20:30:16.882 [Test worker] DEBUG org.mongodb.driver.protocol.command - Sending command {endSessions : BsonArray{values=[{ &quot;id&quot; : { &quot;$binary&quot; : &quot;rngrz9hMS1KwGHcqJo6kqQ==&quot;, &quot;$type&quot; : &quot;04&quot; } }]}} to database admin on connection [connectionId{localValue:2, serverValue:2}] to server localhost:27017
+20:30:16.884 [Test worker] DEBUG org.mongodb.driver.protocol.command - Command execution completed
+20:30:16.885 [Test worker] INFO org.mongodb.driver.connection - Closed connection [connectionId{localValue:2, serverValue:2}] to localhost:27017 because the pool has been closed.
+20:30:16.885 [Test worker] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:2, serverValue:2}
+20:30:16.886 [cluster-ClusterId{value='5bcfaf084cab1e4ccc3020ed', description='null'}-localhost:27017] DEBUG org.mongodb.driver.connection - Closing connection connectionId{localValue:1, serverValue:1}
 </pre>
 </span>
 </div>
@@ -306,7 +133,7 @@ record: Document{{accessCode=DEF123}}
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 4.7</a> at Oct 21, 2018 12:39:49 AM</p>
+<a href="http://www.gradle.org">Gradle 4.7</a> at Oct 23, 2018 8:30:17 PM</p>
 </div>
 </div>
 </body>

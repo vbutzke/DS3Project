@@ -3,8 +3,8 @@ import java.util.Random;
 
 public class RandomGenerator {
 
-	private Random randomGen;
-	private char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G',  'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+	private final Random randomGen;
+	private final char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G',  'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 	
 	public RandomGenerator() {
 		this.randomGen = new Random();
@@ -15,13 +15,13 @@ public class RandomGenerator {
 	}
 
 	private String generateRandomWord(int numberOfLetters) {
-		String w = "";
+		StringBuilder w = new StringBuilder();
 		
 		for(int i=0; i<numberOfLetters; i++) {
-			w = w+generateRandomLetter();
+			w.append(generateRandomLetter());
 		}
 		
-		return w;
+		return w.toString();
 	}
 	
 	private char generateRandomLetter() {

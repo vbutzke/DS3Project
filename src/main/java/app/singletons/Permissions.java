@@ -3,15 +3,17 @@ package app.singletons;
 import app.entities.AccessCode;
 import app.utils.RandomGenerator;
 
+@SuppressWarnings("unused")
 public enum Permissions {
 	
 	ADMIN("ADMIN"), 
 	GUARDIAN("GUARDIAN");
 	
-	RandomGenerator rg = new RandomGenerator();
-	private String level;
+	final RandomGenerator rg = new RandomGenerator();
+	private final String level;
 	
-	private Permissions(String level) {
+	@SuppressWarnings("unused")
+	Permissions(String level) {
 		this.level = level;
 	}
 	

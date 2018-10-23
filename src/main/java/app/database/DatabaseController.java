@@ -12,10 +12,10 @@ public enum DatabaseController {
 	
 	INSTANCE();
 	
-	DatabaseManager dm;
-	ObjectMapper om;
+	final DatabaseManager dm;
+	final ObjectMapper om;
 	
-	private DatabaseController() {
+	DatabaseController() {
 		this.dm = new DatabaseManager();
 		this.om = new ObjectMapper();
 	}
@@ -52,20 +52,14 @@ public enum DatabaseController {
 	}
 
 	public boolean findRecord(Object o, String collection) throws JsonProcessingException {
-		if(dm.findRecord(convertToDocument(o), collection)) {
-			return true;
-		}
-		return false;
+		return dm.findRecord(convertToDocument(o), collection);
 	}
 	
 	public boolean findRecordBy(String field, String value, String collection) {
-		if(dm.findRecordBy(field, value, collection)) {
-			return true;
-		}	
-		return false;
+		return dm.findRecordBy(field, value, collection);
 	}
 	
-	public Document convertToDocument(Object o) throws JsonProcessingException {
+	private Document convertToDocument(Object o) throws JsonProcessingException {
 		return Document.parse(om.writeValueAsString(o));
 	}
 	

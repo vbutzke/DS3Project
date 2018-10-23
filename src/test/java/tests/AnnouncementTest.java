@@ -11,15 +11,11 @@ import org.junit.Before;
 import org.junit.Test;
 import singletons.UserRecord;
 
-import java.security.InvalidParameterException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class AnnouncementTest extends AbstractUT {
 
-    User guardian;
+    private User guardian;
     @Before
     public void start() {
         startDB();
@@ -52,9 +48,7 @@ public class AnnouncementTest extends AbstractUT {
         try {
             announcement = guardian.createAnnouncement();
             assertTrue(DatabaseController.INSTANCE.findRecord(announcement, "announcements"));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (JsonProcessingException | IllegalAccessException e) {
             e.printStackTrace();
         } finally {
             try {

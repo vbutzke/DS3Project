@@ -1,11 +1,9 @@
 package app.entities;
 
-import java.nio.file.AccessDeniedException;
 import java.security.InvalidParameterException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import app.database.DatabaseController;
 import app.exceptions.DuplicateEntityException;
-import org.springframework.dao.PermissionDeniedDataAccessException;
 
 public abstract class User {
 	

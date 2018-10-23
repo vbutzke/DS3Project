@@ -3,10 +3,7 @@ package tests;
 import static org.junit.Assert.assertTrue;
 import java.security.InvalidParameterException;
 
-import app.database.DatabaseManager;
-import com.mongodb.client.model.Filters;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.junit.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -20,8 +17,6 @@ import singletons.UserRecord;
 
 public class UserUT extends AbstractUT{
 
-	DatabaseManager dm = new DatabaseManager();
-
 	@Before
 	public void start() {
 		startDB();
@@ -33,7 +28,7 @@ public class UserUT extends AbstractUT{
 		closeDB();
 	}
 
-	public void resetAccessCodes(){
+	private void resetAccessCodes(){
 
 		DatabaseController.INSTANCE.getDM().getDatabase()
 				.getCollection("accessCodes")

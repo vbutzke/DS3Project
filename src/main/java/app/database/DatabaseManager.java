@@ -58,14 +58,7 @@ public class DatabaseManager {
 	
 	public boolean findRecordBy(String field, String value, String collection) {
 		FindIterable<Document> i = database.getCollection(collection).find(Filters.eq(field, value));
-		
-		for(Document d : i) {
-			if(d != null) {
-				return true;
-			}
-		}
-		
-		return false;
+		return i.first() != null;
 	}
 	
 	public Document getRecord(Document record, String collection) {
@@ -74,9 +67,9 @@ public class DatabaseManager {
 		
 		FindIterable<Document> i = database.getCollection(collection).find(record);
 
-		for(Document d : i) {
-			return d;
-		}
+		if(i.first() != null){
+		    return i.first();
+        }
 		
 		throw new NoDataException();
 	}

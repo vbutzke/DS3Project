@@ -14,7 +14,7 @@ import app.exceptions.DuplicateEntityException;
 @RestController
 public class AppController {
 
-	User u;
+	private User u;
 
 	@PostConstruct
     public void postConstruct() {
