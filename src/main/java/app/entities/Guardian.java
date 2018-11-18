@@ -1,6 +1,8 @@
 package app.entities;
 
 import java.security.InvalidParameterException;
+
+import app.database.DatabaseController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import app.exceptions.DuplicateEntityException;
 
@@ -13,8 +15,10 @@ public class Guardian extends User{
 		addUser();
 	}
 
-	public static Announcement createNewAnnouncement() throws JsonProcessingException {
-		return new Announcement();
+	public static Announcement createNewAnnouncement(String title) throws JsonProcessingException {
+		Announcement a = new Announcement(title);
+		DatabaseController.INSTANCE.addObject(a, "announcements");
+		return a;
 	}
 
 }

@@ -44,10 +44,10 @@ public class AppController {
 	}
 
 	@RequestMapping("/createAnnouncement")
-	private String createAnnouncement(HttpServletResponse response){
+	private String createAnnouncement(String title, HttpServletResponse response){
 
 		try {
-			Announcement a = u.createAnnouncement();
+			Announcement a = FeedController.INSTANCE.createAnnouncement(u, title);
 			response.setStatus(HttpServletResponse.SC_OK);
 			return "ok";
 		} catch (JsonProcessingException | IllegalAccessException e) {
