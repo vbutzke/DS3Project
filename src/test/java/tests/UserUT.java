@@ -28,13 +28,6 @@ public class UserUT extends AbstractUT{
 		closeDB();
 	}
 
-	private void resetAccessCodes(){
-
-		DatabaseController.INSTANCE.getDM().getDatabase()
-				.getCollection("accessCodes")
-				.updateMany(new Document(), new Document("$set", new Document("used", false)));
-	}
-
 	@Test
 	public void createAdminUser() {
 		User admin = null;

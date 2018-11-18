@@ -87,5 +87,9 @@ public class DatabaseManager {
 	public void updateObject(Document record, String collection) {
 		database.getCollection(collection).updateOne(Filters.eq("_id", record.get("_id")), new Document("$set", record));
 	}
+
+	public FindIterable<Document> getAllObjectsFromCollection(String collection){
+		return database.getCollection(collection).find();
+	}
 	
 }

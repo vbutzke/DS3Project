@@ -1,5 +1,6 @@
 package tests;
 
+import app.controllers.FeedController;
 import app.database.DatabaseController;
 import app.entities.Announcement;
 import app.entities.Guardian;
@@ -11,6 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 import singletons.UserRecord;
 
+import java.io.IOException;
+import java.util.LinkedList;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class AnnouncementTest extends AbstractUT {
@@ -39,6 +44,8 @@ public class AnnouncementTest extends AbstractUT {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        resetAnnouncements();
+        resetAccessCodes();
         closeDB();
     }
 
@@ -46,13 +53,38 @@ public class AnnouncementTest extends AbstractUT {
     public void createAnnouncement(){
         Announcement announcement = null;
         try {
-            announcement = guardian.createAnnouncement();
+            announcement = FeedController.INSTANCE.createAnnouncement(guardian, "Create Announcement Test");
             assertTrue(DatabaseController.INSTANCE.findRecord(announcement, "announcements"));
         } catch (JsonProcessingException | IllegalAccessException e) {
             e.printStackTrace();
         } finally {
             try {
                 DatabaseController.INSTANCE.removeObject(announcement, "announcements");
+            } catch (JsonProcessingException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    @Test
+    public void getAllAnnouncements(){
+        LinkedList<Announcement> announcementsList = new LinkedList<>();
+        try {
+            for(int i=0; i<5; i++) {
+                announcementsList.add(FeedController.INSTANCE.createAnnouncement(guardian, Integer.toString(i)));
+            }
+            LinkedList<Announcement> dbAnnouncementsList = FeedController.INSTANCE.getAllAnnouncements();
+            for(int i=0; i<5; i++){
+                assertEquals(announcementsList.get(i).getTitle(), dbAnnouncementsList.get(i).getTitle());
+            }
+
+        } catch (IllegalAccessException | IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                for(int i=0; i<5; i++) {
+                    DatabaseController.INSTANCE.removeObject(announcementsList.get(i), "announcements");
+                }
             } catch (JsonProcessingException e1) {
                 e1.printStackTrace();
             }

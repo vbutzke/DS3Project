@@ -1,6 +1,9 @@
 package app.entities;
 
+import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.LinkedList;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import app.database.DatabaseController;
 import app.exceptions.DuplicateEntityException;
@@ -67,12 +70,4 @@ public abstract class User {
 
 	}
 
-	public Announcement createAnnouncement() throws JsonProcessingException, IllegalAccessException {
-		if(this.permission.equals("Guardian")){
-			return Guardian.createNewAnnouncement();
-		}
-
-		throw new IllegalAccessException("User doesn't have permission to add new announcement");
-	}
-	
 }

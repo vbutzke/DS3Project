@@ -1,7 +1,11 @@
 package app.database;
 
+import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.LinkedList;
 
+import app.entities.Announcement;
+import com.mongodb.client.FindIterable;
 import org.bson.Document;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,7 +62,17 @@ public enum DatabaseController {
 	public boolean findRecordBy(String field, String value, String collection) {
 		return dm.findRecordBy(field, value, collection);
 	}
-	
+
+	public LinkedList<Object> getAllObjectsFromCollection(String collection, Class c) throws IOException {
+		FindIterable<Document> i = dm.getAllObjectsFromCollection(collection);
+		LinkedList<Object> list = new LinkedList<>();
+		for(Document d : i){
+			d.remove("_id");
+			list.add(om.readValue(d.toJson(), c));
+		}
+		return list;
+	}
+
 	private Document convertToDocument(Object o) throws JsonProcessingException {
 		return Document.parse(om.writeValueAsString(o));
 	}

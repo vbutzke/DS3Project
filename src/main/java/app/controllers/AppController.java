@@ -1,6 +1,7 @@
 package app.controllers;
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.LinkedList;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,10 +45,10 @@ public class AppController {
 	}
 
 	@RequestMapping("/createAnnouncement")
-	private String createAnnouncement(HttpServletResponse response){
+	private String createAnnouncement(String title, HttpServletResponse response){
 
 		try {
-			Announcement a = u.createAnnouncement();
+			Announcement a = FeedController.INSTANCE.createAnnouncement(u, title);
 			response.setStatus(HttpServletResponse.SC_OK);
 			return "ok";
 		} catch (JsonProcessingException | IllegalAccessException e) {
@@ -55,6 +56,17 @@ public class AppController {
 		}
 
 		return "not ok";
+	}
+
+	@RequestMapping("/feed")
+	private LinkedList<Announcement> feed(HttpServletResponse response){
+		LinkedList<Announcement> announcementsList = new LinkedList<>();
+		try{
+			announcementsList = FeedController.INSTANCE.getAllAnnouncements();
+		} catch (IOException e) {
+			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+		}
+		return announcementsList;
 	}
 
 	@RequestMapping("/logout")

@@ -7,9 +7,8 @@ public class Announcement {
 
     private String title;
 
-    public Announcement() throws JsonProcessingException {
-        this.title = "First";
-        DatabaseController.INSTANCE.addObject(this, "announcements");
+    public Announcement(String title) throws JsonProcessingException {
+        this.title = title;
     }
 
     public String getTitle() {
