@@ -12,10 +12,10 @@ public enum DatabaseController {
 	
 	INSTANCE();
 	
-	DatabaseManager dm;
-	ObjectMapper om;
+	final DatabaseManager dm;
+	final ObjectMapper om;
 	
-	private DatabaseController() {
+	DatabaseController() {
 		this.dm = new DatabaseManager();
 		this.om = new ObjectMapper();
 	}
@@ -35,10 +35,9 @@ public enum DatabaseController {
 	public boolean isAccessCodeValid(AccessCode accessCode) throws JsonProcessingException {
 		
 		Document d = dm.getRecord(convertToDocument(accessCode), "accessCodes");
-		if((Boolean)d.get("used") == false) {
-			Document oldD = d;
+		if(!((Boolean)d.get("used"))) {
 			d.put("used", true);
-			dm.updateObject(oldD, d, "accessCodes");
+			dm.updateObject(d, "accessCodes");
 			return true;
 		}
 		throw new InvalidParameterException("The provided access code is not valid.");
@@ -53,17 +52,11 @@ public enum DatabaseController {
 	}
 
 	public boolean findRecord(Object o, String collection) throws JsonProcessingException {
-		if(dm.findRecord(convertToDocument(o), collection)) {
-			return true;
-		}
-		return false;
+		return dm.findRecord(convertToDocument(o), collection);
 	}
 	
 	public boolean findRecordBy(String field, String value, String collection) {
-		if(dm.findRecordBy(field, value, collection)) {
-			return true;
-		}	
-		return false;
+		return dm.findRecordBy(field, value, collection);
 	}
 	
 	private Document convertToDocument(Object o) throws JsonProcessingException {

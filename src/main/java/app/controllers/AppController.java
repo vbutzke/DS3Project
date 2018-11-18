@@ -3,20 +3,19 @@ import java.io.IOException;
 import java.security.InvalidParameterException;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
+
+import app.entities.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import app.database.*;
-import app.entities.AccessCode;
-import app.entities.Administrator;
-import app.entities.Adopter;
-import app.entities.Guardian;
-import app.entities.User;
 import app.exceptions.DuplicateEntityException;
 
 @RestController
 public class AppController {
-	
+
+	private User u;
+
 	@PostConstruct
     public void postConstruct() {
         DatabaseController.INSTANCE.startDB();
@@ -24,7 +23,6 @@ public class AppController {
 	
 	@RequestMapping("/register")
 	public User registerUser(String email, String firstName, String lastName, String password, String passwordConf, String code, HttpServletResponse response) {
-		User u = null;
 		System.out.println("Code: "+code);
 		
 		try {
@@ -44,7 +42,21 @@ public class AppController {
 		response.setStatus(HttpServletResponse.SC_OK);
 		return u;
 	}
-	
+
+	@RequestMapping("/createAnnouncement")
+	private String createAnnouncement(HttpServletResponse response){
+
+		try {
+			Announcement a = u.createAnnouncement();
+			response.setStatus(HttpServletResponse.SC_OK);
+			return "ok";
+		} catch (JsonProcessingException | IllegalAccessException e) {
+			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+		}
+
+		return "not ok";
+	}
+
 	@RequestMapping("/logout")
 	private void logout(HttpServletResponse response) {
 		DatabaseController.INSTANCE.closeDB();

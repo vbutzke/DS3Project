@@ -2,6 +2,8 @@ package tests;
 
 import static org.junit.Assert.assertTrue;
 import java.security.InvalidParameterException;
+
+import org.bson.Document;
 import org.junit.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -14,7 +16,7 @@ import app.exceptions.DuplicateEntityException;
 import singletons.UserRecord;
 
 public class UserUT extends AbstractUT{
-	
+
 	@Before
 	public void start() {
 		startDB();
@@ -22,9 +24,17 @@ public class UserUT extends AbstractUT{
 	
 	@After
 	public void end() {
+		resetAccessCodes();
 		closeDB();
 	}
-	
+
+	private void resetAccessCodes(){
+
+		DatabaseController.INSTANCE.getDM().getDatabase()
+				.getCollection("accessCodes")
+				.updateMany(new Document(), new Document("$set", new Document("used", false)));
+	}
+
 	@Test
 	public void createAdminUser() {
 		User admin = null;
@@ -75,5 +85,4 @@ public class UserUT extends AbstractUT{
 			e.printStackTrace();
 		}
 	}
-	
 }

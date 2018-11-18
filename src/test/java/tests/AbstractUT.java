@@ -5,20 +5,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import app.database.DatabaseController;
 import app.entities.User;
 
-public abstract class AbstractUT {
+abstract class AbstractUT {
 	
-	public void startDB() {
+	void startDB() {
 		DatabaseController.INSTANCE.startDB();
 	}
 	
-	public void closeDB() {
+	void closeDB() {
 		DatabaseController.INSTANCE.closeDB();
 	}
 
-	public boolean findRecord(User user, String collection) throws JsonProcessingException {
-		if(DatabaseController.INSTANCE.findRecord(user, collection)) {
-			return true;
-		}
-		return false;
-	}
+	boolean findRecord(User user, String collection) throws JsonProcessingException {
+        return DatabaseController.INSTANCE.findRecord(user, collection);
+    }
 }

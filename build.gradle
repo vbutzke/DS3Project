@@ -16,7 +16,7 @@ plugins {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+//apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
@@ -54,7 +54,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     
     compile('org.springframework.boot:spring-boot-starter-data-mongodb')
-    //security import - descomentar quando implementar login
+    //security import TODO - descomentar quando implementar login
 	//compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.session:spring-session-core')
