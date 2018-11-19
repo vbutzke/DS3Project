@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import singletons.AnnouncementsRecord;
 import singletons.UserRecord;
 
 import java.io.IOException;
@@ -53,7 +54,7 @@ public class AnnouncementTest extends AbstractUT {
     public void createAnnouncement(){
         Announcement announcement = null;
         try {
-            announcement = FeedController.INSTANCE.createAnnouncement(guardian, "Create Announcement Test");
+            announcement = FeedController.INSTANCE.createAnnouncement(guardian, AnnouncementsRecord.BLACK_DOG.getTitle(), AnnouncementsRecord.BLACK_DOG.getDescription(), AnnouncementsRecord.BLACK_DOG.getAddress(), AnnouncementsRecord.BLACK_DOG.getRace(), AnnouncementsRecord.BLACK_DOG.getAge(), AnnouncementsRecord.BLACK_DOG.getSize());
             assertTrue(DatabaseController.INSTANCE.findRecord(announcement, "announcements"));
         } catch (JsonProcessingException | IllegalAccessException e) {
             e.printStackTrace();
@@ -71,7 +72,7 @@ public class AnnouncementTest extends AbstractUT {
         LinkedList<Announcement> announcementsList = new LinkedList<>();
         try {
             for(int i=0; i<5; i++) {
-                announcementsList.add(FeedController.INSTANCE.createAnnouncement(guardian, Integer.toString(i)));
+                announcementsList.add(FeedController.INSTANCE.createAnnouncement(guardian, AnnouncementsRecord.BLACK_DOG.getTitle(), AnnouncementsRecord.BLACK_DOG.getDescription(), AnnouncementsRecord.BLACK_DOG.getAddress(), AnnouncementsRecord.BLACK_DOG.getRace(), AnnouncementsRecord.BLACK_DOG.getAge(), AnnouncementsRecord.BLACK_DOG.getSize()));
             }
             LinkedList<Announcement> dbAnnouncementsList = FeedController.INSTANCE.getAllAnnouncements();
             for(int i=0; i<5; i++){
@@ -85,7 +86,7 @@ public class AnnouncementTest extends AbstractUT {
                 for(int i=0; i<5; i++) {
                     DatabaseController.INSTANCE.removeObject(announcementsList.get(i), "announcements");
                 }
-            } catch (JsonProcessingException e1) {
+            } catch (JsonProcessingException | IndexOutOfBoundsException e1) {
                 e1.printStackTrace();
             }
         }

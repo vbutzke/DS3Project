@@ -60,6 +60,11 @@ public class DatabaseManager {
 		FindIterable<Document> i = database.getCollection(collection).find(Filters.eq(field, value));
 		return i.first() != null;
 	}
+
+	public Document getRecordBy(String value, String collection) {
+		FindIterable<Document> i = database.getCollection(collection).find(Filters.exists(value));
+		return i.first();
+	}
 	
 	public Document getRecord(Document record, String collection) {
 		

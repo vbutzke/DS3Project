@@ -15,8 +15,8 @@ public class Guardian extends User{
 		addUser();
 	}
 
-	public static Announcement createNewAnnouncement(String title) throws JsonProcessingException {
-		Announcement a = new Announcement(title);
+	public static Announcement createNewAnnouncement(String title,  String description, Address address, String race, int age, String size) throws JsonProcessingException {
+		Announcement a = new Announcement(title, description, address, race, age, size);
 		DatabaseController.INSTANCE.addObject(a, "announcements");
 		return a;
 	}
