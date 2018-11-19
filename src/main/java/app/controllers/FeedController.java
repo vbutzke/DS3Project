@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.database.DatabaseController;
+import app.entities.Address;
 import app.entities.Announcement;
 import app.entities.Guardian;
 import app.entities.User;
@@ -27,9 +28,9 @@ public enum FeedController {
         return announcementsList;
     }
 
-    public Announcement createAnnouncement(User user, String title) throws JsonProcessingException, IllegalAccessException {
+    public Announcement createAnnouncement(User user, String title, String description, Address address, String race, int age, String size) throws JsonProcessingException, IllegalAccessException {
         if(user.getPermission().equals("Guardian")){
-            return Guardian.createNewAnnouncement(title);
+            return Guardian.createNewAnnouncement(title, description, address, race, age, size);
         }
 
         throw new IllegalAccessException("User doesn't have permission to add new announcement");

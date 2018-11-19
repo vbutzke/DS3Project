@@ -1,6 +1,12 @@
-package app.entities;
+package singletons;
 
-public class Announcement {
+import app.entities.Address;
+
+import java.io.IOException;
+
+public enum AnnouncementsRecord {
+
+    BLACK_DOG("Cachorro preto - São Leopoldo", "Pequeno cachorro preto encontrado na saída de um estacionamento", "Brazil", "Rio Grande do Sul", "São Leopoldo", "Vira-lata", 2, "Pequeno porte");
 
     private String  title;
     private String  description;
@@ -9,10 +15,14 @@ public class Announcement {
     private int     age;
     private String  size;
 
-    public Announcement(String title, String description, Address address, String race, int age, String size) {
+    AnnouncementsRecord(String title, String description, String country, String state, String city, String race, int age, String size){
         this.title       = title;
         this.description = description;
-        this.address     = address;
+        try {
+            this.address     = new Address(country, state, city);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.race        = race;
         this.age         = age;
         this.size        = size;

@@ -2,9 +2,13 @@ package app.database;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import app.entities.Announcement;
+import app.entities.Country;
+import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -71,6 +75,17 @@ public enum DatabaseController {
 			list.add(om.readValue(d.toJson(), c));
 		}
 		return list;
+	}
+
+	public Object getRecordBy(String value, String collection, Class c) throws IOException {
+		Document d = dm.getRecordBy(value, collection);
+		d.remove("_id");
+
+		//TypeFactory typeFactory = om.getTypeFactory();
+		//MapType countryMapType = typeFactory.constructMapType(HashMap.class, String.class, Country.class);
+		//HashMap<String, Country> map = om.readValue(d.toJson(), countryMapType);
+		//TODO tratar exceção da location
+		return om.readValue(d.toJson(), c);
 	}
 
 	private Document convertToDocument(Object o) throws JsonProcessingException {
