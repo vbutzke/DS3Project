@@ -10,6 +10,8 @@ import app.entities.Country;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.mongodb.client.FindIterable;
+
+import org.apache.commons.math3.exception.NoDataException;
 import org.bson.Document;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,6 +79,12 @@ public enum DatabaseController {
 		return list;
 	}
 
+	public <T> T getRecord(Object source, String collection, Class<T> c) throws NoDataException, IOException {
+		Document d = this.dm.getRecord(convertToDocument(source), collection);
+		d.remove("_id");
+		return om.readValue(d.toJson(), c);
+	}
+	
 	public Object getRecordBy(String value, String collection, Class c) throws IOException {
 		Document d = dm.getRecordBy(value, collection);
 		d.remove("_id");

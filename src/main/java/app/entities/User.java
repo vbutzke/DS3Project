@@ -17,6 +17,8 @@ public abstract class User {
 	private String permission = "Anonymous";
 	protected final String collection = "user";
 	
+	public User(){}
+	
 	public User(String email, String firstName, String lastName, String password, String passwordConf) throws InvalidParameterException {
 		this.email     = email;
 		this.firstName = firstName;

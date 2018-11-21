@@ -6,7 +6,7 @@ public enum UserRecord {
 
 	ADMINISTRATOR("emaildummytestersender@gmail.com", "Administrator", "A", "admin123", "admin123", new AccessCode("ABC123")),
 	GUARDIAN("emaildummytestersender@gmail.com", "Guardian", "A", "guardian123", "guardian123", new AccessCode("DEF123")),
-	ADOPTER("emaildummytestersender@gmail.com", "Adopter", "A", "adopter123", "adopter123", null);
+	ADOPTER("emaildummytestersender@gmail.com", "Adopter", "A", "adopter123", "adopter123",  null);
 	
 	private final String     email;
 	private final String     firstName;
