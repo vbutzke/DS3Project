@@ -6,6 +6,7 @@ import app.entities.Guardian;
 import app.entities.Adopter;
 import app.entities.Credentials;
 import app.entities.User;
+import app.entities.UserModel;
 import app.exceptions.DuplicateEntityException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.After;
@@ -46,21 +47,22 @@ public class AccountUT  extends AbstractUT {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        resetAnnouncements();
-        resetAccessCodes();
+        
         closeDB();
     }
 
     @Test
     public void authenticate(){
+        
         User user = null;
+        
         try {
-            Credentials credentials = new Credentials();
+            UserModel model = new UserModel();
 
-            credentials.setPassword(UserRecord.ADOPTER.ADOPTER.getPassword());
-            credentials.setUsername(UserRecord.ADOPTER.getEmail());
+            model.password = UserRecord.ADOPTER.ADOPTER.getPassword();
+            model.email = UserRecord.ADOPTER.getEmail();
             
-            user = DatabaseController.INSTANCE.getRecord(credentials, "user", Adopter.class);
+            user = DatabaseController.INSTANCE.getRecord(model, "user", Adopter.class);
         } catch (InvalidParameterException | IOException e) {
             e.printStackTrace();
         }
