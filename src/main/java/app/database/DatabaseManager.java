@@ -97,4 +97,8 @@ public class DatabaseManager {
 		return database.getCollection(collection).find();
 	}
 	
+	public FindIterable<Document> filterObjectsFromCollection(Document record, String collection){
+		return database.getCollection(collection).find(record);
+	}
+	
 }

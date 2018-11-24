@@ -13,7 +13,10 @@ import com.mongodb.client.FindIterable;
 
 import org.apache.commons.math3.exception.NoDataException;
 import org.bson.Document;
+
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import app.entities.AccessCode;
@@ -54,7 +57,9 @@ public enum DatabaseController {
 	}
 	
 	public void addObject(Object o, String collection) throws JsonProcessingException {
-		dm.addObject(convertToDocument(o), collection);
+		Document d = convertToDocument(o);
+		d.remove("_id");
+		dm.addObject(d, collection);
 	}
 	
 	public void removeObject(Object o, String collection) throws JsonProcessingException {
@@ -64,7 +69,7 @@ public enum DatabaseController {
 	public boolean findRecord(Object o, String collection) throws JsonProcessingException {
 		return dm.findRecord(convertToDocument(o), collection);
 	}
-	
+		
 	public boolean findRecordBy(String field, String value, String collection) {
 		return dm.findRecordBy(field, value, collection);
 	}
@@ -73,7 +78,22 @@ public enum DatabaseController {
 		FindIterable<Document> i = dm.getAllObjectsFromCollection(collection);
 		LinkedList<Object> list = new LinkedList<>();
 		for(Document d : i){
-			d.remove("_id");
+			list.add(om.readValue(d.toJson(), c));
+		}
+		return list;
+	}
+	
+	public Object filter(DatabaseFilter source, String collection, Class c) throws NoDataException, IOException {
+		Document d = this.dm.getRecord(convertToDocument(source.getEntries()), collection);
+		
+		return om.readValue(d.toJson(), c);
+	}
+
+	public LinkedList<Object> getList(DatabaseFilter filter, String collection, Class c) throws JsonParseException, JsonMappingException, IOException {
+		// TODO Auto-generated method stub
+		FindIterable<Document> i = dm.filterObjectsFromCollection(convertToDocument(filter.getEntries() ), collection);
+		LinkedList<Object> list = new LinkedList<>();
+		for(Document d : i){
 			list.add(om.readValue(d.toJson(), c));
 		}
 		return list;
@@ -81,13 +101,14 @@ public enum DatabaseController {
 
 	public <T> T getRecord(Object source, String collection, Class<T> c) throws NoDataException, IOException {
 		Document d = this.dm.getRecord(convertToDocument(source), collection);
-		d.remove("_id");
+		
 		return om.readValue(d.toJson(), c);
 	}
 	
 	public Object getRecordBy(String value, String collection, Class c) throws IOException {
 		Document d = dm.getRecordBy(value, collection);
-		d.remove("_id");
+		
+		d.remove(value);
 
 		//TypeFactory typeFactory = om.getTypeFactory();
 		//MapType countryMapType = typeFactory.constructMapType(HashMap.class, String.class, Country.class);

@@ -2,11 +2,9 @@ package tests;
 
 import app.controllers.AccountController;
 import app.database.DatabaseController;
-import app.entities.Guardian;
-import app.entities.Adopter;
+import app.database.DatabaseFilter;
 import app.entities.Credentials;
 import app.entities.User;
-import app.entities.UserModel;
 import app.exceptions.DuplicateEntityException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.After;
@@ -29,7 +27,7 @@ public class AccountUT  extends AbstractUT {
         startDB();
 
         try {
-            adopter = new Adopter(UserRecord.ADOPTER.getEmail(), UserRecord.ADOPTER.getFirstName(), UserRecord.ADOPTER.getLastName(), UserRecord.ADOPTER.getPassword(), UserRecord.ADOPTER.getPasswordConf());
+            adopter = new User(UserRecord.ADOPTER.getEmail(), UserRecord.ADOPTER.getFirstName(), UserRecord.ADOPTER.getLastName(), UserRecord.ADOPTER.getPassword(), UserRecord.ADOPTER.getPasswordConf(), null);
         } catch (JsonProcessingException | DuplicateEntityException e) {
             e.printStackTrace();
             try {
@@ -57,12 +55,12 @@ public class AccountUT  extends AbstractUT {
         User user = null;
         
         try {
-            UserModel model = new UserModel();
-
-            model.password = UserRecord.ADOPTER.ADOPTER.getPassword();
-            model.email = UserRecord.ADOPTER.getEmail();
+        	DatabaseFilter model = new DatabaseFilter();
             
-            user = DatabaseController.INSTANCE.getRecord(model, "user", Adopter.class);
+            model.add("email", UserRecord.ADOPTER.getEmail());
+            model.add("password", UserRecord.ADOPTER.getPassword());
+            
+            user = (User)DatabaseController.INSTANCE.filter(model, "user", User.class);
         } catch (InvalidParameterException | IOException e) {
             e.printStackTrace();
         }

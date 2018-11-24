@@ -1,13 +1,10 @@
 package app.controllers;
 
 import app.database.DatabaseController;
+import app.database.DatabaseFilter;
 import app.entities.User;
-import app.entities.UserModel;
 import app.entities.Credentials;
 import app.security.services.JwtService;
-import app.security.JwtUser;
-import app.entities.Adopter;
-import app.entities.Guardian;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.apache.commons.math3.exception.NoDataException;
@@ -31,12 +28,12 @@ public class AccountController {
     @RequestMapping(method = RequestMethod.POST, value = "/authenticate")
     public User authenticate(HttpServletResponse response, @RequestBody Credentials credentials) throws IllegalAccessException, NoDataException, IOException {
             
-        UserModel model = new UserModel();
+        DatabaseFilter model = new DatabaseFilter();
         
-        model.email = credentials.getUsername();
-        model.password = credentials.getPassword();
+        model.add("email", credentials.getUsername());
+        model.add("password", credentials.getPassword());
 
-        User user = DatabaseController.INSTANCE.getRecord(model, "user", Adopter.class);
+        User user = (User)DatabaseController.INSTANCE.filter(model, "user", User.class);
 
         String token = this.generateToken(user);
         
@@ -47,11 +44,7 @@ public class AccountController {
     }
 
     private String generateToken(User user) {
-        JwtUser jwtUser = new JwtUser();
-        jwtUser.setUserName(user.getEmail());
-        jwtUser.setRole("ADOPTER"); //Todo: Role hard coded
-
         JwtService service = new JwtService();
-        return service.getToken(jwtUser);
+        return service.getToken(user);
     }
 }

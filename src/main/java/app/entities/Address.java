@@ -10,6 +10,7 @@ public class Address {
     private String stateName;
     private String cityName;
 
+    public Address() {}
     public Address(String countryName, String stateName, String cityName) throws IOException {
 
         if(((Country)DatabaseController.INSTANCE.getRecordBy(countryName, "locations",  Country.class)).getStates().get(stateName).getCities().get(cityName) != null){

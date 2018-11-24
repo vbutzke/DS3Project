@@ -6,9 +6,17 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 
 import app.entities.*;
+
+import org.springframework.boot.actuate.trace.http.HttpTrace.Principal;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import app.controllers.models.AnnouncementModel;
 import app.database.*;
 import app.exceptions.DuplicateEntityException;
 
@@ -16,7 +24,7 @@ import app.exceptions.DuplicateEntityException;
 public class AppController {
 
 	private User u;
-
+	
 	@PostConstruct
     public void postConstruct() {
         DatabaseController.INSTANCE.startDB();
@@ -28,11 +36,11 @@ public class AppController {
 		
 		try {
 			if(code == null || code.isEmpty() || code.equals("\"\"")) {
-				u = new Adopter(email, firstName, lastName, password, passwordConf);
+				u = new User(email, firstName, lastName, password, passwordConf, null);
 			} else if(code.contains("ADMIN")) {
-				u = new Administrator(email, firstName, lastName, password, passwordConf, new AccessCode(code));
+				u = new User(email, firstName, lastName, password, passwordConf, new AccessCode(code));
 			} else if (code.contains("GUARDIAN")) {
-				u = new Guardian(email, firstName, lastName, password, passwordConf, new AccessCode(code));
+				u = new User(email, firstName, lastName, password, passwordConf, new AccessCode(code));
 			} else {
 				sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, "Invalid access code.");
 			}
@@ -44,14 +52,14 @@ public class AppController {
 		return u;
 	}
 
-	@RequestMapping("/createAnnouncement")
-	private String createAnnouncement(String title, String description, Address address, String race, int age, String size, HttpServletResponse response){
-
+	@RequestMapping(method = RequestMethod.POST, value = "/createAnnouncement")
+	public String createAnnouncement(HttpServletResponse response, Authentication authentication, @RequestBody AnnouncementModel model) {
 		try {
-			Announcement a = FeedController.INSTANCE.createAnnouncement(u, title, description, address, race, age, size);
+			User user = (User)authentication.getDetails();
+			Announcement a = FeedController.INSTANCE.createAnnouncement(user, model.title, model.description, model.address, model.race, model.age, model.size);
 			response.setStatus(HttpServletResponse.SC_OK);
 			return "ok";
-		} catch (JsonProcessingException | IllegalAccessException e) {
+		} catch (JsonProcessingException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
 
@@ -59,10 +67,23 @@ public class AppController {
 	}
 
 	@RequestMapping("/feed")
-	private LinkedList<Announcement> feed(HttpServletResponse response){
+	private LinkedList<Announcement> feed(HttpServletResponse response, Authentication authentication){
+		User user = (User)authentication.getDetails();
 		LinkedList<Announcement> announcementsList = new LinkedList<>();
 		try{
 			announcementsList = FeedController.INSTANCE.getAllAnnouncements();
+		} catch (IOException e) {
+			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+		}
+		return announcementsList;
+	}
+	
+	@RequestMapping("/my-announcements")
+	private LinkedList<Announcement> myAnnouncements(HttpServletResponse response, Authentication authentication){
+		User  user = (User)authentication.getDetails();
+		LinkedList<Announcement> announcementsList = new LinkedList<>();
+		try{
+			announcementsList = FeedController.INSTANCE.getMyAnnouncements(user);
 		} catch (IOException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}

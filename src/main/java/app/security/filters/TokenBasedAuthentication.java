@@ -3,15 +3,19 @@ package app.security.filters;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import app.entities.User;
+
 
 public class TokenBasedAuthentication extends AbstractAuthenticationToken {
 
     private String token;
-    private final UserDetails principle;
+    private UserDetails principle;
+    private User currentUser;
 
-    public TokenBasedAuthentication( UserDetails principle ) {
+    public TokenBasedAuthentication( UserDetails principle, User user ) {
         super( principle.getAuthorities() );
         this.principle = principle;
+        this.currentUser = user;
     }
 
     public String getToken() {
@@ -36,5 +40,9 @@ public class TokenBasedAuthentication extends AbstractAuthenticationToken {
     public UserDetails getPrincipal() {
         return principle;
     }
-
+    
+    @Override
+    public Object getDetails() {
+    	return currentUser;
+    }
 }

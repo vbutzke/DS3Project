@@ -4,12 +4,31 @@ import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import app.database.DatabaseController;
 import app.exceptions.DuplicateEntityException;
+import app.utils.MongoDbId;
 
-public abstract class User {
-	
+public class User {
+
+	@JsonSerialize(using=ToStringSerializer.class)
+	private MongoDbId _id;
+		
+	public String get_id() {
+		return _id.get$oid();
+	}
+
+	public void set_id(MongoDbId _id) {
+		this._id = _id;
+	}
+
 	private String email;
 	private String firstName;
 	private String lastName;
@@ -19,7 +38,7 @@ public abstract class User {
 	
 	public User(){}
 	
-	public User(String email, String firstName, String lastName, String password, String passwordConf) throws InvalidParameterException {
+	public User(String email, String firstName, String lastName, String password, String passwordConf, AccessCode code) throws InvalidParameterException, JsonProcessingException, DuplicateEntityException {
 		this.email     = email;
 		this.firstName = firstName;
 		this.lastName  = lastName;
@@ -27,7 +46,10 @@ public abstract class User {
 		if(password.equals(passwordConf)) {
 			this.password = password;
 		}
+		
+		addUser();
 	}
+
 
 	public String getEmail() {
 		return email;
@@ -71,5 +93,4 @@ public abstract class User {
 		}
 
 	}
-
 }

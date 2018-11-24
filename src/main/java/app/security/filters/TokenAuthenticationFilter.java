@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import app.security.JwtUser;
+import app.entities.User;
 import app.security.services.JwtService;
 
 import javax.servlet.FilterChain;
@@ -45,14 +45,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         if (authToken != null) {
 
             // Get username from token
-            JwtUser user = jwtService.getUser( authToken );
+            User user = jwtService.getUser( authToken );
             if ( user != null ) {
 
                 // Get user
-                UserDetails userDetails = userDetailServiceImpl.loadUserByUsername( user.getUserName() );
+                UserDetails userDetails = userDetailServiceImpl.loadUserByUsername( user.getEmail() );
 
                 // Create authentication
-                TokenBasedAuthentication authentication = new TokenBasedAuthentication( userDetails );
+                TokenBasedAuthentication authentication = new TokenBasedAuthentication( userDetails, user );
                 authentication.setToken( authToken );
                 SecurityContextHolder.getContext().setAuthentication( authentication );
             } else {

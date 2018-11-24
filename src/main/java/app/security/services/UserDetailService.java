@@ -12,10 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import app.database.DatabaseController;
-import app.entities.Adopter;
+import app.database.DatabaseFilter;
 import app.entities.User;
-import app.entities.UserModel;
-import app.security.JwtUser;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -29,18 +27,18 @@ public class UserDetailService  implements UserDetailsService {
 
         User user;
         try {
-            Document d = new Document();
-            d.append("email", username);
-            d = DatabaseController.INSTANCE.getDM().getRecord(d, "user");
+            DatabaseFilter d = new DatabaseFilter();
+            d.add("email", username);
+            user = (User)DatabaseController.INSTANCE.filter(d, "user", User.class);
         
-            if(d == null){
+            if(user == null){
                 throw new UsernameNotFoundException("No user found. Username tried: " + username);
             }
             
             Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
             grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
 
-            return new org.springframework.security.core.userdetails.User(d.getString("email"), d.getString("password"), grantedAuthorities);
+            return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -3,7 +3,6 @@ package tests;
 import app.controllers.FeedController;
 import app.database.DatabaseController;
 import app.entities.Announcement;
-import app.entities.Guardian;
 import app.entities.User;
 import app.exceptions.DuplicateEntityException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,7 +26,7 @@ public class AnnouncementTest extends AbstractUT {
         startDB();
 
         try {
-            guardian = new Guardian(UserRecord.GUARDIAN.getEmail(), UserRecord.GUARDIAN.getFirstName(), UserRecord.GUARDIAN.getLastName(), UserRecord.GUARDIAN.getPassword(), UserRecord.GUARDIAN.getPasswordConf(), UserRecord.GUARDIAN.getCode());
+            guardian = new User(UserRecord.GUARDIAN.getEmail(), UserRecord.GUARDIAN.getFirstName(), UserRecord.GUARDIAN.getLastName(), UserRecord.GUARDIAN.getPassword(), UserRecord.GUARDIAN.getPasswordConf(), UserRecord.GUARDIAN.getCode());
         } catch (JsonProcessingException | DuplicateEntityException e) {
             e.printStackTrace();
             try {
@@ -56,7 +55,7 @@ public class AnnouncementTest extends AbstractUT {
         try {
             announcement = FeedController.INSTANCE.createAnnouncement(guardian, AnnouncementsRecord.BLACK_DOG.getTitle(), AnnouncementsRecord.BLACK_DOG.getDescription(), AnnouncementsRecord.BLACK_DOG.getAddress(), AnnouncementsRecord.BLACK_DOG.getRace(), AnnouncementsRecord.BLACK_DOG.getAge(), AnnouncementsRecord.BLACK_DOG.getSize());
             assertTrue(DatabaseController.INSTANCE.findRecord(announcement, "announcements"));
-        } catch (JsonProcessingException | IllegalAccessException e) {
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -79,7 +78,7 @@ public class AnnouncementTest extends AbstractUT {
                 assertEquals(announcementsList.get(i).getTitle(), dbAnnouncementsList.get(i).getTitle());
             }
 
-        } catch (IllegalAccessException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {

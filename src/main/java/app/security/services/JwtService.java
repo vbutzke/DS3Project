@@ -1,9 +1,13 @@
 package app.security.services;
 
-import app.security.JwtUser;
+import app.database.DatabaseController;
+import app.database.DatabaseFilter;
+import app.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
+import org.apache.commons.math3.exception.NoDataException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,6 +20,8 @@ import org.springframework.security.core.Authentication;
 import java.util.Collections;
 
 import javax.annotation.PostConstruct;
+
+import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
@@ -60,44 +66,54 @@ public class JwtService
         return new Date(expireInMilis + now.getTime());
     }
 
-    protected JwtUser getUser(String encodedSecret, String token)
+    protected User getUser(String encodedSecret, String token)
     {
         Claims claims = Jwts.parser()
                 .setSigningKey(encodedSecret)
                 .parseClaimsJws(token)
                 .getBody();
 
-        String userName = claims.getSubject();
-        String role = (String) claims.get("role");
+        User securityUser = null;
         
-        JwtUser securityUser = new JwtUser();
-        securityUser.setUserName(userName);
-        securityUser.setRole(role);
+		try {
+			String userName = claims.getSubject();
+	        DatabaseFilter filter = new DatabaseFilter();
+	        filter.add("email", userName);        
+	        
+			securityUser = (User)DatabaseController.INSTANCE.filter(filter, "user", User.class);
+			
+		} catch (NoDataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         return securityUser;
     }
 
-    public JwtUser getUser(String token)
+    public User getUser(String token)
     {
         return getUser(this.encodedSecret, token);
     }
 
-    protected String getToken(String encodedSecret, JwtUser jwtUser)
+    protected String getToken(String encodedSecret, User user)
     {
         Date now = new Date();
         return Jwts.builder()
                 .setId(UUID.randomUUID().toString())
-                .setSubject(jwtUser.getUserName())
-                .claim("role", jwtUser.getRole())
+                .setSubject(user.getEmail())
+                .claim("name", user.getFirstName())
                 .setIssuedAt(now)
                 .setExpiration(getExpirationTime())
                 .signWith(SignatureAlgorithm.HS512, encodedSecret)
                 .compact();
     }
 
-    public String getToken(JwtUser jwtUser)
+    public String getToken(User user)
     {
-        return getToken(this.encodedSecret, jwtUser);
+        return getToken(this.encodedSecret, user);
     }
 
     public void addAuthentication(HttpServletResponse response, String username) {

@@ -1,15 +1,47 @@
 package app.entities;
 
-public class Announcement {
+import java.util.HashMap;
 
-    private String  title;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
+import app.utils.MongoDbId;
+
+public class Announcement {
+	
+	@JsonSerialize(using=ToStringSerializer.class)
+	private MongoDbId _id;
+		
+	public String get_id() {
+		if(_id == null)
+			return null;
+		
+		return _id.get$oid();
+	}
+
+	public void set_id(MongoDbId _id) {
+		this._id = _id;
+	}
+	
+	private String  title;
     private String  description;
     private Address address;
     private String  race;
     private int     age;
     private String  size;
 
-    public Announcement(String title, String description, Address address, String race, int age, String size) {
+	private String user;
+
+    public String getUser() {
+		return user;
+	}
+	public void setUser(String user) {
+		this.user = user;
+	}
+	//private HashMap<String, Photo> photos;
+    public Announcement() {}
+	public Announcement(String title, String description, Address address, String race, int age, String size) {
         this.title       = title;
         this.description = description;
         this.address     = address;
@@ -41,4 +73,6 @@ public class Announcement {
     public String getSize() {
         return size;
     }
+    
+
 }
