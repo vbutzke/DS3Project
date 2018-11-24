@@ -11,6 +11,9 @@ import org.apache.commons.math3.exception.NoDataException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import com.mongodb.BasicDBObject;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -77,8 +80,8 @@ public class JwtService
         
 		try {
 			String userName = claims.getSubject();
-	        DatabaseFilter filter = new DatabaseFilter();
-	        filter.add("email", userName);        
+			BasicDBObject filter = new BasicDBObject();
+	        filter.append("email", userName);        
 	        
 			securityUser = (User)DatabaseController.INSTANCE.filter(filter, "user", User.class);
 			

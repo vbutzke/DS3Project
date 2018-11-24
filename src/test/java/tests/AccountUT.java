@@ -7,6 +7,8 @@ import app.entities.Credentials;
 import app.entities.User;
 import app.exceptions.DuplicateEntityException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.mongodb.BasicDBObject;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,10 +57,10 @@ public class AccountUT  extends AbstractUT {
         User user = null;
         
         try {
-        	DatabaseFilter model = new DatabaseFilter();
+        	BasicDBObject model = new BasicDBObject();
             
-            model.add("email", UserRecord.ADOPTER.getEmail());
-            model.add("password", UserRecord.ADOPTER.getPassword());
+            model.append("email", UserRecord.ADOPTER.getEmail());
+            model.append("password", UserRecord.ADOPTER.getPassword());
             
             user = (User)DatabaseController.INSTANCE.filter(model, "user", User.class);
         } catch (InvalidParameterException | IOException e) {

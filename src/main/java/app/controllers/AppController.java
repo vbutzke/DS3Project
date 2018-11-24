@@ -10,6 +10,7 @@ import app.entities.*;
 import org.springframework.boot.actuate.trace.http.HttpTrace.Principal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -78,6 +79,17 @@ public class AppController {
 		return announcementsList;
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/get-announcement/{announcementId}")
+	private Announcement getAnnouncement(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId) {
+		Announcement announcement = null; 
+		try{
+			announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
+		} catch (IOException e) {
+			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+		}
+		return announcement;
+	}
+  
 	@RequestMapping("/my-announcements")
 	private LinkedList<Announcement> myAnnouncements(HttpServletResponse response, Authentication authentication){
 		User  user = (User)authentication.getDetails();

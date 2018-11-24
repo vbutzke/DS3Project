@@ -1,6 +1,7 @@
 package app.security.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.BasicDBObject;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,9 @@ public class UserDetailService  implements UserDetailsService {
 
         User user;
         try {
-            DatabaseFilter d = new DatabaseFilter();
-            d.add("email", username);
+        	BasicDBObject d = new BasicDBObject();
+        	
+            d.append("email", username);
             user = (User)DatabaseController.INSTANCE.filter(d, "user", User.class);
         
             if(user == null){

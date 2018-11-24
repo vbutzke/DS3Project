@@ -9,6 +9,7 @@ import app.entities.Announcement;
 import app.entities.Country;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 
 import org.apache.commons.math3.exception.NoDataException;
@@ -62,6 +63,10 @@ public enum DatabaseController {
 		dm.addObject(d, collection);
 	}
 	
+	public void removeObject(BasicDBObject o, String collection) throws JsonProcessingException {
+		dm.removeObject(o, collection);
+	}
+	
 	public void removeObject(Object o, String collection) throws JsonProcessingException {
 		dm.removeObject(convertToDocument(o), collection);
 	}
@@ -83,15 +88,15 @@ public enum DatabaseController {
 		return list;
 	}
 	
-	public Object filter(DatabaseFilter source, String collection, Class c) throws NoDataException, IOException {
-		Document d = this.dm.getRecord(convertToDocument(source.getEntries()), collection);
+	public Object filter(BasicDBObject source, String collection, Class c) throws NoDataException, IOException {
+		Document d = this.dm.getRecord(source, collection);
 		
 		return om.readValue(d.toJson(), c);
 	}
 
-	public LinkedList<Object> getList(DatabaseFilter filter, String collection, Class c) throws JsonParseException, JsonMappingException, IOException {
+	public LinkedList<Object> getList(BasicDBObject filter, String collection, Class c) throws JsonParseException, JsonMappingException, IOException {
 		// TODO Auto-generated method stub
-		FindIterable<Document> i = dm.filterObjectsFromCollection(convertToDocument(filter.getEntries() ), collection);
+		FindIterable<Document> i = dm.filterObjectsFromCollection(filter, collection);
 		LinkedList<Object> list = new LinkedList<>();
 		for(Document d : i){
 			list.add(om.readValue(d.toJson(), c));

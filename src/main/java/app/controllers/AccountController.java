@@ -6,6 +6,7 @@ import app.entities.User;
 import app.entities.Credentials;
 import app.security.services.JwtService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.mongodb.BasicDBObject;
 
 import org.apache.commons.math3.exception.NoDataException;
 import org.bson.Document;
@@ -28,10 +29,10 @@ public class AccountController {
     @RequestMapping(method = RequestMethod.POST, value = "/authenticate")
     public User authenticate(HttpServletResponse response, @RequestBody Credentials credentials) throws IllegalAccessException, NoDataException, IOException {
             
-        DatabaseFilter model = new DatabaseFilter();
+    	BasicDBObject model = new BasicDBObject();
         
-        model.add("email", credentials.getUsername());
-        model.add("password", credentials.getPassword());
+        model.append("email", credentials.getUsername());
+        model.append("password", credentials.getPassword());
 
         User user = (User)DatabaseController.INSTANCE.filter(model, "user", User.class);
 
