@@ -10,6 +10,7 @@ import app.entities.*;
 import org.apache.commons.math3.exception.NoDataException;
 import org.bson.types.ObjectId;
 import org.springframework.boot.actuate.trace.http.HttpTrace.Principal;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,17 +63,37 @@ public class AppController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/create-announcement")
-	public String createAnnouncement(HttpServletResponse response, Authentication authentication, @RequestBody AnnouncementModel model) {
+	public Announcement createAnnouncement(HttpServletResponse response, Authentication authentication, @RequestBody AnnouncementModel model) {
 		try {
 			User user = (User)authentication.getDetails();
 			Announcement a = FeedController.INSTANCE.createAnnouncement(user, model.title, model.description, model.address, model.race, model.age, model.size);
 			response.setStatus(HttpServletResponse.SC_OK);
-			return "ok";
+			return a;
 		} catch (JsonProcessingException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
 
-		return "not ok";
+		return null;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/update-announcement/{announcementId}")
+	public Announcement updateAnnouncement(HttpServletResponse response, Authentication authentication, @RequestBody AnnouncementModel model, @PathVariable String announcementId) {
+		try {
+			User user = (User)authentication.getDetails();
+			Announcement a = FeedController.INSTANCE.getAnnouncementById(announcementId);
+			
+			if(!a.getUser().equals(user.get_id())) {
+	        	throw new BadCredentialsException("Not authorized."); 
+	        }
+			
+			FeedController.INSTANCE.updateAnnouncement(a, model.title, model.description, model.address, model.race, model.age, model.size);
+			response.setStatus(HttpServletResponse.SC_OK);
+			return a;
+		} catch (NoDataException | IOException e) {
+			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+		}
+
+		return null;
 	}
 
 	@RequestMapping("/feed")
@@ -131,9 +152,7 @@ public class AppController {
 	private LinkedList<Photo> getPhotos(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId) {
 		LinkedList<Photo> photos = null;
 		
-		try {
-			User user = (User)authentication.getDetails();
-	        
+		try {	        
 			photos = GalleryController.INSTANCE.getPhotos(announcementId);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -144,29 +163,30 @@ public class AppController {
 	}
 	
 	@PostMapping("/upload-image") // //new annotation since 4.3
-    public Boolean uploadImage(HttpServletResponse response, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Authentication authentication, String announcementId) throws IOException {
+    public Photo uploadImage(HttpServletResponse response, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Authentication authentication, String announcementId) {
+		
+		Photo photo = null;
+		
 		try {
 			User user = (User)authentication.getDetails();
 			Announcement announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
         
 	        if (file.isEmpty()) {
-	            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-	            return false;
+	            throw new Exception("Please select a file to upload");
 	        }
 	        
 	        if(!announcement.getUser().equals(user.get_id())) {
-	        	redirectAttributes.addFlashAttribute("message", "Not authorized."); 
-	        	return false;
+	        	throw new BadCredentialsException("Not authorized."); 
 	        }
 	        
-	        GalleryController.INSTANCE.uploadImage(file, user, announcement);
+	        return GalleryController.INSTANCE.uploadImage(file, user, announcement);
 		}
-		catch(IOException e) {
+		catch(Exception e) {
 			e.printStackTrace();
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
 		
-		return true;
+		return photo;
 	}
 	
 	@PostMapping("/remove-image")

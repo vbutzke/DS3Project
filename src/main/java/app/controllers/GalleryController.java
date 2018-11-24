@@ -28,6 +28,7 @@ import app.database.DatabaseFilter;
 import app.entities.Announcement;
 import app.entities.Photo;
 import app.entities.User;
+import app.utils.MongoDbId;
 
 public enum GalleryController {
 	INSTANCE();
@@ -37,7 +38,7 @@ public enum GalleryController {
 		return this.getPhotosByAnnouncements(announcement);
 	}
 
-	public void uploadImage(MultipartFile file, User user, Announcement announcement) throws IOException {
+	public Photo uploadImage(MultipartFile file, User user, Announcement announcement) throws IOException {
         // Get the file and save it somewhere
         byte[] bytes = file.getBytes();
         String base64 = Base64.getEncoder().encodeToString(bytes);
@@ -46,7 +47,9 @@ public enum GalleryController {
         photo.setAnnouncementId(announcement.get_id());
         photo.setImage(base64);
         
-        DatabaseController.INSTANCE.addObject(photo, "photos");
+        photo.set_id((MongoDbId)DatabaseController.INSTANCE.addObject(photo, "photos"));
+        
+        return photo;
     }
 	
     public Boolean removeFile(User user, String photoId) throws NoDataException, IOException {

@@ -5,6 +5,8 @@ import app.database.DatabaseFilter;
 import app.entities.Address;
 import app.entities.Announcement;
 import app.entities.User;
+import app.utils.MongoDbId;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mongodb.BasicDBObject;
 
@@ -64,7 +66,22 @@ public enum FeedController {
     public Announcement createAnnouncement(User user, String title,  String description, Address address, String race, int age, String size) throws JsonProcessingException {
 		Announcement a = new Announcement(title, description, address, race, age, size);
 		a.setUser(user.get_id());
-		DatabaseController.INSTANCE.addObject(a, "announcements");
+		
+		a.set_id((MongoDbId)DatabaseController.INSTANCE.addObject(a, "announcements"));
+		
 		return a;
+	}
+    
+    public Announcement updateAnnouncement(Announcement announcement, String title,  String description, Address address, String race, int age, String size) throws JsonProcessingException {
+    	announcement.setTitle(title);
+    	announcement.setDescription(description);
+    	announcement.setAddress(address);
+    	announcement.setRace(race);
+    	announcement.setAge(age);
+    	announcement.setSize(size);	
+
+		DatabaseController.INSTANCE.updateObject(announcement, "announcements");
+
+		return announcement;
 	}
 }

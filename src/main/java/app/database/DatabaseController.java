@@ -57,10 +57,17 @@ public enum DatabaseController {
 		throw new InvalidParameterException("The provided access code is not valid.");
 	}
 	
-	public void addObject(Object o, String collection) throws JsonProcessingException {
+	public void updateObject(Object o, String collection) throws JsonProcessingException {
+		BasicDBObject record = BasicDBObject.parse(om.writeValueAsString(o));
+		dm.updateObject(record, collection);
+	}
+	
+	public Object addObject(Object o, String collection) throws JsonProcessingException {
 		Document d = convertToDocument(o);
 		d.remove("_id");
 		dm.addObject(d, collection);
+		
+		return d.get("_id");
 	}
 	
 	public void removeObject(BasicDBObject o, String collection) throws JsonProcessingException {

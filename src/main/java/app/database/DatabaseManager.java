@@ -2,6 +2,7 @@ package app.database;
 
 import org.apache.commons.math3.exception.NoDataException;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
@@ -124,6 +125,14 @@ public class DatabaseManager {
 	public void updateObject(Document record, String collection) {
 		database.getCollection(collection).updateOne(Filters.eq("_id", record.get("_id")), new Document("$set", record));
 	}
+	
+	public void updateObject(BasicDBObject record, String collection) {
+		BasicDBObject filter = new BasicDBObject();
+		filter.append("_id", new ObjectId(record.getString("_id")));
+		record.remove("_id");
+		database.getCollection(collection).updateOne(filter, new BasicDBObject().append("$set", record));
+	}
+
 
 	public FindIterable<Document> getAllObjectsFromCollection(String collection){
 		return database.getCollection(collection).find();
