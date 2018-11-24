@@ -20,31 +20,23 @@ import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletResponse;
 
-@RestController
-public class AccountController {
+public enum AccountController {
+	INSTANCE();
+	
     AccountController(){
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/authenticate")
-    public User authenticate(HttpServletResponse response, @RequestBody Credentials credentials) throws IllegalAccessException, NoDataException, IOException {
-            
+    public User authenticate(Credentials credentials) throws IllegalAccessException, NoDataException, IOException {
     	BasicDBObject model = new BasicDBObject();
         
         model.append("email", credentials.getUsername());
         model.append("password", credentials.getPassword());
 
-        User user = (User)DatabaseController.INSTANCE.filter(model, "user", User.class);
-
-        String token = this.generateToken(user);
-        
-        if(response!=null)
-            response.addHeader("Set-Authorization", "Bearer " + token);
-        
-        return user;
+        return (User)DatabaseController.INSTANCE.filter(model, "user", User.class);
     }
 
-    private String generateToken(User user) {
+    public String generateToken(User user) {
         JwtService service = new JwtService();
         return service.getToken(user);
     }
