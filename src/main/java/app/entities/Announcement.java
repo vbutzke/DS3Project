@@ -1,11 +1,16 @@
 package app.entities;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import app.utils.MongoDbDateDeserializer;
+import app.utils.MongoDbDateSerializer;
 import app.utils.MongoDbId;
 
 public class Announcement {
@@ -16,13 +21,16 @@ public class Announcement {
 	private String  description;
     private Address address;
     private String  race;
-    private int     age;
+    private String     age;
     private String  size;
 	private String user;
 
+	@JsonDeserialize(using = MongoDbDateDeserializer.class)
+	private Date createdAt;
+
     public Announcement() {}
 
-    public Announcement(String title, String description, Address address, String race, int age, String size) {
+    public Announcement(String title, String description, Address address, String race, String age, String size) {
         this.title       = title;
         this.description = description;
         this.address     = address;
@@ -74,11 +82,11 @@ public class Announcement {
 		this.race = race;
 	}
 
-	public int getAge() {
+	public String getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(String age) {
 		this.age = age;
 	}
 
@@ -96,5 +104,13 @@ public class Announcement {
 
 	public void setUser(String user) {
 		this.user = user;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+	
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 }

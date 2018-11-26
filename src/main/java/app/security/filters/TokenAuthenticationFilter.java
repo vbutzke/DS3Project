@@ -35,6 +35,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 
+    private boolean isValid(String token) {
+    	token = token == null ? "" : token.toLowerCase().trim();
+    	return !(token.isEmpty() || token.equals("undefined") || token.equals("bearer undefined") || token.equals("bearer"));
+    }
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -42,7 +46,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String error = "";
         String authToken = getToken( request );
 
-        if (authToken != null) {
+        if (isValid(authToken)) {
 
             // Get username from token
             User user = jwtService.getUser( authToken );

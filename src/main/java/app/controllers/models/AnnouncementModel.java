@@ -9,7 +9,7 @@ public class AnnouncementModel {
 	public String  description;
 	public Address address;
 	public String  race;
-	public int     age;
+	public String     age;
 	public String  size;
 	public User user;
 

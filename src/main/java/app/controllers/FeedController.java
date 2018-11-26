@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mongodb.BasicDBObject;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 
 import org.apache.commons.math3.exception.NoDataException;
@@ -63,16 +64,17 @@ public enum FeedController {
         return announcementsList;
     }
 
-    public Announcement createAnnouncement(User user, String title,  String description, Address address, String race, int age, String size) throws JsonProcessingException {
+    public Announcement createAnnouncement(User user, String title,  String description, Address address, String race, String age, String size) throws JsonProcessingException {
 		Announcement a = new Announcement(title, description, address, race, age, size);
-		a.setUser(user.get_id());
 		
+		a.setUser(user.get_id());
+		a.setCreatedAt(new Date());
 		a.set_id((MongoDbId)DatabaseController.INSTANCE.addObject(a, "announcements"));
 		
 		return a;
 	}
     
-    public Announcement updateAnnouncement(Announcement announcement, String title,  String description, Address address, String race, int age, String size) throws JsonProcessingException {
+    public Announcement updateAnnouncement(Announcement announcement, String title,  String description, Address address, String race, String age, String size) throws JsonProcessingException {
     	announcement.setTitle(title);
     	announcement.setDescription(description);
     	announcement.setAddress(address);
@@ -80,6 +82,8 @@ public enum FeedController {
     	announcement.setAge(age);
     	announcement.setSize(size);	
 
+    	announcement.setCreatedAt(new Date());
+    	
 		DatabaseController.INSTANCE.updateObject(announcement, "announcements");
 
 		return announcement;

@@ -20,10 +20,12 @@ gen/
 out/
 
 # Gradle files
-.gradle/
-.vscode/
-.settings/
-build/
+.gradle/**/*
+.vscode/**/*
+.settings/**/*
+build/**/*
+bin/**/*
+.idea/**/*
 
 # Local configuration file (sdk path, etc)
 local.properties

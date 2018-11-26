@@ -71,19 +71,19 @@ public class JwtService
 
     protected User getUser(String encodedSecret, String token)
     {
-        Claims claims = Jwts.parser()
-                .setSigningKey(encodedSecret)
-                .parseClaimsJws(token)
-                .getBody();
-
-        User securityUser = null;
-        
 		try {
+	        Claims claims = Jwts.parser()
+	                .setSigningKey(encodedSecret)
+	                .parseClaimsJws(token)
+	                .getBody();
+	
+	        User securityUser = null;
+        
 			String userName = claims.getSubject();
 			BasicDBObject filter = new BasicDBObject();
 	        filter.append("email", userName);        
 	        
-			securityUser = (User)DatabaseController.INSTANCE.filter(filter, "user", User.class);
+			return (User)DatabaseController.INSTANCE.filter(filter, "user", User.class);
 			
 		} catch (NoDataException e) {
 			// TODO Auto-generated catch block
@@ -93,7 +93,7 @@ public class JwtService
 			e.printStackTrace();
 		}
         
-        return securityUser;
+        return null;
     }
 
     public User getUser(String token)

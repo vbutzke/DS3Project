@@ -143,7 +143,7 @@ public class AppController {
 		String token = AccountController.INSTANCE.generateToken(user);
         
         if(response!=null)
-            response.addHeader("Set-Authorization", "Bearer " + token);
+            response.addHeader("Set-Authorization", token);
         
         return user;
 	}
