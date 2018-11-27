@@ -7,6 +7,8 @@ import java.util.LinkedList;
 
 import app.entities.Announcement;
 import app.entities.Country;
+import app.utils.MongoDbId;
+
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.mongodb.BasicDBObject;
@@ -14,6 +16,7 @@ import com.mongodb.client.FindIterable;
 
 import org.apache.commons.math3.exception.NoDataException;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -67,7 +70,11 @@ public enum DatabaseController {
 		d.remove("_id");
 		dm.addObject(d, collection);
 		
-		return d.get("_id");
+		ObjectId id = (ObjectId)d.get("_id");
+		
+		MongoDbId dbId = new MongoDbId(id.toHexString());
+		
+		return dbId;
 	}
 	
 	public void removeObject(BasicDBObject o, String collection) throws JsonProcessingException {

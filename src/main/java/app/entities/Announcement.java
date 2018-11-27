@@ -1,5 +1,6 @@
 package app.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -24,6 +25,10 @@ public class Announcement {
     private String     age;
     private String  size;
 	private String user;
+	
+	private Photo photo;
+	
+	private ArrayList<AnnouncementParams> params;
 
 	@JsonDeserialize(using = MongoDbDateDeserializer.class)
 	private Date createdAt;
@@ -112,5 +117,21 @@ public class Announcement {
 	
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	public void setAvatar(Photo p) {
+		this.photo = p;
+	}
+	
+	public Photo getAvatar() {
+		return this.photo;
+	}
+	
+	public ArrayList<AnnouncementParams> getParams() {
+		return params;
+	}
+
+	public void setParams(ArrayList<AnnouncementParams> params) {
+		this.params = params;
 	}
 }

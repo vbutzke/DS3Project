@@ -83,7 +83,7 @@ public enum GalleryController {
 		return p;
 	}
 	
-	 private LinkedList<Photo> getPhotosByAnnouncements(Announcement announcement) throws IOException {
+	 public LinkedList<Photo> getPhotosByAnnouncements(Announcement announcement) throws IOException {
         LinkedList<Photo> photosList = new LinkedList<>();
         
         BasicDBObject filter = new BasicDBObject();

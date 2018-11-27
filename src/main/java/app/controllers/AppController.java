@@ -66,7 +66,7 @@ public class AppController {
 	public Announcement createAnnouncement(HttpServletResponse response, Authentication authentication, @RequestBody AnnouncementModel model) {
 		try {
 			User user = (User)authentication.getDetails();
-			Announcement a = FeedController.INSTANCE.createAnnouncement(user, model.title, model.description, model.address, model.race, model.age, model.size);
+			Announcement a = FeedController.INSTANCE.createAnnouncement(user, model.title, model.description, model.address, model.race, model.age, model.size, model.params);
 			response.setStatus(HttpServletResponse.SC_OK);
 			return a;
 		} catch (JsonProcessingException e) {
@@ -86,7 +86,7 @@ public class AppController {
 	        	throw new BadCredentialsException("Not authorized."); 
 	        }
 			
-			FeedController.INSTANCE.updateAnnouncement(a, model.title, model.description, model.address, model.race, model.age, model.size);
+			FeedController.INSTANCE.updateAnnouncement(a, model.title, model.description, model.address, model.race, model.age, model.size, model.params);
 			response.setStatus(HttpServletResponse.SC_OK);
 			return a;
 		} catch (NoDataException | IOException e) {
@@ -113,6 +113,7 @@ public class AppController {
 		Announcement announcement = null; 
 		try{
 			announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
+			announcement = FeedController.INSTANCE.getOnePic(announcement);
 		} catch (IOException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}

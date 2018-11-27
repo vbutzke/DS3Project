@@ -11,6 +11,10 @@ public class MongoDbId {
 	  private String $oid;
 	
 	  public MongoDbId(){ }
+	  
+	  public MongoDbId(String id){
+		  this.$oid = id;
+	  }
 	 
 	  public String get$oid() {
 	    return $oid;

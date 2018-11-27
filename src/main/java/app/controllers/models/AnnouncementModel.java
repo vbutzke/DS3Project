@@ -1,6 +1,10 @@
 package app.controllers.models;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import app.entities.Address;
+import app.entities.AnnouncementParams;
 import app.entities.User;
 
 public class AnnouncementModel {
@@ -12,6 +16,7 @@ public class AnnouncementModel {
 	public String     age;
 	public String  size;
 	public User user;
+	public ArrayList<AnnouncementParams> params; 
 
     public AnnouncementModel() {}
 }
