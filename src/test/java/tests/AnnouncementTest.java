@@ -53,7 +53,7 @@ public class AnnouncementTest extends AbstractUT {
     public void createAnnouncement(){
         Announcement announcement = null;
         try {
-            announcement = FeedController.INSTANCE.createAnnouncement(guardian, AnnouncementsRecord.BLACK_DOG.getTitle(), AnnouncementsRecord.BLACK_DOG.getDescription(), AnnouncementsRecord.BLACK_DOG.getAddress(), AnnouncementsRecord.BLACK_DOG.getRace(), AnnouncementsRecord.BLACK_DOG.getAge(), AnnouncementsRecord.BLACK_DOG.getSize());
+            announcement = FeedController.INSTANCE.createAnnouncement(guardian, AnnouncementsRecord.BLACK_DOG.getTitle(), AnnouncementsRecord.BLACK_DOG.getDescription(), AnnouncementsRecord.BLACK_DOG.getAddress(), AnnouncementsRecord.BLACK_DOG.getRace(), AnnouncementsRecord.BLACK_DOG.getAge(), AnnouncementsRecord.BLACK_DOG.getSize(), null);
             assertTrue(DatabaseController.INSTANCE.findRecord(announcement, "announcements"));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -71,7 +71,7 @@ public class AnnouncementTest extends AbstractUT {
         LinkedList<Announcement> announcementsList = new LinkedList<>();
         try {
             for(int i=0; i<5; i++) {
-                announcementsList.add(FeedController.INSTANCE.createAnnouncement(guardian, AnnouncementsRecord.BLACK_DOG.getTitle(), AnnouncementsRecord.BLACK_DOG.getDescription(), AnnouncementsRecord.BLACK_DOG.getAddress(), AnnouncementsRecord.BLACK_DOG.getRace(), AnnouncementsRecord.BLACK_DOG.getAge(), AnnouncementsRecord.BLACK_DOG.getSize()));
+                announcementsList.add(FeedController.INSTANCE.createAnnouncement(guardian, AnnouncementsRecord.BLACK_DOG.getTitle(), AnnouncementsRecord.BLACK_DOG.getDescription(), AnnouncementsRecord.BLACK_DOG.getAddress(), AnnouncementsRecord.BLACK_DOG.getRace(), AnnouncementsRecord.BLACK_DOG.getAge(), AnnouncementsRecord.BLACK_DOG.getSize(), null));
             }
             LinkedList<Announcement> dbAnnouncementsList = FeedController.INSTANCE.getAllAnnouncements();
             for(int i=0; i<5; i++){
