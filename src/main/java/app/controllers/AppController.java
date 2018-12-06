@@ -27,6 +27,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mongodb.BasicDBObject;
 
 import app.controllers.models.AnnouncementModel;
+import app.controllers.models.RegisterModel;
 import app.database.*;
 import app.exceptions.DuplicateEntityException;
 
@@ -41,19 +42,9 @@ public class AppController {
     }
 	
 	@RequestMapping("/register")
-	public User registerUser(String email, String firstName, String lastName, String password, String passwordConf, String code, HttpServletResponse response) {
-		System.out.println("Code: "+code);
-		
+	public User registerUser(HttpServletResponse response, @RequestBody RegisterModel model) {
 		try {
-			if(code == null || code.isEmpty() || code.equals("\"\"")) {
-				u = new User(email, firstName, lastName, password, passwordConf, null);
-			} else if(code.contains("ADMIN")) {
-				u = new User(email, firstName, lastName, password, passwordConf, new AccessCode(code));
-			} else if (code.contains("GUARDIAN")) {
-				u = new User(email, firstName, lastName, password, passwordConf, new AccessCode(code));
-			} else {
-				sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, "Invalid access code.");
-			}
+			u = new User(model.email, model.firstName, model.lastName, model.password, model.passwordConf, null);
 		} catch(InvalidParameterException | JsonProcessingException | DuplicateEntityException e) {
 			sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}

@@ -22,6 +22,9 @@ public class User {
 	private MongoDbId _id;
 		
 	public String get_id() {
+		if(_id == null)
+			return null;
+		
 		return _id.get$oid();
 	}
 
