@@ -4,15 +4,10 @@ import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
-
 import app.entities.*;
-
 import org.apache.commons.math3.exception.NoDataException;
-import org.bson.types.ObjectId;
-import org.springframework.boot.actuate.trace.http.HttpTrace.Principal;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,10 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mongodb.BasicDBObject;
-
 import app.controllers.models.AnnouncementModel;
 import app.controllers.models.RegisterModel;
 import app.database.*;
@@ -44,7 +36,7 @@ public class AppController {
 	@RequestMapping("/register")
 	public User registerUser(HttpServletResponse response, @RequestBody RegisterModel model) {
 		try {
-			u = new User(model.email, model.firstName, model.lastName, model.password, model.passwordConf, null);
+			u = new User(model.email, model.firstName, model.lastName, model.password, model.passwordConf);
 		} catch(InvalidParameterException | JsonProcessingException | DuplicateEntityException e) {
 			sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
@@ -103,8 +95,7 @@ public class AppController {
 	private Announcement getAnnouncement(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId) {
 		Announcement announcement = null; 
 		try{
-			announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
-			announcement = FeedController.INSTANCE.getOnePic(announcement);
+			announcement = FeedController.INSTANCE.getOnePic(FeedController.INSTANCE.getAnnouncementById(announcementId));
 		} catch (IOException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
@@ -129,14 +120,16 @@ public class AppController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/authenticate")
-    public User authenticate(HttpServletResponse response, @RequestBody Credentials credentials) throws IllegalAccessException, NoDataException, IOException {
+    public User authenticate(HttpServletResponse response, @RequestBody Credentials credentials) throws NoDataException, IOException {
 		User  user = AccountController.INSTANCE.authenticate(credentials);
-		
-		String token = AccountController.INSTANCE.generateToken(user);
-        
-        if(response!=null)
-            response.addHeader("Set-Authorization", token);
-        
+		try {
+			String token = AccountController.INSTANCE.generateToken(user);
+
+			if (response != null)
+				response.addHeader("Set-Authorization", token);
+		} catch(IOException e){
+			e.printStackTrace();
+		}
         return user;
 	}
 	
@@ -157,8 +150,6 @@ public class AppController {
 	@PostMapping("/upload-image") // //new annotation since 4.3
     public Photo uploadImage(HttpServletResponse response, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Authentication authentication, String announcementId) {
 		
-		Photo photo = null;
-		
 		try {
 			User user = (User)authentication.getDetails();
 			Announcement announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
@@ -178,9 +169,10 @@ public class AppController {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
 		
-		return photo;
+		return null;
 	}
 	
+	@SuppressWarnings("SameReturnValue")
 	@PostMapping("/remove-image")
     public Boolean removeFile(HttpServletResponse response, RedirectAttributes redirectAttributes, Authentication authentication, String fileId) {
 		try {
@@ -196,15 +188,14 @@ public class AppController {
 		return true;
 	}
 	
-	private HttpServletResponse sendError(HttpServletResponse response, int sc, String message) {
+	private void sendError(HttpServletResponse response, int sc, String message) {
 		response.setStatus(sc);
 		try {
 			response.sendError(sc, message);		
 		} catch(IOException i) {
 			i.printStackTrace();
 		}
-		
-		return response;
+
 	}
 	
 }

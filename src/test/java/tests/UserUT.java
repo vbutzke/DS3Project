@@ -1,21 +1,13 @@
 package tests;
 
-import static org.junit.Assert.assertTrue;
-import java.security.InvalidParameterException;
-
-import org.bson.Document;
 import org.junit.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
-import app.database.DatabaseController;
 //import app.entities.Administrator;
 //import app.entities.Adopter;
 //import app.entities.Guardian;
-import app.entities.User;
-import app.exceptions.DuplicateEntityException;
-import singletons.UserRecord;
 
-public class UserUT extends AbstractUT{
+
+class UserUT extends AbstractUT{
 
 	@Before
 	public void start() {

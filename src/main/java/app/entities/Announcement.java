@@ -2,29 +2,23 @@ package app.entities;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
 import app.utils.MongoDbDateDeserializer;
-import app.utils.MongoDbDateSerializer;
 import app.utils.MongoDbId;
 
 public class Announcement {
 	
 	@JsonSerialize(using=ToStringSerializer.class)
 	private MongoDbId _id;
-	private String  title;
-	private String  description;
-    private Address address;
-    private String  race;
-    private String     age;
-    private String  size;
-	private String user;
+	private String    title;
+	private String    description;
+    private Address   address;
+    private String    race;
+    private String    age;
+    private String    size;
+	private String    user;
 	
 	private Photo photo;
 	

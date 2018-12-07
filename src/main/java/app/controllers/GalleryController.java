@@ -4,27 +4,14 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.LinkedList;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.math3.exception.NoDataException;
 import org.bson.types.ObjectId;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mongodb.BasicDBObject;
 
 import app.database.DatabaseController;
-import app.database.DatabaseFilter;
 import app.entities.Announcement;
 import app.entities.Photo;
 import app.entities.User;
@@ -52,7 +39,8 @@ public enum GalleryController {
         return photo;
     }
 	
-    public Boolean removeFile(User user, String photoId) throws NoDataException, IOException {
+    @SuppressWarnings("SameReturnValue")
+    public void removeFile(User user, String photoId) throws NoDataException, IOException {
 		
 		Photo photo = this.getPhotoById(photoId);
         Announcement announcement = FeedController.INSTANCE.getAnnouncementById(photo.getAnnouncementId());
@@ -65,8 +53,7 @@ public enum GalleryController {
 		filter.append("_id", new ObjectId(photoId));
 		
 		DatabaseController.INSTANCE.removeObject(filter, "photos");
-		
-        return true;
+
     }
 	
 	private Photo createPhoto(String announcementId, MultipartFile file) throws IOException {
@@ -92,9 +79,9 @@ public enum GalleryController {
         
         LinkedList<Object> objectsList = DatabaseController.INSTANCE.getList(filter, "photos", Photo.class);
 
-        for(int i=0; i<objectsList.size(); i++){
-        	photosList.add((Photo) objectsList.get(i));
-        }
+         for (Object anObjectsList : objectsList) {
+             photosList.add((Photo) anObjectsList);
+         }
 
         return photosList;
      }

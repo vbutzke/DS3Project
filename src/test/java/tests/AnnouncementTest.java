@@ -26,7 +26,7 @@ public class AnnouncementTest extends AbstractUT {
         startDB();
 
         try {
-            guardian = new User(UserRecord.GUARDIAN.getEmail(), UserRecord.GUARDIAN.getFirstName(), UserRecord.GUARDIAN.getLastName(), UserRecord.GUARDIAN.getPassword(), UserRecord.GUARDIAN.getPasswordConf(), UserRecord.GUARDIAN.getCode());
+            guardian = new User(UserRecord.GUARDIAN.getEmail(), UserRecord.GUARDIAN.getFirstName(), UserRecord.GUARDIAN.getLastName(), UserRecord.GUARDIAN.getPassword(), UserRecord.GUARDIAN.getPasswordConf());
         } catch (JsonProcessingException | DuplicateEntityException e) {
             e.printStackTrace();
             try {
