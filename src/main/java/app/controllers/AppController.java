@@ -4,7 +4,10 @@ import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
+
+import app.controllers.models.CommentModel;
 import app.entities.*;
+import app.entities.Thread;
 import org.apache.commons.math3.exception.NoDataException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -101,7 +104,39 @@ public class AppController {
 		}
 		return announcement;
 	}
-  
+
+	@RequestMapping(method = RequestMethod.POST, value = "/get-announcement/{announcementId}/getThread")
+	private Thread getThread(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId) {
+		try{
+			return FeedController.INSTANCE.getAnnouncementById(announcementId).getThread();
+		} catch (IOException e) {
+			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+		}
+		return null;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/get-announcement/{announcementId}/addComment")
+	private Thread addComment(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId, int commentPos) {
+		Thread thread = null;
+		try{
+			thread = FeedController.INSTANCE.getAnnouncementById(announcementId).removeComment(commentPos);
+		} catch (IOException e) {
+			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+		}
+		return thread;
+	}
+
+	@PostMapping("/get-announcement/{announcementId}/deleteComment")
+	private Thread deleteComment(HttpServletResponse response, Authentication authentication, @RequestBody CommentModel model, @PathVariable String announcementId) {
+		Thread thread = null;
+		try{
+			thread = FeedController.INSTANCE.getAnnouncementById(announcementId).addComment(new Comment(model.userId, model.comment));
+		} catch (IOException e) {
+			sendError(response, HttpServletResponse.SC_NOT_MODIFIED, e.getMessage());
+		}
+		return thread;
+	}
+
 	@RequestMapping("/my-announcements")
 	private LinkedList<Announcement> myAnnouncements(HttpServletResponse response, Authentication authentication){
 		User  user = (User)authentication.getDetails();

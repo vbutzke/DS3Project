@@ -1,7 +1,11 @@
 package app.entities;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+
+import app.database.DatabaseController;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -19,9 +23,8 @@ public class Announcement {
     private String    age;
     private String    size;
 	private String    user;
-	
-	private Photo photo;
-	
+	private Photo     photo;
+	private Thread    thread;
 	private ArrayList<AnnouncementParams> params;
 
 	@JsonDeserialize(using = MongoDbDateDeserializer.class)
@@ -127,5 +130,31 @@ public class Announcement {
 
 	public void setParams(ArrayList<AnnouncementParams> params) {
 		this.params = params;
+	}
+
+	public Thread addComment(Comment comment) throws IOException {
+    	thread = getThread();
+    	if(thread == null){
+    		thread = new Thread(_id, comment);
+		} else {
+    		thread.getComments().add(comment);
+		}
+		DatabaseController.INSTANCE.updateObject(thread, thread.getCollection());
+		return thread;
+	}
+
+	public Thread removeComment(int commentPos) throws IOException {
+    	thread = getThread();
+    	thread.getComments().remove(commentPos);
+		DatabaseController.INSTANCE.updateObject(thread, thread.getCollection());
+    	return thread;
+	}
+
+	public Photo getPhoto() {
+		return photo;
+	}
+
+	public Thread getThread() throws IOException {
+		return thread = (Thread) DatabaseController.INSTANCE.getRecordBy(get_id(), thread.getCollection(), Thread.class);
 	}
 }

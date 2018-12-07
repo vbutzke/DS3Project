@@ -1,11 +1,7 @@
 package app.controllers;
 
 import app.database.DatabaseController;
-import app.entities.Address;
-import app.entities.Announcement;
-import app.entities.AnnouncementParams;
-import app.entities.Photo;
-import app.entities.User;
+import app.entities.*;
 import app.utils.MongoDbId;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mongodb.BasicDBObject;
@@ -95,4 +91,5 @@ public enum FeedController {
     	
     	return announcement;
     }
+
 }
