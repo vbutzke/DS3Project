@@ -73,6 +73,7 @@ public class AppController {
 	        }
 			
 			FeedController.INSTANCE.updateAnnouncement(a, model.title, model.description, model.address, model.race, model.age, model.size, model.params);
+			a.save();
 			response.setStatus(HttpServletResponse.SC_OK);
 			return a;
 		} catch (NoDataException | IOException e) {
@@ -105,7 +106,7 @@ public class AppController {
 		return announcement;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/get-announcement/{announcementId}/getThread")
+	@RequestMapping(method = RequestMethod.GET, value = "/get-announcement/{announcementId}/getThread")
 	private Thread getThread(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId) {
 		try{
 			return FeedController.INSTANCE.getAnnouncementById(announcementId).getThread();
@@ -119,7 +120,10 @@ public class AppController {
 	private Thread addComment(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId, int commentPos) {
 		Thread thread = null;
 		try{
-			thread = FeedController.INSTANCE.getAnnouncementById(announcementId).removeComment(commentPos);
+			Announcement a = FeedController.INSTANCE.getAnnouncementById(announcementId);
+			thread = a.removeComment(commentPos);
+			a.save();
+
 		} catch (IOException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
@@ -130,7 +134,9 @@ public class AppController {
 	private Thread deleteComment(HttpServletResponse response, Authentication authentication, @RequestBody CommentModel model, @PathVariable String announcementId) {
 		Thread thread = null;
 		try{
-			thread = FeedController.INSTANCE.getAnnouncementById(announcementId).addComment(new Comment(model.userId, model.comment));
+			Announcement a = FeedController.INSTANCE.getAnnouncementById(announcementId);
+			thread = a.addComment(new Comment(model.userId, model.comment));
+			a.save();
 		} catch (IOException e) {
 			sendError(response, HttpServletResponse.SC_NOT_MODIFIED, e.getMessage());
 		}
@@ -196,8 +202,9 @@ public class AppController {
 	        if(!announcement.getUser().equals(user.get_id())) {
 	        	throw new BadCredentialsException("Not authorized."); 
 	        }
-	        
-	        return GalleryController.INSTANCE.uploadImage(file, user, announcement);
+	        Photo p = GalleryController.INSTANCE.uploadImage(file, user, announcement);
+	        announcement.save();
+	        return p;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -212,7 +219,6 @@ public class AppController {
     public Boolean removeFile(HttpServletResponse response, RedirectAttributes redirectAttributes, Authentication authentication, String fileId) {
 		try {
 			User user = (User)authentication.getDetails();
-
 			GalleryController.INSTANCE.removeFile(user, fileId);
 		} catch (NoDataException | IOException e) {
 			// TODO Auto-generated catch block

@@ -63,7 +63,7 @@ public enum FeedController {
 		a.setUser(user.get_id());
 		a.setCreatedAt(new Date());
 		
-		a.set_id((MongoDbId)DatabaseController.INSTANCE.addObject(a, "announcements"));
+		a.set_id((MongoDbId)DatabaseController.INSTANCE.addObject(a, a.getCollection()));
 		
 		return a;
 	}
@@ -76,9 +76,6 @@ public enum FeedController {
     	announcement.setAge(age);
     	announcement.setSize(size);
     	announcement.setParams(params);
-    	
-		DatabaseController.INSTANCE.updateObject(announcement, "announcements");
-
     }
     
     public Announcement getOnePic(Announcement announcement) throws IOException {

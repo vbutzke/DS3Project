@@ -53,7 +53,7 @@ public enum GalleryController {
 		filter.append("_id", new ObjectId(photoId));
 		
 		DatabaseController.INSTANCE.removeObject(filter, "photos");
-
+		announcement.save();
     }
 	
 	private Photo createPhoto(String announcementId, MultipartFile file) throws IOException {

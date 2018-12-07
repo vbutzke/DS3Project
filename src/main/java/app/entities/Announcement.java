@@ -26,6 +26,7 @@ public class Announcement {
 	private Photo     photo;
 	private Thread    thread;
 	private ArrayList<AnnouncementParams> params;
+	private final String collection = "announcements";
 
 	@JsonDeserialize(using = MongoDbDateDeserializer.class)
 	private Date createdAt;
@@ -156,5 +157,13 @@ public class Announcement {
 
 	public Thread getThread() throws IOException {
 		return thread = (Thread) DatabaseController.INSTANCE.getRecordBy(get_id(), thread.getCollection(), Thread.class);
+	}
+
+	public void save() throws JsonProcessingException {
+		DatabaseController.INSTANCE.updateObject(this, collection);
+	}
+
+	public String getCollection() {
+		return collection;
 	}
 }
