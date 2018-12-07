@@ -2,6 +2,9 @@ package app.database;
 
 import org.apache.commons.math3.exception.NoDataException;
 import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
@@ -42,6 +45,19 @@ public class DatabaseManager {
 	 public void setDatabase(MongoDatabase database) {
 	 	this.database = database;
 	 }
+	 
+	 public boolean findRecord(BasicDBObject record, String collection) {
+			FindIterable<Document> i = database.getCollection(collection).find(record);
+
+			for(Document d : i) {
+				d.remove("_id");
+				if(d.toString().equals(record.toString())) {
+					return true;
+				}
+			}
+			
+			return false;
+		}
 
 	public boolean findRecord(Document record, String collection) {
 		FindIterable<Document> i = database.getCollection(collection).find(record);
@@ -79,6 +95,23 @@ public class DatabaseManager {
 		throw new NoDataException();
 	}
 	
+	public Document getRecord(BasicDBObject record, String collection) {
+		
+		System.out.println("record: "+record);
+		
+		FindIterable<Document> i = database.getCollection(collection).find(record);
+
+		if(i.first() != null){
+		    return i.first();
+        }
+		
+		throw new NoDataException();
+	}
+	
+	public void removeObject(BasicDBObject record, String collection) {
+		database.getCollection(collection).deleteOne(record);
+ 	}
+	
 	public void addObject(Document record, String collection) {
 		database.getCollection(collection).insertOne(record);
 	}
@@ -92,9 +125,25 @@ public class DatabaseManager {
 	public void updateObject(Document record, String collection) {
 		database.getCollection(collection).updateOne(Filters.eq("_id", record.get("_id")), new Document("$set", record));
 	}
+	
+	public void updateObject(BasicDBObject record, String collection) {
+		BasicDBObject filter = new BasicDBObject();
+		filter.append("_id", new ObjectId(record.getString("_id")));
+		record.remove("_id");
+		database.getCollection(collection).updateOne(filter, new BasicDBObject().append("$set", record));
+	}
+
 
 	public FindIterable<Document> getAllObjectsFromCollection(String collection){
 		return database.getCollection(collection).find();
+	}
+
+	public FindIterable<Document> filterObjectsFromCollection(BasicDBObject record, String collection){
+		return database.getCollection(collection).find(record);
+	}
+	
+	public FindIterable<Document> filterObjectsFromCollection(Document record, String collection){
+		return database.getCollection(collection).find(record);
 	}
 	
 }
