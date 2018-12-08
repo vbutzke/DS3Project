@@ -18,13 +18,13 @@ import app.utils.MongoDbId;
 
 public class User {
 
-	@JsonSerialize(using=ToStringSerializer.class)
+	@JsonSerialize(using = ToStringSerializer.class)
 	private MongoDbId _id;
-		
+
 	public String get_id() {
-		if(_id == null)
+		if (_id == null)
 			return null;
-		
+
 		return _id.get$oid();
 	}
 
@@ -38,21 +38,41 @@ public class User {
 	private String password;
 	private String permission = "Anonymous";
 	protected final String collection = "user";
-	
-	public User(){}
-	
-	public User(String email, String firstName, String lastName, String password, String passwordConf, AccessCode code) throws InvalidParameterException, JsonProcessingException, DuplicateEntityException {
-		this.email     = email;
-		this.firstName = firstName;
-		this.lastName  = lastName;
-		
-		if(password.equals(passwordConf)) {
-			this.password = password;
-		}
-		
-		addUser();
+
+	public User() {
 	}
 
+	public User(String email, String firstName, String lastName, String password, String passwordConf, AccessCode code)
+			throws InvalidParameterException, JsonProcessingException, DuplicateEntityException {
+
+		if (email == "") {
+			throw new DuplicateEntityException("The email cannot be empty.");
+		} else {
+			this.email = email;
+		}
+		if (firstName == "") {
+			throw new DuplicateEntityException("The First Name cannot be empty.");
+		} else {
+			this.firstName = firstName;
+		}
+		if (lastName == "") {
+			throw new DuplicateEntityException("The Last Name cannot be empty.");
+		} else {
+			this.lastName = lastName;
+		}
+		if (password == "" || passwordConf == "") {
+			throw new DuplicateEntityException("The Password and Password Confirm cannot be empty.");
+		} else {
+			if (password.equals(passwordConf)) {
+				this.password = password;
+			} else
+			{
+				throw new DuplicateEntityException("The Password and Password Confirm must be equals.");
+			}
+			
+		}
+		addUser();
+	}
 
 	public String getEmail() {
 		return email;
@@ -74,25 +94,25 @@ public class User {
 		return collection;
 	}
 
-	public String getPermission(){
+	public String getPermission() {
 		return permission;
 	}
 
-	public void setPermission(String permission){
+	public void setPermission(String permission) {
 		this.permission = permission;
 	}
 
 	public void checkAccessCode(AccessCode accessCode) throws JsonProcessingException {
-		if(accessCode == null || !DatabaseController.INSTANCE.isAccessCodeValid(accessCode)) {
+		if (accessCode == null || !DatabaseController.INSTANCE.isAccessCodeValid(accessCode)) {
 			throw new InvalidParameterException();
 		}
 	}
-	
+
 	public void addUser() throws JsonProcessingException, DuplicateEntityException {
-		if(DatabaseController.INSTANCE.findRecordBy("email", this.getEmail(), collection)) {
+		if (DatabaseController.INSTANCE.findRecordBy("email", this.getEmail(), collection)) {
 			throw new DuplicateEntityException("This email is already in use.");
 		} else {
-			DatabaseController.INSTANCE.addObject(this, collection);
+			this.set_id((MongoDbId) DatabaseController.INSTANCE.addObject(this, collection));
 		}
 
 	}
