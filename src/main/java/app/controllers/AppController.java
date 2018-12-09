@@ -116,7 +116,7 @@ public class AppController {
 		return null;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/get-announcement/{announcementId}/addComment")
+	@RequestMapping(method = RequestMethod.POST, value = "/get-announcement/{announcementId}/deleteComment")
 	private Thread addComment(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId, int commentPos) {
 		Thread thread = null;
 		try{
@@ -130,7 +130,7 @@ public class AppController {
 		return thread;
 	}
 
-	@PostMapping("/get-announcement/{announcementId}/deleteComment")
+	@PostMapping("/get-announcement/{announcementId}/addComment")
 	private Thread deleteComment(HttpServletResponse response, Authentication authentication, @RequestBody CommentModel model, @PathVariable String announcementId) {
 		Thread thread = null;
 		try{
