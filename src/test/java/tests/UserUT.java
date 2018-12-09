@@ -5,7 +5,7 @@ import org.junit.*;
 //import app.entities.Administrator;
 //import app.entities.Adopter;
 //import app.entities.Guardian;
-
+@Ignore
 
 class UserUT extends AbstractUT{
 

@@ -8,6 +8,7 @@ import app.exceptions.DuplicateEntityException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import singletons.AnnouncementsRecord;
 import singletons.UserRecord;
@@ -18,6 +19,7 @@ import java.util.LinkedList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+@Ignore
 public class AnnouncementTest extends AbstractUT {
 
     private User guardian;

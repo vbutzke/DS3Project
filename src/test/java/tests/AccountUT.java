@@ -8,6 +8,7 @@ import com.mongodb.BasicDBObject;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import singletons.UserRecord;
 
@@ -16,6 +17,7 @@ import java.security.InvalidParameterException;
 
 import static org.junit.Assert.assertNotNull;
 
+@Ignore
 public class AccountUT  extends AbstractUT {
 
     private User adopter;
