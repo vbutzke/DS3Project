@@ -57,7 +57,7 @@ public class AnnouncementTest extends AbstractUT {
         try {
             announcement = FeedController.INSTANCE.createAnnouncement(guardian, AnnouncementsRecord.BLACK_DOG.getTitle(), AnnouncementsRecord.BLACK_DOG.getDescription(), AnnouncementsRecord.BLACK_DOG.getAddress(), AnnouncementsRecord.BLACK_DOG.getRace(), AnnouncementsRecord.BLACK_DOG.getAge(), AnnouncementsRecord.BLACK_DOG.getSize(), null);
             assertTrue(DatabaseController.INSTANCE.findRecord(announcement, "announcements"));
-        } catch (JsonProcessingException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {

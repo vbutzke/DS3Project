@@ -3,6 +3,7 @@ package app.controllers.models;
 import java.util.ArrayList;
 import app.entities.Address;
 import app.entities.AnnouncementParams;
+import app.entities.Thread;
 import app.entities.User;
 
 public class AnnouncementModel {
@@ -14,7 +15,8 @@ public class AnnouncementModel {
 	public String  age;
 	public String  size;
 	public User    user;
-	public ArrayList<AnnouncementParams> params; 
+	public ArrayList<AnnouncementParams> params;
+	public String threadId;
 
     public AnnouncementModel() {}
 }

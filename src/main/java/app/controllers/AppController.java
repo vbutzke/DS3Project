@@ -55,7 +55,7 @@ public class AppController {
 			Announcement a = FeedController.INSTANCE.createAnnouncement(user, model.title, model.description, model.address, model.race, model.age, model.size, model.params);
 			response.setStatus(HttpServletResponse.SC_OK);
 			return a;
-		} catch (JsonProcessingException e) {
+		} catch (IOException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
 
@@ -109,7 +109,7 @@ public class AppController {
 	@RequestMapping(method = RequestMethod.GET, value = "/get-announcement/{announcementId}/getThread")
 	private Thread getThread(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId) {
 		try{
-			return FeedController.INSTANCE.getAnnouncementById(announcementId).getThread();
+			return FeedController.INSTANCE.getAnnouncementById(announcementId).getThreadFromDB();
 		} catch (IOException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}

@@ -13,11 +13,17 @@ public class Thread {
     @JsonSerialize(using = ToStringSerializer.class)
     private MongoDbId _id;
 
-    private MongoDbId announcementId;
+    private String announcementId;
     private LinkedList<Comment> comments;
     private final String collection = "threads";
 
-    public Thread(MongoDbId announcementId, Comment comment) throws JsonProcessingException {
+    public Thread(String announcementId) throws JsonProcessingException {
+        this.announcementId = announcementId;
+        this.comments = new LinkedList<>();
+        DatabaseController.INSTANCE.addObject(this, collection);
+    }
+
+    public Thread(String announcementId, Comment comment) throws JsonProcessingException {
         this.announcementId = announcementId;
         this.comments = new LinkedList<>();
         this.comments.add(comment);
@@ -35,7 +41,7 @@ public class Thread {
         this._id = _id;
     }
 
-    public MongoDbId getAnnouncementId() {
+    public String getAnnouncementId() {
         return announcementId;
     }
 

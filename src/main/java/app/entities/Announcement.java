@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import app.database.DatabaseController;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -24,8 +25,8 @@ public class Announcement {
     private String    size;
 	private String    user;
 	private Photo     photo;
-	private Thread    thread;
 	private ArrayList<AnnouncementParams> params;
+	private String    threadId;
 	private final String collection = "announcements";
 
 	@JsonDeserialize(using = MongoDbDateDeserializer.class)
@@ -33,13 +34,15 @@ public class Announcement {
 
     public Announcement() {}
 
-    public Announcement(String title, String description, Address address, String race, String age, String size) {
+    public Announcement(String title, String description, Address address, String race, String age, String size) throws IOException {
         this.title       = title;
         this.description = description;
         this.address     = address;
         this.race        = race;
         this.age         = age;
         this.size        = size;
+        Thread t = new Thread(get_id());
+		this.threadId    = DatabaseController.INSTANCE.getRecord(t, t.getCollection(), Thread.class).get_id();
     }
 
 	public String get_id() {
@@ -134,9 +137,9 @@ public class Announcement {
 	}
 
 	public Thread addComment(Comment comment) throws IOException {
-    	thread = getThread();
+    	Thread thread = getThreadFromDB();
     	if(thread == null){
-    		thread = new Thread(_id, comment);
+    		thread = new Thread(get_id(), comment);
 		} else {
     		thread.getComments().add(comment);
 		}
@@ -145,7 +148,7 @@ public class Announcement {
 	}
 
 	public Thread removeComment(int commentPos) throws IOException {
-    	thread = getThread();
+    	Thread thread = getThreadFromDB();
     	thread.getComments().remove(commentPos);
 		DatabaseController.INSTANCE.updateObject(thread, thread.getCollection());
     	return thread;
@@ -155,10 +158,6 @@ public class Announcement {
 		return photo;
 	}
 
-	public Thread getThread() throws IOException {
-		return thread = (Thread) DatabaseController.INSTANCE.getRecordBy(get_id(), thread.getCollection(), Thread.class);
-	}
-
 	public void save() throws JsonProcessingException {
 		DatabaseController.INSTANCE.updateObject(this, collection);
 	}
@@ -166,4 +165,15 @@ public class Announcement {
 	public String getCollection() {
 		return collection;
 	}
+
+	public String getThreadId() {
+		return threadId;
+	}
+
+	@JsonIgnore
+	public Thread getThreadFromDB() throws IOException {
+
+		return (Thread) DatabaseController.INSTANCE.getRecordBy(threadId, "threads", Thread.class);
+	}
+
 }

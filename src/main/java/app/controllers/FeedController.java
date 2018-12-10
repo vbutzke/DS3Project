@@ -56,7 +56,7 @@ public enum FeedController {
         return announcementsList;
     }
 
-    public Announcement createAnnouncement(User user, String title,  String description, Address address, String race, String age, String size, ArrayList<AnnouncementParams> params) throws JsonProcessingException {
+    public Announcement createAnnouncement(User user, String title,  String description, Address address, String race, String age, String size, ArrayList<AnnouncementParams> params) throws IOException {
 		Announcement a = new Announcement(title, description, address, race, age, size);
 		
 		a.setParams(params);
