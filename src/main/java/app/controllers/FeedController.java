@@ -115,9 +115,18 @@ public enum FeedController {
         DatabaseController.INSTANCE.updateObject(announcement, "announcements");
     }
 
-    public boolean approveAdoption(User user, Announcement announcement) throws AuthenticationException, JsonProcessingException {
-        if(announcement.getUser().equals(user.get_id())){
-            announcement.approveAdoption(user.get_id());
+    public boolean approveAdoption(User owner, User adopter, Announcement announcement) throws AuthenticationException, JsonProcessingException {
+        if(announcement.getUser().equals(owner.get_id())){
+            announcement.approveAdoption(adopter.get_id());
+            DatabaseController.INSTANCE.updateObject(announcement, "announcements");
+            return true;
+        }
+        throw new AuthenticationException("User is not authorized to perform this action");
+    }
+
+    public boolean declineAdoption(User owner, Announcement announcement) throws AuthenticationException, JsonProcessingException {
+        if(announcement.getUser().equals(owner.get_id())){
+            announcement.declineAdoption();
             DatabaseController.INSTANCE.updateObject(announcement, "announcements");
             return true;
         }

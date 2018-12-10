@@ -149,17 +149,29 @@ public class Announcement {
 	}
 
 	public void requestAdoption(String adopterId){
-		this.status = AnnouncementStatus.PENDING_APPROVAL;
-		setAdopter(adopterId);
+    	if(this.status == AnnouncementStatus.AVAILABLE) {
+			this.status = AnnouncementStatus.PENDING_APPROVAL;
+			setAdopter(adopterId);
+		} else {
+    		throw new UnsupportedOperationException("There is an adoption pending for this announcement.");
+		}
 	}
 
 	public void approveAdoption(String adopterId){
-    	this.status = AnnouncementStatus.ADOPTED;
-    	setAdopter(adopterId);
+    	if(this.status == AnnouncementStatus.PENDING_APPROVAL) {
+			this.status = AnnouncementStatus.ADOPTED;
+			setAdopter(adopterId);
+		} else {
+			throw new UnsupportedOperationException("There is an adoption pending for this announcement.");
+		}
 	}
 
 	public void declineAdoption(){
-    	this.status  = AnnouncementStatus.AVAILABLE;
-    	setAdopter("");
+		if(this.status == AnnouncementStatus.PENDING_APPROVAL) {
+			this.status = AnnouncementStatus.AVAILABLE;
+			setAdopter("");
+		} else {
+			throw new UnsupportedOperationException("There is an adoption pending for this announcement.");
+		}
 	}
 }
