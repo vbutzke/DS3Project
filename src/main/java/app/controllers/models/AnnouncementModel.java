@@ -7,7 +7,7 @@ import app.entities.Address;
 import app.entities.AnnouncementParams;
 import app.entities.User;
 
-public class AnnouncementModel {
+public class AnnouncementModel extends Model{
 	public String  _id;
 	public String  title;
 	public String  description;

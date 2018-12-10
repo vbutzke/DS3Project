@@ -1,7 +1,10 @@
 package app.utils;
 
+import app.controllers.models.AdoptionRequestModel;
+import app.controllers.models.Model;
+import app.entities.User;
 import app.singletons.EmailCredentials;
-
+import app.singletons.EmailType;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
@@ -17,8 +20,31 @@ public enum EmailService {
         setup();
     }
 
-    public String buildBody(){
+    public String buildBody(Model model, User requestor, EmailType type){
+        String body = "";
 
+        if(type == EmailType.ADOPTION_REQ){
+            AdoptionRequestModel am = (AdoptionRequestModel)model;
+            body = "Olá,\n" +
+                    "Estamos muito felizes em informar que seu anúncio " + am.announcement.title + " possui uma pessoa interessada!\n"+
+                    "Dados do anúncio: \n"+
+                    "   - Título: " + am.announcement.title + "\n" +
+                    "   - Descrição: " + am.announcement.description + "\n" +
+                    "   - Idade: " + am.announcement.age + "\n" +
+                    "   - Raça: " + am.announcement.race + "\n" +
+                    "   - Porte: " + am.announcement.size + "\n" +
+                    "   - Endereço: " + am.announcement.address + "\n"
+                    + "\n" +
+                    "Seguem os dados de contato informados pelo potencial adotante: \n" +
+                    "   - Nome Completo: " + requestor.getFirstName()+" "+requestor.getLastName()+"\n"+
+                    "   - Telefone: " + am.phone + "\n" +
+                    "   - Email: " + requestor.getEmail() + "\n" +
+                    "   - Cidade: " + am.city + "\n" +
+                    "   - Melhor data para contato: " + am.dateForContact + " - " + am.shiftForContact + "\n" +
+                   "Agradecemos sua ação!";
+        }
+
+        return body;
     }
 
     public void send(String to, String subject, String body) throws MessagingException {

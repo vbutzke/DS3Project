@@ -1,6 +1,6 @@
 package app.controllers.models;
 
-public class RegisterModel {
+public class RegisterModel extends Model{
 	public String email;
 	public String firstName;
 	public String lastName;

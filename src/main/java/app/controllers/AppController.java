@@ -204,8 +204,10 @@ public class AppController {
 		Announcement announcement = null;
 		try{
 			announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
-			User user = (User)DatabaseController.INSTANCE.getRecordBy(announcement.getUser(), "user", User.class);
-			EmailService.INSTANCE.send(user.getEmail(), "[SOLICITAÇÃO DE ADOÇÃO] - "+announcement.getTitle(), EmailService.INSTANCE.buildBody());
+			User guardian = (User)DatabaseController.INSTANCE.getRecordBy(announcement.getUser(), "user", User.class);
+			User adopter = (User)authentication.getDetails();
+
+			EmailService.INSTANCE.send(guardian.getEmail(), "[SOLICITAÇÃO DE ADOÇÃO] - "+announcement.getTitle(), EmailService.INSTANCE.buildBody(model));
 		} catch (IOException | MessagingException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
