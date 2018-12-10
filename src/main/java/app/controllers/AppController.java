@@ -231,6 +231,24 @@ public class AppController {
 		response.setStatus(HttpServletResponse.SC_OK);
 	}
 
+	@RequestMapping(method = RequestMethod.POST, value = "/reset-password")
+	public boolean resetPassword(HttpServletResponse response, String email, String password, String passwordConf){
+		boolean isReset = false;
+		BasicDBObject filter = new BasicDBObject();
+		filter.append("email", new ObjectId(email));
+		try {
+			User user = (User)DatabaseController.INSTANCE.filter(filter, "user", User.class);
+			if(user != null){
+				isReset = user.setPassword(password, passwordConf);
+				response.setStatus(HttpServletResponse.SC_OK);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		response.setStatus(HttpServletResponse.SC_PRECONDITION_FAILED);
+		return isReset;
+	}
+
 	private HttpServletResponse sendError(HttpServletResponse response, int sc, String message) {
 		response.setStatus(sc);
 		try {

@@ -96,4 +96,12 @@ public class User {
 		}
 
 	}
+
+	public boolean setPassword(String password, String passwordConf){
+		if(password.equals(passwordConf)){
+			this.password = password;
+			return true;
+		}
+		return false;
+	}
 }
