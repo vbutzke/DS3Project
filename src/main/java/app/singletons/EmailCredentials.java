@@ -7,8 +7,8 @@ public enum EmailCredentials {
     private String password;
 
     private EmailCredentials(){
-        this.email    = "";
-        this.password = "";
+        this.email    = "emaildummytestersender@gmail.com";
+        this.password = "Obsec40dev";
     }
 
     public String getEmail() {
