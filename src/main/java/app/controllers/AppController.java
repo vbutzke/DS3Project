@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import app.controllers.models.AdoptionRequestModel;
 import app.entities.*;
 
+import app.singletons.EmailType;
 import app.utils.EmailService;
 import org.apache.commons.math3.exception.NoDataException;
 import org.bson.types.ObjectId;
@@ -207,7 +208,7 @@ public class AppController {
 			User guardian = (User)DatabaseController.INSTANCE.getRecordBy(announcement.getUser(), "user", User.class);
 			User adopter = (User)authentication.getDetails();
 
-			EmailService.INSTANCE.send(guardian.getEmail(), "[SOLICITAÇÃO DE ADOÇÃO] - "+announcement.getTitle(), EmailService.INSTANCE.buildBody(model));
+			EmailService.INSTANCE.send(guardian.getEmail(), "[SOLICITAÇÃO DE ADOÇÃO] - "+announcement.getTitle(), EmailService.INSTANCE.buildBody(model, adopter, EmailType.ADOPTION_REQ));
 		} catch (IOException | MessagingException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
