@@ -15,6 +15,8 @@ import app.entities.User;
 import app.exceptions.DuplicateEntityException;
 import singletons.UserRecord;
 
+@Ignore
+
 public class UserUT extends AbstractUT{
 
 	@Before

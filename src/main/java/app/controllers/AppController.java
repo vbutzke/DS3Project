@@ -205,7 +205,7 @@ public class AppController {
 		Announcement announcement = null;
 		try{
 			announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
-			User guardian = (User)DatabaseController.INSTANCE.getRecordBy(announcement.getUser(), "user", User.class);
+			User guardian = (User)DatabaseController.INSTANCE.filter(new BasicDBObject().append("_id", new ObjectId(announcement.getUser())), "user", User.class);
 			User adopter = (User)authentication.getDetails();
 
 			EmailService.INSTANCE.send(guardian.getEmail(), "[SOLICITAÇÃO DE ADOÇÃO] - "+announcement.getTitle(), EmailService.INSTANCE.buildBody(model, adopter, EmailType.ADOPTION_REQ));
