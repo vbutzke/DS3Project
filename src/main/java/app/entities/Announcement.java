@@ -29,6 +29,7 @@ public class Announcement {
 	private Photo photo;
 	
 	private ArrayList<AnnouncementParams> params;
+	private boolean adopted;
 
 	@JsonDeserialize(using = MongoDbDateDeserializer.class)
 	private Date createdAt;
@@ -42,6 +43,7 @@ public class Announcement {
         this.race        = race;
         this.age         = age;
         this.size        = size;
+        this.adopted 	  = false;
     }
 
 	public String get_id() {
@@ -133,5 +135,13 @@ public class Announcement {
 
 	public void setParams(ArrayList<AnnouncementParams> params) {
 		this.params = params;
+	}
+
+	public boolean isAdopted() {
+		return adopted;
+	}
+
+	public void setAdopted(boolean adopted) {
+		this.adopted = adopted;
 	}
 }
