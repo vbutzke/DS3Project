@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.naming.AuthenticationException;
+
 public enum FeedController {
     INSTANCE();
 
@@ -106,5 +108,19 @@ public enum FeedController {
     	}
     	
     	return announcement;
+    }
+
+    public void requestAdoption(Announcement announcement, String userId) throws JsonProcessingException {
+        announcement.requestAdoption(userId);
+        DatabaseController.INSTANCE.updateObject(announcement, "announcements");
+    }
+
+    public boolean approveAdoption(User user, Announcement announcement) throws AuthenticationException, JsonProcessingException {
+        if(announcement.getUser().equals(user.get_id())){
+            announcement.approveAdoption(user.get_id());
+            DatabaseController.INSTANCE.updateObject(announcement, "announcements");
+            return true;
+        }
+        throw new AuthenticationException("User is not authorized to perform this action");
     }
 }

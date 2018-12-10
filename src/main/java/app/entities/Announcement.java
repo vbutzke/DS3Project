@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import app.singletons.AnnouncementStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -29,7 +30,8 @@ public class Announcement {
 	private Photo photo;
 	
 	private ArrayList<AnnouncementParams> params;
-	private boolean adopted;
+	private AnnouncementStatus status;
+	private String adopter;
 
 	@JsonDeserialize(using = MongoDbDateDeserializer.class)
 	private Date createdAt;
@@ -43,7 +45,8 @@ public class Announcement {
         this.race        = race;
         this.age         = age;
         this.size        = size;
-        this.adopted 	  = false;
+        this.status 	  = AnnouncementStatus.AVAILABLE;
+        this.adopter     = "";
     }
 
 	public String get_id() {
@@ -137,11 +140,26 @@ public class Announcement {
 		this.params = params;
 	}
 
-	public boolean isAdopted() {
-		return adopted;
+	public String getAdopter() {
+		return adopter;
 	}
 
-	public void setAdopted(boolean adopted) {
-		this.adopted = adopted;
+	public void setAdopter(String adopter) {
+		this.adopter = adopter;
+	}
+
+	public void requestAdoption(String adopterId){
+		this.status = AnnouncementStatus.PENDING_APPROVAL;
+		setAdopter(adopterId);
+	}
+
+	public void approveAdoption(String adopterId){
+    	this.status = AnnouncementStatus.ADOPTED;
+    	setAdopter(adopterId);
+	}
+
+	public void declineAdoption(){
+    	this.status  = AnnouncementStatus.AVAILABLE;
+    	setAdopter("");
 	}
 }

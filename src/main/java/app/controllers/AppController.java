@@ -4,6 +4,7 @@ import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletResponse;
 
 import app.controllers.models.AdoptionRequestModel;
@@ -207,13 +208,36 @@ public class AppController {
 			announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
 			User guardian = (User)DatabaseController.INSTANCE.filter(new BasicDBObject().append("_id", new ObjectId(announcement.getUser())), "user", User.class);
 			User adopter = (User)authentication.getDetails();
-
+			FeedController.INSTANCE.requestAdoption(announcement, adopter.get_id());
 			EmailService.INSTANCE.send(guardian.getEmail(), "[SOLICITAÇÃO DE ADOÇÃO] - "+announcement.getTitle(), EmailService.INSTANCE.buildBody(model, adopter, EmailType.ADOPTION_REQ));
 		} catch (IOException | MessagingException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
 
 	}
+
+	@RequestMapping(method = RequestMethod.POST, value ="/get-announcement/approve/{announcementId}")
+	public void approveAdoption(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId, @RequestBody AdoptionRequestModel model){
+		Announcement announcement = null;
+		BasicDBObject filter = new BasicDBObject();
+		try{
+			announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
+			filter.append("_id", new ObjectId(announcement.getAdopter()));
+			User adopter = (User) DatabaseController.INSTANCE.filter(filter, "user", User.class);
+			User user = (User)authentication.getDetails();
+			if(FeedController.INSTANCE.approveAdoption(adopter, announcement)){
+				EmailService.INSTANCE.send(adopter.getEmail(), "[SOLICITAÇÃO DE ADOÇÃO] - "+announcement.getTitle(), EmailService.INSTANCE.buildBody(model, adopter, EmailType.APPROVE_ADOPTION));
+			}
+		} catch (IOException e) {
+			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+		} catch (AuthenticationException e) {
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 
 	private HttpServletResponse sendError(HttpServletResponse response, int sc, String message) {
 		response.setStatus(sc);
