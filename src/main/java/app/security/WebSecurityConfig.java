@@ -37,7 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
             .authorizeRequests()
 
-			.antMatchers(HttpMethod.POST, "/register").permitAll()
+            .antMatchers(HttpMethod.GET, "/photo/{fileName:.+}").permitAll()
+            .antMatchers(HttpMethod.POST, "/register").permitAll()
             .antMatchers(HttpMethod.POST, "/login").permitAll()
             .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
 			.anyRequest().authenticated()
