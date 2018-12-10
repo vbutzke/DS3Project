@@ -48,7 +48,7 @@ public enum EmailService {
     }
 
     public void send(String to, String subject, String body) throws MessagingException {
-        Message message = new MimeMessage(session);
+    	Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(EmailCredentials.INSTANCE.getEmail()));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
         message.setSubject(subject);
@@ -57,7 +57,11 @@ public enum EmailService {
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(mimeBodyPart);
         message.setContent(multipart);
-        Transport.send(message);
+        
+        Transport transport = session.getTransport("smtp");
+        transport.connect("smtp.gmail.com", EmailCredentials.INSTANCE.getEmail(), EmailCredentials.INSTANCE.getPassword());
+
+        transport.sendMessage(message, message.getAllRecipients());
     }
 
     private void setup(){
