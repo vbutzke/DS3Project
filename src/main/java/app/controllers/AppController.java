@@ -196,7 +196,7 @@ public class AppController {
 		return true;
 	}
 
-	@RequestMapping("/get-announcement/{announcementId}/addAsFavorite")
+	@RequestMapping(method = RequestMethod.POST, value = "/get-announcement/{announcementId}/addAsFavorite")
 	public void addAsFavorite(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId){
 		try{
 			User user = (User)authentication.getDetails();
@@ -208,7 +208,7 @@ public class AppController {
 		}
 	}
 
-	@RequestMapping("/get-announcement/{announcementId}/removeFromFavorites")
+	@RequestMapping(method = RequestMethod.POST, value = "/get-announcement/{announcementId}/removeFromFavorites")
 	public void removeFromFavorites(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId){
 		try{
 			User user = (User)authentication.getDetails();
@@ -219,6 +219,21 @@ public class AppController {
 			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
 		}
 	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/get-announcement/getFavorites")
+	public LinkedList<Announcement> getFavorites(HttpServletResponse response, Authentication authentication){
+		LinkedList<Announcement> favorites = new LinkedList<>();
+		try{
+			User user = (User)authentication.getDetails();
+			favorites = FeedController.INSTANCE.getFavorites(user);
+			response.setStatus(HttpServletResponse.SC_OK);
+		} catch (IOException e) {
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		return favorites;
+	}
+
 
 	private HttpServletResponse sendError(HttpServletResponse response, int sc, String message) {
 		response.setStatus(sc);

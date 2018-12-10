@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.controllers.models.AnnouncementModel;
 import app.database.DatabaseController;
 import app.database.DatabaseFilter;
 import app.entities.Address;
@@ -118,6 +119,21 @@ public enum FeedController {
         user.getFavoriteAnnouncements().remove(announcementId);
         user.setFavoriteAnnouncements(user.getFavoriteAnnouncements());
         DatabaseController.INSTANCE.updateObject(user, user.getCollection());
+    }
+
+    public LinkedList<Announcement> getFavorites(User user) throws IOException {
+
+        LinkedList<Announcement> aml = new LinkedList<>();
+        LinkedList<String> announcements = user.getFavoriteAnnouncements();
+        BasicDBObject filter = new BasicDBObject();
+
+        for(String id : announcements){
+            filter.append("_id", new ObjectId(id));
+            aml.add((Announcement) DatabaseController.INSTANCE.filter(filter, "announcements", Announcement.class));
+            filter.clear();
+        }
+
+        return aml;
     }
 
 }
