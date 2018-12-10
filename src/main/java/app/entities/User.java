@@ -50,7 +50,9 @@ public class User {
 		if(password.equals(passwordConf)) {
 			this.password = password;
 		}
-		
+
+		favoriteAnnouncements = new LinkedList<>();
+
 		addUser();
 	}
 
