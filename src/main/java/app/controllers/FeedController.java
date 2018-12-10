@@ -107,4 +107,17 @@ public enum FeedController {
     	
     	return announcement;
     }
+
+    public void addAsFavorite(String announcementId, User user) throws JsonProcessingException {
+        user.getFavoriteAnnouncements().add(announcementId);
+        user.setFavoriteAnnouncements(user.getFavoriteAnnouncements());
+        DatabaseController.INSTANCE.updateObject(user, user.getCollection());
+    }
+
+    public void removeFromFavorites(String announcementId, User user) throws JsonProcessingException {
+        user.getFavoriteAnnouncements().remove(announcementId);
+        user.setFavoriteAnnouncements(user.getFavoriteAnnouncements());
+        DatabaseController.INSTANCE.updateObject(user, user.getCollection());
+    }
+
 }

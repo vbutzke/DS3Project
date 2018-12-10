@@ -195,7 +195,31 @@ public class AppController {
 		
 		return true;
 	}
-	
+
+	@RequestMapping("/get-announcement/{announcementId}/addAsFavorite")
+	public void addAsFavorite(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId){
+		try{
+			User user = (User)authentication.getDetails();
+			FeedController.INSTANCE.addAsFavorite(announcementId, user);
+			response.setStatus(HttpServletResponse.SC_OK);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+		}
+	}
+
+	@RequestMapping("/get-announcement/{announcementId}/removeFromFavorites")
+	public void removeFromFavorites(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId){
+		try{
+			User user = (User)authentication.getDetails();
+			FeedController.INSTANCE.removeFromFavorites(announcementId, user);
+			response.setStatus(HttpServletResponse.SC_OK);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+		}
+	}
+
 	private HttpServletResponse sendError(HttpServletResponse response, int sc, String message) {
 		response.setStatus(sc);
 		try {

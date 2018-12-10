@@ -37,6 +37,7 @@ public class User {
 	private String lastName;
 	private String password;
 	private String permission = "Anonymous";
+	private LinkedList<String> favoriteAnnouncements;
 	protected final String collection = "user";
 	
 	public User(){}
@@ -95,5 +96,13 @@ public class User {
 			DatabaseController.INSTANCE.addObject(this, collection);
 		}
 
+	}
+
+	public LinkedList<String> getFavoriteAnnouncements() {
+		return favoriteAnnouncements;
+	}
+
+	public void setFavoriteAnnouncements(LinkedList<String> favoriteAnnouncements) {
+		this.favoriteAnnouncements = favoriteAnnouncements;
 	}
 }
