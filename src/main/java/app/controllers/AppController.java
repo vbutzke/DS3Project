@@ -200,7 +200,7 @@ public class AppController {
 		return true;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value ="/get-announcement/adopt/{announcementId}")
+	@RequestMapping(method = RequestMethod.POST, value = "/get-announcement/adopt/{announcementId}")
 	public void adoptDog(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId, @RequestBody AdoptionRequestModel model){
 		Announcement announcement = null;
 		try{
@@ -213,6 +213,22 @@ public class AppController {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
 
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/forgot-password") //TODO: conferir se é realmente um POST
+	public void forgotPassword(HttpServletResponse response, String email){
+
+		BasicDBObject filter = new BasicDBObject();
+		filter.append("email", new ObjectId(email));
+		try {
+			User user = (User)DatabaseController.INSTANCE.filter(filter, "user", User.class);
+			if(user != null){
+				EmailService.INSTANCE.send(email, "Reset password", "To reset your password, click on the following link: "); //TODO: adicionar link de password reset aqui
+			}
+		} catch (IOException | MessagingException e) {
+			e.printStackTrace();
+		}
+		response.setStatus(HttpServletResponse.SC_OK);
 	}
 
 	private HttpServletResponse sendError(HttpServletResponse response, int sc, String message) {
