@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @Ignore
-
 public class AnnouncementTest extends AbstractUT {
 
     private User guardian;
@@ -29,7 +28,7 @@ public class AnnouncementTest extends AbstractUT {
         startDB();
 
         try {
-            guardian = new User(UserRecord.GUARDIAN.getEmail(), UserRecord.GUARDIAN.getFirstName(), UserRecord.GUARDIAN.getLastName(), UserRecord.GUARDIAN.getPassword(), UserRecord.GUARDIAN.getPasswordConf(), UserRecord.GUARDIAN.getCode());
+            guardian = new User(UserRecord.GUARDIAN.getEmail(), UserRecord.GUARDIAN.getFirstName(), UserRecord.GUARDIAN.getLastName(), UserRecord.GUARDIAN.getPassword(), UserRecord.GUARDIAN.getPasswordConf());
         } catch (JsonProcessingException | DuplicateEntityException e) {
             e.printStackTrace();
             try {
@@ -58,7 +57,7 @@ public class AnnouncementTest extends AbstractUT {
         try {
             announcement = FeedController.INSTANCE.createAnnouncement(guardian, AnnouncementsRecord.BLACK_DOG.getTitle(), AnnouncementsRecord.BLACK_DOG.getDescription(), AnnouncementsRecord.BLACK_DOG.getAddress(), AnnouncementsRecord.BLACK_DOG.getRace(), AnnouncementsRecord.BLACK_DOG.getAge(), AnnouncementsRecord.BLACK_DOG.getSize(), null);
             assertTrue(DatabaseController.INSTANCE.findRecord(announcement, "announcements"));
-        } catch (JsonProcessingException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {

@@ -3,7 +3,6 @@ package app.database;
 import org.apache.commons.math3.exception.NoDataException;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;

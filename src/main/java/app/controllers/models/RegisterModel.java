@@ -6,5 +6,4 @@ public class RegisterModel extends Model{
 	public String lastName;
 	public String password;
 	public String passwordConf;
-	public String code; 
 }
