@@ -103,8 +103,11 @@ public class AppController {
 	private Announcement getAnnouncement(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId) {
 		Announcement announcement = null; 
 		try{
+			User user = (User) authentication.getDetails();
+			
 			announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
 			announcement = FeedController.INSTANCE.getOnePic(announcement);
+			announcement = FeedController.INSTANCE.getFavorite(user, announcement);
 		} catch (IOException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}

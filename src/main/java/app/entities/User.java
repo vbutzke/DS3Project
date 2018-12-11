@@ -101,6 +101,9 @@ public class User {
 	}
 
 	public LinkedList<String> getFavoriteAnnouncements() {
+		if(favoriteAnnouncements  == null)
+			favoriteAnnouncements = new LinkedList<>();
+		
 		return favoriteAnnouncements;
 	}
 

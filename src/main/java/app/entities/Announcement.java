@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import app.utils.MongoDbDateDeserializer;
 import app.utils.MongoDbDateSerializer;
 import app.utils.MongoDbId;
+import org.springframework.data.annotation.Transient;
 
 public class Announcement {
 	
@@ -27,6 +28,9 @@ public class Announcement {
 	private String user;
 	
 	private Photo photo;
+	
+	@Transient
+	private boolean favorite;
 	
 	private ArrayList<AnnouncementParams> params;
 
@@ -134,4 +138,14 @@ public class Announcement {
 	public void setParams(ArrayList<AnnouncementParams> params) {
 		this.params = params;
 	}
+
+	public boolean getFavorite() {
+		return favorite;
+	}
+
+	public void setFavorite(boolean favorite) {
+		this.favorite = favorite;
+	}
+	
+	
 }

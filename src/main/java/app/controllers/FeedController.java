@@ -136,4 +136,18 @@ public enum FeedController {
         return aml;
     }
 
+	public Announcement getFavorite(User user, Announcement announcement) {
+
+		LinkedList<String> announcements = user.getFavoriteAnnouncements();
+        
+		if(announcements!=null) {
+			for(String id : announcements){
+				if(id.equals(announcement.get_id()))
+					announcement.setFavorite(true);
+			}
+		}
+		
+        return announcement;
+	}
+
 }
