@@ -1,29 +1,20 @@
 package app.security.services;
 
 import app.database.DatabaseController;
-import app.database.DatabaseFilter;
 import app.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
 import org.apache.commons.math3.exception.NoDataException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
 import com.mongodb.BasicDBObject;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-
 import java.util.Collections;
-
 import javax.annotation.PostConstruct;
-
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
@@ -38,7 +29,7 @@ public class JwtService
     private String encodedSecret;
 
     public static final String TOKEN_PREFIX = "Bearer ";
-	public static final String HEADER_STRING = "Authorization";
+    public static final String HEADER_STRING = "Authorization";
 
     public JwtService() {
         this.expireHours = 24;
@@ -71,28 +62,28 @@ public class JwtService
 
     protected User getUser(String encodedSecret, String token)
     {
-		try {
-	        Claims claims = Jwts.parser()
-	                .setSigningKey(encodedSecret)
-	                .parseClaimsJws(token)
-	                .getBody();
-	
-	        User securityUser = null;
-        
-			String userName = claims.getSubject();
-			BasicDBObject filter = new BasicDBObject();
-	        filter.append("email", userName);        
-	        
-			return (User)DatabaseController.INSTANCE.filter(filter, "user", User.class);
-			
-		} catch (NoDataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(encodedSecret)
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            User securityUser = null;
+
+            String userName = claims.getSubject();
+            BasicDBObject filter = new BasicDBObject();
+            filter.append("email", userName);
+
+            return (User)DatabaseController.INSTANCE.filter(filter, "user", User.class);
+
+        } catch (NoDataException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         return null;
     }
 
@@ -122,32 +113,32 @@ public class JwtService
     public void addAuthentication(HttpServletResponse response, String username) {
         Date now = new Date();
 
-		String JWT = Jwts.builder()
-				.setId(UUID.randomUUID().toString())
+        String JWT = Jwts.builder()
+                .setId(UUID.randomUUID().toString())
                 .setSubject(username)
                 .setIssuedAt(now)
                 .setExpiration(getExpirationTime())
                 .signWith(SignatureAlgorithm.HS512, encodedSecret)
-				.compact();
-		
-		response.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
-	}
-	
-	public Authentication getAuthentication(HttpServletRequest request) {
-		String token = request.getHeader(HEADER_STRING);
-		
-		if (token != null) {
-			// faz parse do token
-			String user = Jwts.parser()
-					.setSigningKey(this.encodedSecret)
-					.parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-					.getBody()
-					.getSubject();
-			
-			if (user != null) {
-				return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
-			}
-		}
-		return null;
-	}
+                .compact();
+
+        response.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
+    }
+
+    public Authentication getAuthentication(HttpServletRequest request) {
+        String token = request.getHeader(HEADER_STRING);
+
+        if (token != null) {
+            // faz parse do token
+            String user = Jwts.parser()
+                    .setSigningKey(this.encodedSecret)
+                    .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                    .getBody()
+                    .getSubject();
+
+            if (user != null) {
+                return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+            }
+        }
+        return null;
+    }
 }

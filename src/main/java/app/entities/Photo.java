@@ -2,7 +2,6 @@ package app.entities;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
 import app.utils.MongoDbId;
 
 public class Photo {

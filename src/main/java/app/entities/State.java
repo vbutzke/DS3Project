@@ -1,10 +1,9 @@
 package app.entities;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
-public class State {
-    HashMap<String, City> cities;
+class State {
+    private HashMap<String, City> cities;
 
     public HashMap<String, City> getCities() {
         return cities;
