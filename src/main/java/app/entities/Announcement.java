@@ -1,17 +1,16 @@
 package app.entities;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-
+import app.singletons.AnnouncementStatus;
+import app.database.DatabaseController;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
 import app.utils.MongoDbDateDeserializer;
-import app.utils.MongoDbDateSerializer;
 import app.utils.MongoDbId;
 import org.springframework.data.annotation.Transient;
 
@@ -19,33 +18,42 @@ public class Announcement {
 	
 	@JsonSerialize(using=ToStringSerializer.class)
 	private MongoDbId _id;
-	private String  title;
-	private String  description;
-    private Address address;
-    private String  race;
-    private String     age;
-    private String  size;
-	private String user;
-	
-	private Photo photo;
-	
-	@Transient
-	private boolean favorite;
-	
+  
+	private String    title;
+	private String    description;
+  private Address   address;
+  private String    race;
+  private String    age;
+  private String    size;
+	private String    user;
+	private Photo     photo;
 	private ArrayList<AnnouncementParams> params;
+	private AnnouncementStatus status;
+	private String adopter;
+	private boolean adopted;
+	private String    threadId;
+	private final String collection = "announcements";
 
+  @Transient
+	private boolean favorite;
+  
 	@JsonDeserialize(using = MongoDbDateDeserializer.class)
 	private Date createdAt;
 
     public Announcement() {}
 
-    public Announcement(String title, String description, Address address, String race, String age, String size) {
+    public Announcement(String title, String description, Address address, String race, String age, String size) throws IOException {
         this.title       = title;
         this.description = description;
         this.address     = address;
         this.race        = race;
         this.age         = age;
         this.size        = size;
+        this.status 	  = AnnouncementStatus.AVAILABLE;
+        this.adopter     = "";
+        this.adopted 	  = false;
+        Thread t = new Thread(get_id());
+		    this.threadId    = DatabaseController.INSTANCE.getRecord(t, t.getCollection(), Thread.class).get_id();
     }
 
 	public String get_id() {
@@ -147,5 +155,82 @@ public class Announcement {
 		this.favorite = favorite;
 	}
 	
-	
+  public String getAdopter() {
+		return adopter;
+  }
+  
+  public boolean isAdopted() {
+		return adopted;
+	}
+
+	public void setAdopter(String adopter) {
+		this.adopter = adopter;
+	}
+
+	public void requestAdoption(String adopterId){
+    	if(this.status == AnnouncementStatus.AVAILABLE) {
+			this.status = AnnouncementStatus.PENDING_APPROVAL;
+			setAdopter(adopterId);
+		} else {
+    		throw new UnsupportedOperationException("There is an adoption pending for this announcement.");
+		}
+	}
+
+	public void approveAdoption(String adopterId){
+    	if(this.status == AnnouncementStatus.PENDING_APPROVAL) {
+			this.status = AnnouncementStatus.ADOPTED;
+			setAdopter(adopterId);
+		} else {
+			throw new UnsupportedOperationException("There is an adoption pending for this announcement.");
+		}
+	}
+
+	public void declineAdoption(){
+		if(this.status == AnnouncementStatus.PENDING_APPROVAL) {
+			this.status = AnnouncementStatus.AVAILABLE;
+			setAdopter("");
+		} else {
+			throw new UnsupportedOperationException("There is an adoption pending for this announcement.");
+		}
+	}
+
+  public Thread addComment(Comment comment) throws IOException {
+    	Thread thread = getThreadFromDB();
+    	if(thread == null){
+    		thread = new Thread(get_id(), comment);
+		} else {
+    		thread.getComments().add(comment);
+		}
+		DatabaseController.INSTANCE.updateObject(thread, thread.getCollection());
+		return thread;
+	}
+
+	public Thread removeComment(int commentPos) throws IOException {
+    	Thread thread = getThreadFromDB();
+    	thread.getComments().remove(commentPos);
+		DatabaseController.INSTANCE.updateObject(thread, thread.getCollection());
+    	return thread;
+	}
+
+	public Photo getPhoto() {
+		return photo;
+	}
+
+	public void save() throws JsonProcessingException {
+		DatabaseController.INSTANCE.updateObject(this, collection);
+	}
+
+	public String getCollection() {
+		return collection;
+	}
+
+	public String getThreadId() {
+		return threadId;
+	}
+
+	@JsonIgnore
+	public Thread getThreadFromDB() throws IOException {
+
+		return (Thread) DatabaseController.INSTANCE.getRecordBy(threadId, "threads", Thread.class);
+	}
 }

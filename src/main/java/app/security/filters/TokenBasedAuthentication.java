@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import app.entities.User;
 
 
-public class TokenBasedAuthentication extends AbstractAuthenticationToken {
+class TokenBasedAuthentication extends AbstractAuthenticationToken {
 
     private String token;
     private UserDetails principle;
