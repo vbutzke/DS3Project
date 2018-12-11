@@ -1,9 +1,5 @@
 package app.security.filters;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +29,6 @@ public class CorsFilter implements Filter {
     public void destroy() {
     }
 
-    public void init(FilterConfig config) throws ServletException {
+    public void init(FilterConfig config) {
     }
 }

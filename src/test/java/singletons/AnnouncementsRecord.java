@@ -4,6 +4,7 @@ import app.entities.Address;
 
 import java.io.IOException;
 
+@SuppressWarnings("SameParameterValue")
 public enum AnnouncementsRecord {
 
     BLACK_DOG("Cachorro preto - São Leopoldo", "Pequeno cachorro preto encontrado na saída de um estacionamento", "Brazil", "Rio Grande do Sul", "São Leopoldo", "Vira-lata", "2 meses", "Pequeno porte");
