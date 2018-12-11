@@ -1,30 +1,17 @@
 package app.database;
 
 import java.io.IOException;
-import java.security.InvalidParameterException;
-import java.util.HashMap;
 import java.util.LinkedList;
-
-import app.entities.Announcement;
-import app.entities.Country;
 import app.utils.MongoDbId;
-
-import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
-
 import org.apache.commons.math3.exception.NoDataException;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import app.entities.AccessCode;
-
+@SuppressWarnings("unchecked")
 public enum DatabaseController {
 	
 	INSTANCE();
@@ -48,18 +35,7 @@ public enum DatabaseController {
 	public void closeDB() {
 		dm.closeConnection();
 	}
-	
-	public boolean isAccessCodeValid(AccessCode accessCode) throws JsonProcessingException {
-		
-		Document d = dm.getRecord(convertToDocument(accessCode), "accessCodes");
-		if(!((Boolean)d.get("used"))) {
-			d.put("used", true);
-			dm.updateObject(d, "accessCodes");
-			return true;
-		}
-		throw new InvalidParameterException("The provided access code is not valid.");
-	}
-	
+
 	public void updateObject(Object o, String collection) throws JsonProcessingException {
 		BasicDBObject record = BasicDBObject.parse(om.writeValueAsString(o));
 		dm.updateObject(record, collection);
@@ -71,13 +47,11 @@ public enum DatabaseController {
 		dm.addObject(d, collection);
 		
 		ObjectId id = (ObjectId)d.get("_id");
-		
-		MongoDbId dbId = new MongoDbId(id.toHexString());
-		
-		return dbId;
+
+		return new MongoDbId(id.toHexString());
 	}
 	
-	public void removeObject(BasicDBObject o, String collection) throws JsonProcessingException {
+	public void removeObject(BasicDBObject o, String collection) {
 		dm.removeObject(o, collection);
 	}
 	
@@ -108,7 +82,7 @@ public enum DatabaseController {
 		return om.readValue(d.toJson(), c);
 	}
 
-	public LinkedList<Object> getList(BasicDBObject filter, String collection, Class c) throws JsonParseException, JsonMappingException, IOException {
+	public LinkedList<Object> getList(BasicDBObject filter, String collection, Class c) throws IOException {
 		// TODO Auto-generated method stub
 		FindIterable<Document> i = dm.filterObjectsFromCollection(filter, collection);
 		LinkedList<Object> list = new LinkedList<>();

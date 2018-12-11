@@ -1,9 +1,6 @@
 package tests;
 
-import app.controllers.AccountController;
 import app.database.DatabaseController;
-import app.database.DatabaseFilter;
-import app.entities.Credentials;
 import app.entities.User;
 import app.exceptions.DuplicateEntityException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,13 +14,10 @@ import singletons.UserRecord;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
-import java.util.LinkedList;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @Ignore
-
 public class AccountUT  extends AbstractUT {
 
     private User adopter;
@@ -32,7 +26,7 @@ public class AccountUT  extends AbstractUT {
         startDB();
 
         try {
-            adopter = new User(UserRecord.ADOPTER.getEmail(), UserRecord.ADOPTER.getFirstName(), UserRecord.ADOPTER.getLastName(), UserRecord.ADOPTER.getPassword(), UserRecord.ADOPTER.getPasswordConf(), null);
+            adopter = new User(UserRecord.ADOPTER.getEmail(), UserRecord.ADOPTER.getFirstName(), UserRecord.ADOPTER.getLastName(), UserRecord.ADOPTER.getPassword(), UserRecord.ADOPTER.getPasswordConf());
         } catch (JsonProcessingException | DuplicateEntityException e) {
             e.printStackTrace();
             try {
