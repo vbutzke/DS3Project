@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import org.apache.commons.math3.exception.NoDataException;
 import org.bson.types.ObjectId;
 
+import javax.naming.AuthenticationException;
+
 public enum FeedController {
     INSTANCE();
 
@@ -89,4 +91,26 @@ public enum FeedController {
     	return announcement;
     }
 
+    public void requestAdoption(Announcement announcement, String userId) throws JsonProcessingException {
+        announcement.requestAdoption(userId);
+        DatabaseController.INSTANCE.updateObject(announcement, "announcements");
+    }
+
+    public boolean approveAdoption(User owner, User adopter, Announcement announcement) throws AuthenticationException, JsonProcessingException {
+        if(announcement.getUser().equals(owner.get_id())){
+            announcement.approveAdoption(adopter.get_id());
+            DatabaseController.INSTANCE.updateObject(announcement, "announcements");
+            return true;
+        }
+        throw new AuthenticationException("User is not authorized to perform this action");
+    }
+
+    public boolean declineAdoption(User owner, Announcement announcement) throws AuthenticationException, JsonProcessingException {
+        if(announcement.getUser().equals(owner.get_id())){
+            announcement.declineAdoption();
+            DatabaseController.INSTANCE.updateObject(announcement, "announcements");
+            return true;
+        }
+        throw new AuthenticationException("User is not authorized to perform this action");
+    }
 }

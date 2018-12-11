@@ -3,7 +3,7 @@ package app.entities;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-
+import app.singletons.AnnouncementStatus;
 import app.database.DatabaseController;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,13 +19,15 @@ public class Announcement {
 	private MongoDbId _id;
 	private String    title;
 	private String    description;
-    private Address   address;
-    private String    race;
-    private String    age;
-    private String    size;
+  private Address   address;
+  private String    race;
+  private String    age;
+  private String    size;
 	private String    user;
 	private Photo     photo;
 	private ArrayList<AnnouncementParams> params;
+	private AnnouncementStatus status;
+	private String adopter;
 	private boolean adopted;
 	private String    threadId;
 	private final String collection = "announcements";
@@ -42,6 +44,8 @@ public class Announcement {
         this.race        = race;
         this.age         = age;
         this.size        = size;
+        this.status 	  = AnnouncementStatus.AVAILABLE;
+        this.adopter     = "";
         this.adopted 	  = false;
         Thread t = new Thread(get_id());
 		    this.threadId    = DatabaseController.INSTANCE.getRecord(t, t.getCollection(), Thread.class).get_id();
@@ -138,12 +142,43 @@ public class Announcement {
 		this.params = params;
 	}
 
+  public String getAdopter() {
+		return adopter;
+  }
+  
   public boolean isAdopted() {
 		return adopted;
 	}
 
-	public void setAdopted(boolean adopted) {
-		this.adopted = adopted;
+	public void setAdopter(String adopter) {
+		this.adopter = adopter;
+	}
+
+	public void requestAdoption(String adopterId){
+    	if(this.status == AnnouncementStatus.AVAILABLE) {
+			this.status = AnnouncementStatus.PENDING_APPROVAL;
+			setAdopter(adopterId);
+		} else {
+    		throw new UnsupportedOperationException("There is an adoption pending for this announcement.");
+		}
+	}
+
+	public void approveAdoption(String adopterId){
+    	if(this.status == AnnouncementStatus.PENDING_APPROVAL) {
+			this.status = AnnouncementStatus.ADOPTED;
+			setAdopter(adopterId);
+		} else {
+			throw new UnsupportedOperationException("There is an adoption pending for this announcement.");
+		}
+	}
+
+	public void declineAdoption(){
+		if(this.status == AnnouncementStatus.PENDING_APPROVAL) {
+			this.status = AnnouncementStatus.AVAILABLE;
+			setAdopter("");
+		} else {
+			throw new UnsupportedOperationException("There is an adoption pending for this announcement.");
+		}
 	}
 
   public Thread addComment(Comment comment) throws IOException {
