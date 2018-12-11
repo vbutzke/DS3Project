@@ -3,8 +3,6 @@ package app.utils;
 import java.io.IOException;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MongoDbId {
@@ -26,7 +24,7 @@ public class MongoDbId {
 	 
 	  @JsonCreator
 	  public static String fromJSON(String val) 
-	      throws JsonParseException, JsonMappingException, IOException {
+	      throws IOException {
 	    ObjectMapper mapper = new ObjectMapper();
 	    MongoDbId a = mapper.readValue(val, MongoDbId.class);
 	    return a.get$oid();

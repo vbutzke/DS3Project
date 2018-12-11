@@ -3,7 +3,6 @@ package app.database;
 import org.apache.commons.math3.exception.NoDataException;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -78,7 +77,8 @@ public class DatabaseManager {
 	}
 
 	public Document getRecordBy(String value, String collection) {
-		FindIterable<Document> i = database.getCollection(collection).find(Filters.exists(value));
+		FindIterable<Document> i = database.getCollection(collection).find(Filters.eq(value));
+		System.out.println("OIIOIIOIIIOIOOIIOIOIOIOII:" +i.first());
 		return i.first();
 	}
 	
