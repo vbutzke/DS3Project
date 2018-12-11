@@ -3,10 +3,14 @@ import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import javax.annotation.PostConstruct;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 
-import app.controllers.models.CommentModel;
+import app.controllers.models.AdoptionRequestModel;
 import app.entities.*;
+import app.singletons.EmailType;
+import app.utils.EmailService;
+import app.controllers.models.CommentModel;
 import app.entities.Thread;
 import org.apache.commons.math3.exception.NoDataException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -228,7 +232,22 @@ public class AppController {
 		
 		return true;
 	}
-	
+
+	@RequestMapping(method = RequestMethod.POST, value ="/get-announcement/adopt/{announcementId}")
+	public void adoptDog(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId, @RequestBody AdoptionRequestModel model){
+		Announcement announcement = null;
+		try{
+			announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
+			User guardian = (User)DatabaseController.INSTANCE.filter(new BasicDBObject().append("_id", new ObjectId(announcement.getUser())), "user", User.class);
+			User adopter = (User)authentication.getDetails();
+
+			EmailService.INSTANCE.send(guardian.getEmail(), "[SOLICITAÇÃO DE ADOÇÃO] - "+announcement.getTitle(), EmailService.INSTANCE.buildBody(model, adopter, EmailType.ADOPTION_REQ));
+		} catch (IOException | MessagingException e) {
+			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+		}
+
+	}
+
 	private void sendError(HttpServletResponse response, int sc, String message) {
 		response.setStatus(sc);
 		try {

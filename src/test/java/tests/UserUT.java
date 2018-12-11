@@ -6,8 +6,7 @@ import org.junit.*;
 //import app.entities.Adopter;
 //import app.entities.Guardian;
 @Ignore
-
-class UserUT extends AbstractUT{
+public class UserUT extends AbstractUT{
 
 	@Before
 	public void start() {

@@ -100,7 +100,7 @@ public enum DatabaseController {
 	
 	public Object getRecordBy(String value, String collection, Class c) throws IOException {
 		Document d = dm.getRecordBy(value, collection);
-		
+
 		d.remove(value);
 
 		//TypeFactory typeFactory = om.getTypeFactory();

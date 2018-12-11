@@ -26,6 +26,7 @@ public class Announcement {
 	private String    user;
 	private Photo     photo;
 	private ArrayList<AnnouncementParams> params;
+	private boolean adopted;
 	private String    threadId;
 	private final String collection = "announcements";
 
@@ -41,8 +42,9 @@ public class Announcement {
         this.race        = race;
         this.age         = age;
         this.size        = size;
+        this.adopted 	  = false;
         Thread t = new Thread(get_id());
-		this.threadId    = DatabaseController.INSTANCE.getRecord(t, t.getCollection(), Thread.class).get_id();
+		    this.threadId    = DatabaseController.INSTANCE.getRecord(t, t.getCollection(), Thread.class).get_id();
     }
 
 	public String get_id() {
@@ -136,7 +138,15 @@ public class Announcement {
 		this.params = params;
 	}
 
-	public Thread addComment(Comment comment) throws IOException {
+  public boolean isAdopted() {
+		return adopted;
+	}
+
+	public void setAdopted(boolean adopted) {
+		this.adopted = adopted;
+	}
+
+  public Thread addComment(Comment comment) throws IOException {
     	Thread thread = getThreadFromDB();
     	if(thread == null){
     		thread = new Thread(get_id(), comment);
@@ -175,5 +185,4 @@ public class Announcement {
 
 		return (Thread) DatabaseController.INSTANCE.getRecordBy(threadId, "threads", Thread.class);
 	}
-
 }

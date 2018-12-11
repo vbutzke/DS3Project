@@ -77,7 +77,8 @@ public class DatabaseManager {
 	}
 
 	public Document getRecordBy(String value, String collection) {
-		FindIterable<Document> i = database.getCollection(collection).find(Filters.exists(value));
+		FindIterable<Document> i = database.getCollection(collection).find(Filters.eq(value));
+		System.out.println("OIIOIIOIIIOIOOIIOIOIOIOII:" +i.first());
 		return i.first();
 	}
 	
