@@ -12,11 +12,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import app.utils.MongoDbDateDeserializer;
 import app.utils.MongoDbId;
+import org.springframework.data.annotation.Transient;
 
 public class Announcement {
 	
 	@JsonSerialize(using=ToStringSerializer.class)
 	private MongoDbId _id;
+  
 	private String    title;
 	private String    description;
   private Address   address;
@@ -32,6 +34,9 @@ public class Announcement {
 	private String    threadId;
 	private final String collection = "announcements";
 
+  @Transient
+	private boolean favorite;
+  
 	@JsonDeserialize(using = MongoDbDateDeserializer.class)
 	private Date createdAt;
 
@@ -142,6 +147,14 @@ public class Announcement {
 		this.params = params;
 	}
 
+	public boolean getFavorite() {
+		return favorite;
+	}
+
+	public void setFavorite(boolean favorite) {
+		this.favorite = favorite;
+	}
+	
   public String getAdopter() {
 		return adopter;
   }

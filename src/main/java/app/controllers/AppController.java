@@ -104,8 +104,12 @@ public class AppController {
 	private Announcement getAnnouncement(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId) {
 		Announcement announcement = null; 
 		try{
-			announcement = FeedController.INSTANCE.getOnePic(FeedController.INSTANCE.getAnnouncementById(announcementId));
-		} catch (IOException e) {
+			User user = (User) authentication.getDetails();
+			
+			announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
+			announcement = FeedController.INSTANCE.getOnePic(announcement);
+			announcement = FeedController.INSTANCE.getFavorite(user, announcement);
+    } catch (IOException e) {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
 		return announcement;
@@ -232,6 +236,44 @@ public class AppController {
 		}
 		
 		return true;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/get-announcement/{announcementId}/addAsFavorite")
+	public void addAsFavorite(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId){
+		try{
+			User user = (User)authentication.getDetails();
+			FeedController.INSTANCE.addAsFavorite(announcementId, user);
+			response.setStatus(HttpServletResponse.SC_OK);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/get-announcement/{announcementId}/removeFromFavorites")
+	public void removeFromFavorites(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId){
+		try{
+			User user = (User)authentication.getDetails();
+			FeedController.INSTANCE.removeFromFavorites(announcementId, user);
+			response.setStatus(HttpServletResponse.SC_OK);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/get-announcement/getFavorites")
+	public LinkedList<Announcement> getFavorites(HttpServletResponse response, Authentication authentication){
+		LinkedList<Announcement> favorites = new LinkedList<>();
+		try{
+			User user = (User)authentication.getDetails();
+			favorites = FeedController.INSTANCE.getFavorites(user);
+			response.setStatus(HttpServletResponse.SC_OK);
+		} catch (IOException e) {
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		return favorites;
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value ="/get-announcement/adopt/{announcementId}")

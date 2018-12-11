@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.controllers.models.AnnouncementModel;
 import app.database.DatabaseController;
 import app.entities.*;
 import app.utils.MongoDbId;
@@ -90,6 +91,47 @@ public enum FeedController {
     	
     	return announcement;
     }
+
+    public void addAsFavorite(String announcementId, User user) throws JsonProcessingException {
+        user.getFavoriteAnnouncements().add(announcementId);
+        user.setFavoriteAnnouncements(user.getFavoriteAnnouncements());
+        DatabaseController.INSTANCE.updateObject(user, user.getCollection());
+    }
+
+    public void removeFromFavorites(String announcementId, User user) throws JsonProcessingException {
+        user.getFavoriteAnnouncements().remove(announcementId);
+        user.setFavoriteAnnouncements(user.getFavoriteAnnouncements());
+        DatabaseController.INSTANCE.updateObject(user, user.getCollection());
+    }
+
+    public LinkedList<Announcement> getFavorites(User user) throws IOException {
+
+        LinkedList<Announcement> aml = new LinkedList<>();
+        LinkedList<String> announcements = user.getFavoriteAnnouncements();
+        BasicDBObject filter = new BasicDBObject();
+
+        for(String id : announcements){
+            filter.append("_id", new ObjectId(id));
+            aml.add((Announcement) DatabaseController.INSTANCE.filter(filter, "announcements", Announcement.class));
+            filter.clear();
+        }
+
+        return aml;
+    }
+
+  	public Announcement getFavorite(User user, Announcement announcement) {
+
+	  	LinkedList<String> announcements = user.getFavoriteAnnouncements();
+        
+		  if(announcements!=null) {
+			  for(String id : announcements){
+				  if(id.equals(announcement.get_id()))
+					  announcement.setFavorite(true);
+			   }
+		   }
+		
+       return announcement;
+	  }
 
     public void requestAdoption(Announcement announcement, String userId) throws JsonProcessingException {
         announcement.requestAdoption(userId);

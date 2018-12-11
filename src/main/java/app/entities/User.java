@@ -29,6 +29,7 @@ public class User {
 	private String lastName;
 	private String password;
 	private String permission = "Anonymous";
+	private LinkedList<String> favoriteAnnouncements;
 	private final String collection = "user";
 	
 	public User(){}
@@ -41,7 +42,9 @@ public class User {
 		if(password.equals(passwordConf)) {
 			this.password = password;
 		}
-		
+
+		favoriteAnnouncements = new LinkedList<>();
+
 		addUser();
 	}
 
@@ -81,5 +84,16 @@ public class User {
 			DatabaseController.INSTANCE.addObject(this, collection);
 		}
 
+	}
+
+	public LinkedList<String> getFavoriteAnnouncements() {
+		if(favoriteAnnouncements  == null)
+			favoriteAnnouncements = new LinkedList<>();
+		
+		return favoriteAnnouncements;
+	}
+
+	public void setFavoriteAnnouncements(LinkedList<String> favoriteAnnouncements) {
+		this.favoriteAnnouncements = favoriteAnnouncements;
 	}
 }
