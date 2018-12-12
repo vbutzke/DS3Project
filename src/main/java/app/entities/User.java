@@ -1,6 +1,8 @@
 package app.entities;
 
 import java.security.InvalidParameterException;
+import java.util.LinkedList;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -35,7 +37,7 @@ public class User {
 	public User() {
 	}
 
-	public User(String email, String firstName, String lastName, String password, String passwordConf, AccessCode code) throws InvalidParameterException, JsonProcessingException, DuplicateEntityException {
+	public User(String email, String firstName, String lastName, String password, String passwordConf) throws InvalidParameterException, JsonProcessingException, DuplicateEntityException {
 
 		if (email.equals("") || firstName.equals("") || lastName.equals("") || password.equals("") || passwordConf.equals("")) {
 			throw new InvalidParameterException("Email, first name, last name, password and passoword confirmation are mandatory fields. Please revise.");
@@ -83,11 +85,11 @@ public class User {
 		this.permission = permission;
 	}
     
-	public void checkAccessCode(AccessCode accessCode) throws JsonProcessingException {
-		if (accessCode == null || !DatabaseController.INSTANCE.isAccessCodeValid(accessCode)) {
-			throw new InvalidParameterException();
-		}
-	}
+//	public void checkAccessCode(AccessCode accessCode) throws JsonProcessingException {
+//		if (accessCode == null || !DatabaseController.INSTANCE.isAccessCodeValid(accessCode)) {
+//			throw new InvalidParameterException();
+//		}
+//	}
     
 	public void addUser() throws JsonProcessingException, DuplicateEntityException {
 		if (DatabaseController.INSTANCE.findRecordBy("email", this.getEmail(), collection)) {
