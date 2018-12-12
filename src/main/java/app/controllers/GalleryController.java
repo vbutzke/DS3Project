@@ -1,5 +1,6 @@
 package app.controllers;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.LinkedList;
@@ -24,20 +25,36 @@ public enum GalleryController {
 		Announcement announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
 		return this.getPhotosByAnnouncements(announcement);
 	}
+	
+	public Photo getPhoto(String photoId) throws IOException {
+		BasicDBObject filter = new BasicDBObject();
+        
+        filter.append("_id", new ObjectId(photoId));
+        
+        LinkedList<Object> objectsList = DatabaseController.INSTANCE.getList(filter, "photos", Photo.class);
 
-	public Photo uploadImage(MultipartFile file, User user, Announcement announcement) throws IOException {
-        // Get the file and save it somewhere
-        byte[] bytes = file.getBytes();
-        String base64 = Base64.getEncoder().encodeToString(bytes);
+        Photo photo = null;
         
-        Photo photo = new  Photo();
-        photo.setAnnouncementId(announcement.get_id());
-        photo.setImage(base64);
-        
-        photo.set_id((MongoDbId)DatabaseController.INSTANCE.addObject(photo, "photos"));
-        
+        if(!objectsList.isEmpty()){
+        	photo = (Photo)objectsList.getFirst();
+        }
+
         return photo;
-    }
+	}
+
+//	public Photo uploadImage(MultipartFile file, User user, Announcement announcement) throws IOException {
+//        // Get the file and save it somewhere
+//        byte[] bytes = file.getBytes();
+//        String base64 = Base64.getEncoder().encodeToString(bytes);
+//        
+//        Photo photo = new  Photo();
+//        photo.setAnnouncementId(announcement.get_id());
+//        photo.setImage(base64);
+//        
+//        photo.set_id((MongoDbId)DatabaseController.INSTANCE.addObject(photo, "photos"));
+//        
+//        return photo;
+//    }
 	
     @SuppressWarnings("SameReturnValue")
     public void removeFile(User user, String photoId) throws NoDataException, IOException {
@@ -55,20 +72,20 @@ public enum GalleryController {
 		DatabaseController.INSTANCE.removeObject(filter, "photos");
 		announcement.save();
     }
-	
-	private Photo createPhoto(String announcementId, MultipartFile file) throws IOException {
-		byte[] bytes = file.getBytes();
-        String base64 = Base64.getEncoder().encodeToString(bytes);
-        
-        Photo p = new Photo();
-        
-        p.setAnnouncementId(announcementId);
-        p.setImage(base64);
-            
-		DatabaseController.INSTANCE.addObject(p, "photos");
-		
-		return p;
-	}
+
+//	private Photo createPhoto(String announcementId, MultipartFile file) throws IOException {
+//		byte[] bytes = file.getBytes();
+//        String base64 = Base64.getEncoder().encodeToString(bytes);
+//        
+//        Photo p = new Photo();
+//        
+//        p.setAnnouncementId(announcementId);
+//        p.setImage(base64);
+//            
+//		DatabaseController.INSTANCE.addObject(p, "photos");
+//		
+//		return p;
+//	}
 	
 	 public LinkedList<Photo> getPhotosByAnnouncements(Announcement announcement) throws IOException {
         LinkedList<Photo> photosList = new LinkedList<>();

@@ -10,7 +10,8 @@ public class Photo {
 	private MongoDbId _id;
 
 	private String announcementId;
-	private String image;
+	private String uri;
+	private String contentType;
 		
 	public String get_id() {
 		if(_id == null)
@@ -26,13 +27,24 @@ public class Photo {
 	public String getAnnouncementId() {
 		return announcementId;
 	}
+	
 	public void setAnnouncementId(String announcementId) {
 		this.announcementId = announcementId;
 	}
-	public String getImage() {
-		return image;
+	
+	public String getUri() {
+		return uri;
 	}
-	public void setImage(String image) {
-		this.image = image;
+	
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+	
+	public String getContentType() {
+		return contentType;
+	}
+	
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 }

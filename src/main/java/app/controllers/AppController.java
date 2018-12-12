@@ -1,12 +1,14 @@
 package app.controllers;
+
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.Base64;
 import java.util.LinkedList;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.mail.MessagingException;
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletResponse;
-
 import app.controllers.models.AdoptionRequestModel;
 import app.entities.*;
 import app.singletons.EmailType;
@@ -14,6 +16,17 @@ import app.utils.EmailService;
 import app.controllers.models.CommentModel;
 import app.entities.Thread;
 import org.apache.commons.math3.exception.NoDataException;
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.trace.http.HttpTrace.Principal;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,11 +38,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import app.controllers.models.AnnouncementModel;
 import app.controllers.models.RegisterModel;
 import app.database.*;
 import app.exceptions.DuplicateEntityException;
+import app.utils.FileStorageService;
+import app.utils.MongoDbId;
 
 @RestController
 public class AppController {
@@ -184,7 +200,7 @@ public class AppController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/get-photos/{announcementId}")
-	private LinkedList<Photo> getPhotos(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId) {
+	public LinkedList<Photo> getPhotos(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId) {
 		LinkedList<Photo> photos = null;
 		
 		try {	        
@@ -197,8 +213,54 @@ public class AppController {
 		return photos;
 	}
 	
-	@PostMapping("/upload-image") // //new annotation since 4.3
-    public Photo uploadImage(HttpServletResponse response, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Authentication authentication, String announcementId) {
+//	@PostMapping("/upload-image") // //new annotation since 4.3
+//    public Photo uploadImage(HttpServletResponse response, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Authentication authentication, String announcementId) {
+//		
+//		Photo photo = null;
+//		
+//		try {
+//			User user = (User)authentication.getDetails();
+//			Announcement announcement = FeedController.INSTANCE.getAnnouncementById(announcementId);
+//        
+//	        if (file.isEmpty()) {
+//	            throw new Exception("Please select a file to upload");
+//	        }
+//	        
+//	        if(!announcement.getUser().equals(user.get_id())) {
+//	        	throw new BadCredentialsException("Not authorized."); 
+//	        }
+//	        
+//	        return GalleryController.INSTANCE.uploadImage(file, user, announcement);
+//		}
+//		catch(Exception e) {
+//			e.printStackTrace();
+//			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+//		}
+//		
+//		return photo;
+//	}
+	
+	@PostMapping("/remove-image")
+    public Boolean removeFile(HttpServletResponse response, RedirectAttributes redirectAttributes, Authentication authentication, String fileId) {
+		try {
+			User user = (User)authentication.getDetails();
+
+			GalleryController.INSTANCE.removeFile(user, fileId);
+		} catch (NoDataException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+		}
+		
+    return true;
+	}
+	
+	@Autowired
+  private FileStorageService fileStorageService;
+    
+  @PostMapping("/upload-image")
+  public Photo uploadFile(HttpServletResponse response, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Authentication authentication, String announcementId) throws Exception {
+        Photo photo =  new Photo();
 		
 		try {
 			User user = (User)authentication.getDetails();
@@ -211,18 +273,59 @@ public class AppController {
 	        if(!announcement.getUser().equals(user.get_id())) {
 	        	throw new BadCredentialsException("Not authorized."); 
 	        }
+      
+	        photo.setAnnouncementId(announcement.get_id());
+	        //photo.setUri(fileDownloadUri);
+	        photo.setContentType(file.getContentType());
+	        
+	        photo.set_id((MongoDbId)DatabaseController.INSTANCE.addObject(photo, "photos"));
+	        
+	        String fileName = fileStorageService.storeFile(file, photo.get_id());
+	        String fileDownloadUri = ServletUriComponentsBuilder.fromPath("/photo/")
+	                .path(photo.get_id())
+	                .toUriString();
+	        
+	        photo.setUri(fileDownloadUri);
+	        
+	        DatabaseController.INSTANCE.updateObject(photo, "photos");
 	        Photo p = GalleryController.INSTANCE.uploadImage(file, user, announcement);
 	        announcement.save();
 	        return p;
-		}
+    }
 		catch(Exception e) {
 			e.printStackTrace();
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
+        return photo;
+    }
+
+    @GetMapping("/photo/{fileName:.+}")
+    public ResponseEntity<Resource> downloadFile(HttpServletResponse response, @PathVariable String fileName, HttpServletRequest request) throws Exception {
+        // Load file as Resource
+        Resource resource = fileStorageService.loadFileAsResource(fileName);
+
+        // Try to determine file's content type
+        String contentType = null;
+        Photo photo = null;
+        try {
+        	photo = GalleryController.INSTANCE.getPhoto(fileName);
+            contentType = photo.getContentType();
+        } catch (IOException e) {
+        	e.printStackTrace();
+			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
 		
-		return null;
-	}
-	
 	@SuppressWarnings("SameReturnValue")
 	@PostMapping("/remove-image")
     public Boolean removeFile(HttpServletResponse response, RedirectAttributes redirectAttributes, Authentication authentication, String fileId) {
