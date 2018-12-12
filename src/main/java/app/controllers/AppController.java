@@ -40,6 +40,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.mongodb.BasicDBObject;
+
 import app.controllers.models.AnnouncementModel;
 import app.controllers.models.RegisterModel;
 import app.database.*;
@@ -240,11 +242,11 @@ public class AppController {
 //		return photo;
 //	}
 	
+	@SuppressWarnings("SameReturnValue")
 	@PostMapping("/remove-image")
     public Boolean removeFile(HttpServletResponse response, RedirectAttributes redirectAttributes, Authentication authentication, String fileId) {
 		try {
 			User user = (User)authentication.getDetails();
-
 			GalleryController.INSTANCE.removeFile(user, fileId);
 		} catch (NoDataException | IOException e) {
 			// TODO Auto-generated catch block
@@ -252,14 +254,14 @@ public class AppController {
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
 		
-    return true;
+		return true;
 	}
 	
 	@Autowired
   private FileStorageService fileStorageService;
     
-  @PostMapping("/upload-image")
-  public Photo uploadFile(HttpServletResponse response, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Authentication authentication, String announcementId) throws Exception {
+	@PostMapping("/upload-image")
+	  public Photo uploadFile(HttpServletResponse response, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Authentication authentication, String announcementId) throws Exception {
         Photo photo =  new Photo();
 		
 		try {
@@ -288,16 +290,16 @@ public class AppController {
 	        photo.setUri(fileDownloadUri);
 	        
 	        DatabaseController.INSTANCE.updateObject(photo, "photos");
-	        Photo p = GalleryController.INSTANCE.uploadImage(file, user, announcement);
+
 	        announcement.save();
-	        return p;
-    }
+		}
 		catch(Exception e) {
 			e.printStackTrace();
 			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
 		}
+		
         return photo;
-    }
+	}
 
     @GetMapping("/photo/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(HttpServletResponse response, @PathVariable String fileName, HttpServletRequest request) throws Exception {
@@ -326,21 +328,6 @@ public class AppController {
                 .body(resource);
     }
 		
-	@SuppressWarnings("SameReturnValue")
-	@PostMapping("/remove-image")
-    public Boolean removeFile(HttpServletResponse response, RedirectAttributes redirectAttributes, Authentication authentication, String fileId) {
-		try {
-			User user = (User)authentication.getDetails();
-			GalleryController.INSTANCE.removeFile(user, fileId);
-		} catch (NoDataException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			sendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
-		}
-		
-		return true;
-	}
-
 	@RequestMapping(method = RequestMethod.POST, value = "/get-announcement/{announcementId}/addAsFavorite")
 	public void addAsFavorite(HttpServletResponse response, Authentication authentication, @PathVariable String announcementId){
 		try{
