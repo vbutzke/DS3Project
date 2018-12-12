@@ -52,8 +52,11 @@ public class Announcement {
         this.status 	  = AnnouncementStatus.AVAILABLE;
         this.adopter     = "";
         this.adopted 	  = false;
-        Thread t = new Thread(get_id());
+        
+        if(get_id()!=null) {
+        	Thread t = new Thread(get_id());
 		    this.threadId    = DatabaseController.INSTANCE.getRecord(t, t.getCollection(), Thread.class).get_id();
+        }
     }
 
 	public String get_id() {
