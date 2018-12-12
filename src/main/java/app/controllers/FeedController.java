@@ -112,7 +112,10 @@ public enum FeedController {
 
         for(String id : announcements){
             filter.append("_id", new ObjectId(id));
-            aml.add((Announcement) DatabaseController.INSTANCE.filter(filter, "announcements", Announcement.class));
+            Announcement a = (Announcement) DatabaseController.INSTANCE.filter(filter, "announcements", Announcement.class);
+            a = getOnePic((Announcement) a);
+            aml.add(a);
+            
             filter.clear();
         }
 
