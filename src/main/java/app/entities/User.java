@@ -1,17 +1,9 @@
 package app.entities;
 
-import java.io.IOException;
 import java.security.InvalidParameterException;
-import java.util.LinkedList;
-
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
 import app.database.DatabaseController;
 import app.exceptions.DuplicateEntityException;
 import app.utils.MongoDbId;
@@ -37,40 +29,29 @@ public class User {
 	private String lastName;
 	private String password;
 	private String permission = "Anonymous";
-	protected final String collection = "user";
-
+	private LinkedList<String> favoriteAnnouncements;
+	private final String collection = "user";
+  
 	public User() {
 	}
 
-	public User(String email, String firstName, String lastName, String password, String passwordConf, AccessCode code)
-			throws InvalidParameterException, JsonProcessingException, DuplicateEntityException {
+	public User(String email, String firstName, String lastName, String password, String passwordConf, AccessCode code) throws InvalidParameterException, JsonProcessingException, DuplicateEntityException {
 
-		if (email == "") {
-			throw new DuplicateEntityException("The email cannot be empty.");
-		} else {
-			this.email = email;
-		}
-		if (firstName == "") {
-			throw new DuplicateEntityException("The First Name cannot be empty.");
-		} else {
-			this.firstName = firstName;
-		}
-		if (lastName == "") {
-			throw new DuplicateEntityException("The Last Name cannot be empty.");
-		} else {
-			this.lastName = lastName;
-		}
-		if (password == "" || passwordConf == "") {
-			throw new DuplicateEntityException("The Password and Password Confirm cannot be empty.");
-		} else {
-			if (password.equals(passwordConf)) {
+		if (email.equals("") || firstName.equals("") || lastName.equals("") || password.equals("") || passwordConf.equals("")) {
+			throw new InvalidParameterException("Email, first name, last name, password and passoword confirmation are mandatory fields. Please revise.");
+		} 
+    
+    this.email     = email;
+    this.firstName = firstName;
+    this.lastName  = lastName;
+    
+    if (password.equals(passwordConf)) {
 				this.password = password;
-			} else
-			{
-				throw new DuplicateEntityException("The Password and Password Confirm must be equals.");
-			}
-			
+		} else {
+				throw new DuplicateEntityException("The Password and Password Confirm must be equal.");
 		}
+    
+		favoriteAnnouncements = new LinkedList<>();
 		addUser();
 	}
 
@@ -101,13 +82,13 @@ public class User {
 	public void setPermission(String permission) {
 		this.permission = permission;
 	}
-
+    
 	public void checkAccessCode(AccessCode accessCode) throws JsonProcessingException {
 		if (accessCode == null || !DatabaseController.INSTANCE.isAccessCodeValid(accessCode)) {
 			throw new InvalidParameterException();
 		}
 	}
-
+    
 	public void addUser() throws JsonProcessingException, DuplicateEntityException {
 		if (DatabaseController.INSTANCE.findRecordBy("email", this.getEmail(), collection)) {
 			throw new DuplicateEntityException("This email is already in use.");
@@ -115,5 +96,24 @@ public class User {
 			this.set_id((MongoDbId) DatabaseController.INSTANCE.addObject(this, collection));
 		}
 
+	}
+
+	public boolean setPassword(String password, String passwordConf){
+		if(password.equals(passwordConf)){
+			this.password = password;
+			return true;
+		}
+		return false;
+  }
+  
+	public LinkedList<String> getFavoriteAnnouncements() {
+		if(favoriteAnnouncements  == null)
+			favoriteAnnouncements = new LinkedList<>();
+		
+		return favoriteAnnouncements;
+	}
+
+	public void setFavoriteAnnouncements(LinkedList<String> favoriteAnnouncements) {
+		this.favoriteAnnouncements = favoriteAnnouncements;
 	}
 }

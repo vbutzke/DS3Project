@@ -1,7 +1,7 @@
 package app.entities;
 
-public class City {
-    String name;
+class City {
+    private String name;
 
     public City(String name) {
         this.name = name;
